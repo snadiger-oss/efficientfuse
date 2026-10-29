@@ -1,0 +1,43 @@
+# Python and local environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage*
+htmlcov/
+.venv*/
+venv/
+env/
+build/
+dist/
+# Compiler artifacts and local caches
+.cache/
+.triton/
+torchinductor_*/
+*.so
+*.dylib
+*.o
+*.ptx
+*.cubin
+# Generated measurements, decisions, profiles and plots
+results/*
+!results/README.md
+outputs/
+tmp/
+slurm-*.out
+*.nsys-rep
+*.ncu-rep
+# Credentials and host-specific state
+.env
+.env.*
+!.env.example
+.aws/
+.ssh/
+credentials*
+*service-account*.json
+*.pem
+*.key
+.DS_Store
+
