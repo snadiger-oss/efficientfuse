@@ -1,0 +1,44 @@
+{
+  "scope": "quick single-window measurement, ordinary execution, not a calibration",
+  "workload": "w1",
+  "shape": "4096x4096",
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "results": [
+    {
+      "plan": "eager",
+      "calls": 2357,
+      "window_s": 1.9951461553573608,
+      "runtime_us": 846.4769432996864,
+      "energy_mJ": 180.55494272380145
+    },
+    {
+      "plan": "full",
+      "calls": 5641,
+      "window_s": 1.9973746249452233,
+      "runtime_us": 354.081656611456,
+      "energy_mJ": 75.96809076404892
+    },
+    {
+      "plan": "first_pair",
+      "calls": 3379,
+      "window_s": 1.9988408470526338,
+      "runtime_us": 591.5480458871364,
+      "energy_mJ": 124.05179047055341
+    },
+    {
+      "plan": "last_pair",
+      "calls": 3378,
+      "window_s": 1.9982633776962757,
+      "runtime_us": 591.552213646026,
+      "energy_mJ": 127.46714031971581
+    },
+    {
+      "plan": "separate",
+      "calls": 2415,
+      "window_s": 1.9982595276087523,
+      "runtime_us": 827.4366573949285,
+      "energy_mJ": 175.54948240165632
+    }
+  ]
+}
