@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "greenfuse"
+version = "0.1.0"
+description = "Operation partitioning experiments for GPU energy research"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+torch = ["torch>=2.5,<3"]
+test = ["pytest>=8"]
+measurement = ["nvidia-ml-py>=12,<14"]
+analysis = ["matplotlib>=3.8,<4"]
+config = ["PyYAML>=6,<7"]
+
+[project.scripts]
+greenfuse = "greenfuse.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+

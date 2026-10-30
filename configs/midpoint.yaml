@@ -1,0 +1,15 @@
+# Run this six-shape grid after the single smoke case is reliable.
+workload: w1
+grid:
+  m: [32, 1024]
+  n: [256, 1024, 4096]
+device: cuda:0
+modes: [launch, graph]
+dtype: float32
+layout: contiguous
+seed: 0
+rounds: 5
+window_seconds: 3.0
+latency_tolerance: 0.05
+exclusion_policy: none
+eager_baseline: true
