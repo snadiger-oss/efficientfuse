@@ -31,6 +31,7 @@ def main():
     parser.add_argument("--window-seconds", type=float, default=3.0)
     parser.add_argument("--warmup", type=int, default=3)
     parser.add_argument("--exclusive-gpu", action="store_true", help="Assert a reserved whole physical GPU; required for energy")
+    parser.add_argument("--partitions", nargs="+", help="Optional subset of partition IDs, e.g. p10 p00")
     parser.add_argument("--compiler-artifacts", action="store_true")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
@@ -49,6 +50,11 @@ def main():
     modes = tuple(dict.fromkeys(args.modes or (["launch"] if device.type == "cpu" else ["launch", "graph"])))
     captured = capture_graph(workload_w1)
     partitions = enumerate_partitions(captured.description)
+    if args.partitions:
+        unknown = sorted(set(args.partitions) - {p.id for p in partitions})
+        if unknown:
+            parser.error(f"Unknown partition IDs {unknown}; available: {[p.id for p in partitions]}")
+        partitions = tuple(p for p in partitions if p.id in args.partitions)
     metadata = {"workload": spec.to_dict(), "input_spec_fingerprint": spec.fingerprint,
                 "graph_fingerprint": captured.description.fingerprint,
                 "partitions": [p.to_dict() for p in partitions],

@@ -31,7 +31,9 @@ def summarize_kernel_trace(trace: dict, *, mode: str, device_index: int) -> Kern
     if not isinstance(events, list):
         return KernelEvidence(reason="Trace has no event list")
     complete = [event for event in events if isinstance(event, dict) and event.get("ph") == "X"]
-    markers = [event for event in complete if event.get("name") == INVOCATION_MARKER]
+    # Newer PyTorch also mirrors the marker onto the GPU timeline as gpu_user_annotation; bound by the CPU range.
+    markers = [event for event in complete if event.get("name") == INVOCATION_MARKER
+               and event.get("cat") != "gpu_user_annotation"]
     if len(markers) != 1:
         return KernelEvidence(reason="Expected exactly one complete logical-invocation marker")
 

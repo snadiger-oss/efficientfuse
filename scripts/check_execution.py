@@ -25,6 +25,7 @@ def main():
     parser.add_argument("--n", type=int, default=256)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--warmup", type=int, default=3)
+    parser.add_argument("--partitions", nargs="+", help="Optional subset of partition IDs, e.g. p10 p00")
     parser.add_argument("--compiler-artifacts", action="store_true", help="Ask Inductor to save debug code; cache hits may not produce files")
     parser.add_argument("--output", type=Path, default=Path("results/person2_execution.json"))
     args = parser.parse_args()
@@ -38,6 +39,11 @@ def main():
     spec = w1_spec(args.m, args.n, seed=args.seed)
     captured = capture_graph(workload_w1)
     partitions = enumerate_partitions(captured.description)
+    if args.partitions:
+        unknown = sorted(set(args.partitions) - {p.id for p in partitions})
+        if unknown:
+            parser.error(f"Unknown partition IDs {unknown}; available: {[p.id for p in partitions]}")
+        partitions = tuple(p for p in partitions if p.id in args.partitions)
     modes = tuple(dict.fromkeys(args.modes))
     report = {
         "schema_version": 1, "run_id": run_id,

@@ -1,0 +1,22 @@
+# Experiment 1: W1 at a small shape, restricted to this half of the search space:
+#   p10 = last_pair [bias add] [ReLU + residual add]
+#   p00 = full      [bias add + ReLU + residual add]
+# p01 (first_pair) and p11 (separate) are run by the other half of the team.
+workload: w1
+shapes: [[32, 256]]
+device: cuda:0
+modes: [launch, graph]
+partitions: [p10, p00]
+dtype: float32
+layout: contiguous
+seed: 0
+rtol: 0.00001
+atol: 0.000001
+rounds: 5
+window_seconds: 3.0
+warmup_iterations: 3
+max_partitions: 256
+latency_tolerance: 0.05
+exclusion_policy: none
+eager_baseline: true
+compiler_artifacts: false

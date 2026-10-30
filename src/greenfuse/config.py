@@ -31,6 +31,7 @@ class ExperimentConfig:
     exclusion_policy: str = "none"
     eager_baseline: bool = True
     compiler_artifacts: bool = False
+    partitions: tuple | None = None  # Optional subset of partition IDs, e.g. ["p10", "p00"]; None means all
 
     def __post_init__(self):
         if self.workload != "w1" or self.dtype != "float32" or self.layout != "contiguous":
@@ -60,7 +61,20 @@ class ExperimentConfig:
             raise ValueError("Unknown exclusion policy")
         if any(type(v) is not bool for v in (self.eager_baseline, self.compiler_artifacts)):
             raise ValueError("Baseline and artifact switches must be booleans")
+        if self.partitions is not None and (not isinstance(self.partitions, tuple) or not self.partitions
+                                            or len(set(self.partitions)) != len(self.partitions)
+                                            or any(not isinstance(v, str) for v in self.partitions)):
+            raise ValueError("partitions must be a nonempty list of unique partition IDs")
         self.measurement()
+
+    def select_partitions(self, partitions):
+        if self.partitions is None:
+            return tuple(partitions)
+        known = {p.id: p for p in partitions}
+        missing = [pid for pid in self.partitions if pid not in known]
+        if missing:
+            raise ValueError(f"Unknown partition IDs {missing}; available: {sorted(known)}")
+        return tuple(known[pid] for pid in self.partitions)
 
     def measurement(self, *, validation=False):
         return MeasurementConfig(rounds=self.rounds, window_seconds=self.window_seconds,
@@ -101,6 +115,10 @@ class ExperimentConfig:
             if not isinstance(data["modes"], (list, tuple)) or any(not isinstance(v, str) for v in data["modes"]):
                 raise ValueError("modes must be a list of strings")
             data["modes"] = tuple(data["modes"])
+        if data.get("partitions") is not None:
+            if not isinstance(data["partitions"], (list, tuple)):
+                raise ValueError("partitions must be a list of partition IDs")
+            data["partitions"] = tuple(data["partitions"])
         return cls(**data)
 
 

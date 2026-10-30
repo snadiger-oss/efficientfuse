@@ -77,7 +77,7 @@ def create_context(config, shape, *, exclusive_gpu=False):
     spec = replace(get_workload_spec(config.workload, m=shape[0], n=shape[1], seed=config.seed),
                    rtol=config.rtol, atol=config.atol)
     captured = capture_graph(workload)
-    partitions = enumerate_partitions(captured.description, max_partitions=config.max_partitions)
+    partitions = config.select_partitions(enumerate_partitions(captured.description, max_partitions=config.max_partitions))
     experiment_key = fingerprint({"config": config.to_dict(), "graph": captured.description.fingerprint, "inputs": spec.fingerprint})
     candidates = combine_candidates(partitions, config.modes, experiment_key)
     environment = environment_report(config.device, exclusive_gpu=exclusive_gpu)

@@ -1,0 +1,398 @@
+{
+  "status": "validated",
+  "planner_key": "451100a3b671bbe5e77632ad5014ed3c6dbfb361c5de1d0e3a7ec5762a3f7824",
+  "selected_id": "p00_launch",
+  "initial_report": "/home/havarur/ondemand/scalable/efficientfuse/results/exp2_w1_large_p10_p00/78b115ff1359/w1_8192x8192/451100a3b671_9aad3485/initial.json",
+  "validation_report": "/home/havarur/ondemand/scalable/efficientfuse/results/exp2_w1_large_p10_p00/78b115ff1359/w1_8192x8192/451100a3b671_9aad3485/validation.json",
+  "cache_written": true,
+  "selection": {
+    "status": "selected",
+    "reason": null,
+    "selected_id": "p00_launch",
+    "exclusions": {},
+    "candidates": {
+      "p10_launch": {
+        "seconds": 0.002332463791010095,
+        "joules": 0.5253128109452736,
+        "timing": {
+          "count": 5,
+          "median": 0.002332463791010095,
+          "minimum": 0.0023324523736208457,
+          "maximum": 0.0023325309035743575,
+          "mad": 1.1417389249313015e-08,
+          "cv": 1.3855929732933267e-05,
+          "complete": true
+        },
+        "energy": {
+          "count": 5,
+          "median": 0.5253128109452736,
+          "minimum": 0.5124060945273632,
+          "maximum": 0.5259334577114428,
+          "mad": 0.0006206467661692416,
+          "cv": 0.013699657434428504,
+          "complete": true
+        },
+        "partition_id": "p10",
+        "mode": "launch"
+      },
+      "p10_graph": {
+        "seconds": 0.004245217387903143,
+        "joules": 0.9299454545454545,
+        "timing": {
+          "count": 5,
+          "median": 0.004245217387903143,
+          "minimum": 0.004244703865102069,
+          "maximum": 0.004264227975032885,
+          "mad": 5.135228010738624e-07,
+          "cv": 0.001960977023437065,
+          "complete": true
+        },
+        "energy": {
+          "count": 5,
+          "median": 0.9299454545454545,
+          "minimum": 0.9268465909090909,
+          "maximum": 0.9533477272727273,
+          "mad": 0.0002909090909090084,
+          "cv": 0.011653962761720413,
+          "complete": true
+        },
+        "partition_id": "p10",
+        "mode": "graph"
+      },
+      "p00_launch": {
+        "seconds": 0.0013923977160136304,
+        "joules": 0.317170007423905,
+        "timing": {
+          "count": 5,
+          "median": 0.0013923977160136304,
+          "minimum": 0.0013922446659049151,
+          "maximum": 0.0013958197546833828,
+          "mad": 1.3244485602887691e-07,
+          "cv": 0.001120426513843386,
+          "complete": true
+        },
+        "energy": {
+          "count": 5,
+          "median": 0.317170007423905,
+          "minimum": 0.30956310319227914,
+          "maximum": 0.3176826280623608,
+          "mad": 0.0005126206384558074,
+          "cv": 0.013589232698674432,
+          "complete": true
+        },
+        "partition_id": "p00",
+        "mode": "launch"
+      },
+      "p00_graph": {
+        "seconds": 0.0033075381357820684,
+        "joules": 0.7412530864197531,
+        "timing": {
+          "count": 5,
+          "median": 0.0033075381357820684,
+          "minimum": 0.003307266891777936,
+          "maximum": 0.0033094970972607374,
+          "mad": 2.7124400413247596e-07,
+          "cv": 0.0002774011360161904,
+          "complete": true
+        },
+        "energy": {
+          "count": 5,
+          "median": 0.7412530864197531,
+          "minimum": 0.7241075837742504,
+          "maximum": 0.743452380952381,
+          "mad": 0.0021992945326279045,
+          "cv": 0.013221401535460349,
+          "complete": true
+        },
+        "partition_id": "p00",
+        "mode": "graph"
+      }
+    },
+    "scope": "Lowest observed median GPU energy within the median-runtime bound; no significance claim",
+    "policy": {
+      "latency_tolerance": 0.05,
+      "exclusion_policy": "none"
+    },
+    "requested_ids": [
+      "p10_launch",
+      "p10_graph",
+      "p00_launch",
+      "p00_graph",
+      "eager_launch"
+    ],
+    "fastest_id": "p00_launch",
+    "runtime_limit_seconds": 0.0014620176018143118,
+    "feasible_ids": [
+      "p00_launch"
+    ],
+    "runtime_ratio": 1.0,
+    "energy_ratio_to_fastest": 1.0,
+    "energy_range_overlaps": [],
+    "uncertainty": "Observed ranges are not confidence intervals; fresh validation is required before caching",
+    "evidence_fingerprint": "13d7e1cddfdc4c421add15ce8f4abccb8f87c438fa605a13bdf99cfeeaa7daf3",
+    "comparison_fingerprint": "56902eec7a9299f83709c0e3e0deeb60c36cdb3a0b6835cc53ace0f80392abaa"
+  },
+  "validation": {
+    "status": "validated",
+    "reason": "Same median-energy winner meets the runtime bound in a fresh full-set repeat",
+    "initial": {
+      "status": "selected",
+      "reason": null,
+      "selected_id": "p00_launch",
+      "exclusions": {},
+      "candidates": {
+        "p10_launch": {
+          "seconds": 0.002332463791010095,
+          "joules": 0.5253128109452736,
+          "timing": {
+            "count": 5,
+            "median": 0.002332463791010095,
+            "minimum": 0.0023324523736208457,
+            "maximum": 0.0023325309035743575,
+            "mad": 1.1417389249313015e-08,
+            "cv": 1.3855929732933267e-05,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.5253128109452736,
+            "minimum": 0.5124060945273632,
+            "maximum": 0.5259334577114428,
+            "mad": 0.0006206467661692416,
+            "cv": 0.013699657434428504,
+            "complete": true
+          },
+          "partition_id": "p10",
+          "mode": "launch"
+        },
+        "p10_graph": {
+          "seconds": 0.004245217387903143,
+          "joules": 0.9299454545454545,
+          "timing": {
+            "count": 5,
+            "median": 0.004245217387903143,
+            "minimum": 0.004244703865102069,
+            "maximum": 0.004264227975032885,
+            "mad": 5.135228010738624e-07,
+            "cv": 0.001960977023437065,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.9299454545454545,
+            "minimum": 0.9268465909090909,
+            "maximum": 0.9533477272727273,
+            "mad": 0.0002909090909090084,
+            "cv": 0.011653962761720413,
+            "complete": true
+          },
+          "partition_id": "p10",
+          "mode": "graph"
+        },
+        "p00_launch": {
+          "seconds": 0.0013923977160136304,
+          "joules": 0.317170007423905,
+          "timing": {
+            "count": 5,
+            "median": 0.0013923977160136304,
+            "minimum": 0.0013922446659049151,
+            "maximum": 0.0013958197546833828,
+            "mad": 1.3244485602887691e-07,
+            "cv": 0.001120426513843386,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.317170007423905,
+            "minimum": 0.30956310319227914,
+            "maximum": 0.3176826280623608,
+            "mad": 0.0005126206384558074,
+            "cv": 0.013589232698674432,
+            "complete": true
+          },
+          "partition_id": "p00",
+          "mode": "launch"
+        },
+        "p00_graph": {
+          "seconds": 0.0033075381357820684,
+          "joules": 0.7412530864197531,
+          "timing": {
+            "count": 5,
+            "median": 0.0033075381357820684,
+            "minimum": 0.003307266891777936,
+            "maximum": 0.0033094970972607374,
+            "mad": 2.7124400413247596e-07,
+            "cv": 0.0002774011360161904,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.7412530864197531,
+            "minimum": 0.7241075837742504,
+            "maximum": 0.743452380952381,
+            "mad": 0.0021992945326279045,
+            "cv": 0.013221401535460349,
+            "complete": true
+          },
+          "partition_id": "p00",
+          "mode": "graph"
+        }
+      },
+      "scope": "Lowest observed median GPU energy within the median-runtime bound; no significance claim",
+      "policy": {
+        "latency_tolerance": 0.05,
+        "exclusion_policy": "none"
+      },
+      "requested_ids": [
+        "p10_launch",
+        "p10_graph",
+        "p00_launch",
+        "p00_graph",
+        "eager_launch"
+      ],
+      "fastest_id": "p00_launch",
+      "runtime_limit_seconds": 0.0014620176018143118,
+      "feasible_ids": [
+        "p00_launch"
+      ],
+      "runtime_ratio": 1.0,
+      "energy_ratio_to_fastest": 1.0,
+      "energy_range_overlaps": [],
+      "uncertainty": "Observed ranges are not confidence intervals; fresh validation is required before caching",
+      "evidence_fingerprint": "13d7e1cddfdc4c421add15ce8f4abccb8f87c438fa605a13bdf99cfeeaa7daf3",
+      "comparison_fingerprint": "56902eec7a9299f83709c0e3e0deeb60c36cdb3a0b6835cc53ace0f80392abaa"
+    },
+    "fresh": {
+      "status": "selected",
+      "reason": null,
+      "selected_id": "p00_launch",
+      "exclusions": {},
+      "candidates": {
+        "p10_launch": {
+          "seconds": 0.002332570838084009,
+          "joules": 0.525125,
+          "timing": {
+            "count": 5,
+            "median": 0.002332570838084009,
+            "minimum": 0.002332433608165984,
+            "maximum": 0.0023327101269894424,
+            "mad": 7.990377014557848e-08,
+            "cv": 4.59956776065994e-05,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.525125,
+            "minimum": 0.5120870646766169,
+            "maximum": 0.5255472636815921,
+            "mad": 0.0004222636815921499,
+            "cv": 0.013238544424210314,
+            "complete": true
+          },
+          "partition_id": "p10",
+          "mode": "launch"
+        },
+        "p10_graph": {
+          "seconds": 0.0042505087035948335,
+          "joules": 0.9494366515837104,
+          "timing": {
+            "count": 5,
+            "median": 0.0042505087035948335,
+            "minimum": 0.004245133519518227,
+            "maximum": 0.004253015700702417,
+            "mad": 2.506997107583342e-06,
+            "cv": 0.0008306183644937714,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.9494366515837104,
+            "minimum": 0.9475486425339367,
+            "maximum": 0.9500509049773755,
+            "mad": 0.0006142533936651651,
+            "cv": 0.0012480073649976083,
+            "complete": true
+          },
+          "partition_id": "p10",
+          "mode": "graph"
+        },
+        "p00_launch": {
+          "seconds": 0.0013923671873702593,
+          "joules": 0.31706236080178174,
+          "timing": {
+            "count": 5,
+            "median": 0.0013923671873702593,
+            "minimum": 0.0013922954744949062,
+            "maximum": 0.0013924553387458889,
+            "mad": 7.171287535307456e-08,
+            "cv": 4.790170780422569e-05,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.31706236080178174,
+            "minimum": 0.30972345953971786,
+            "maximum": 0.3178645137342242,
+            "mad": 0.000802152932442457,
+            "cv": 0.013161582877336967,
+            "complete": true
+          },
+          "partition_id": "p00",
+          "mode": "launch"
+        },
+        "p00_graph": {
+          "seconds": 0.0033090625096250464,
+          "joules": 0.7400123456790123,
+          "timing": {
+            "count": 5,
+            "median": 0.0033090625096250464,
+            "minimum": 0.003307010272987568,
+            "maximum": 0.0033096887353590873,
+            "mad": 6.262257340409333e-07,
+            "cv": 0.0003798923915008979,
+            "complete": true
+          },
+          "energy": {
+            "count": 5,
+            "median": 0.7400123456790123,
+            "minimum": 0.7242248677248677,
+            "maximum": 0.7437901234567901,
+            "mad": 0.003777777777777769,
+            "cv": 0.012875719756734011,
+            "complete": true
+          },
+          "partition_id": "p00",
+          "mode": "graph"
+        }
+      },
+      "scope": "Lowest observed median GPU energy within the median-runtime bound; no significance claim",
+      "policy": {
+        "latency_tolerance": 0.05,
+        "exclusion_policy": "none"
+      },
+      "requested_ids": [
+        "p10_launch",
+        "p10_graph",
+        "p00_launch",
+        "p00_graph",
+        "eager_launch"
+      ],
+      "fastest_id": "p00_launch",
+      "runtime_limit_seconds": 0.0014619855467387722,
+      "feasible_ids": [
+        "p00_launch"
+      ],
+      "runtime_ratio": 1.0,
+      "energy_ratio_to_fastest": 1.0,
+      "energy_range_overlaps": [],
+      "uncertainty": "Observed ranges are not confidence intervals; fresh validation is required before caching",
+      "evidence_fingerprint": "6d59e0fcf3502eee9caa5130b42b07afbe2330f6aaca327f53ebe8b6282962cb",
+      "comparison_fingerprint": "78e2ab8963ab8633044422c2c6b243d8bd275ed2f25973637357b289d3f67c2f"
+    },
+    "selected_id": "p00_launch",
+    "statistical_significance": "not established",
+    "setup_energy_and_break_even": "not measured; no net-energy savings claim"
+  },
+  "reason": "Same median-energy winner meets the runtime bound in a fresh full-set repeat",
+  "cache_path": "/home/havarur/ondemand/scalable/efficientfuse/results/decisions/451100a3b671bbe5e77632ad5014ed3c6dbfb361c5de1d0e3a7ec5762a3f7824.json"
+}
