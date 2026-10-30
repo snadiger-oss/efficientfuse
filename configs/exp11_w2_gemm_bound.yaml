@@ -1,0 +1,25 @@
+# Experiment 11: W2 gelu(x @ weight + bias), x [128, 4096] @ weight [4096, 4096], cuBLAS, TF32 off.
+# GEMM-dominated: all 8 candidates tied in screening. atol 1e-3: addmm vs mm+add round differently
+# (max abs diff 2.8e-4 on outputs of magnitude ~64, near-zero GELU outputs fail a 1e-5 relative check).
+# All four groupings x two modes (8 candidates) + eager. Screened first: partial+replay was within
+# 1.05x of the best full-fusion runtime (results/bhargav/screening/screen_all.json).
+# Replay reads GPU-resident inputs (copies only new/modified inputs), like ordinary mode.
+workload: w2
+shapes: [[128, 4096]]
+device: cuda:0
+modes: [launch, graph]
+replay_input_refresh: on_change
+gemm_backend: default
+dtype: float32
+layout: contiguous
+seed: 0
+rtol: 0.0001
+atol: 0.001
+rounds: 5
+window_seconds: 3.0
+warmup_iterations: 3
+max_partitions: 256
+latency_tolerance: 0.05
+exclusion_policy: none
+eager_baseline: true
+compiler_artifacts: false

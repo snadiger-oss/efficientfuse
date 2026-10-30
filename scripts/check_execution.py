@@ -22,8 +22,10 @@ def main():
     parser.add_argument("--device", default="cuda:0", help="cuda:N for GPU validation; cpu for explicit ordinary-only development")
     parser.add_argument("--modes", nargs="+", choices=["launch", "graph"], default=["launch", "graph"])
     parser.add_argument("--workload", choices=sorted(WORKLOADS), default="w1")
-    parser.add_argument("--gemm-backend", choices=["default", "autotune", "triton"], default="default",
+    parser.add_argument("--gemm-backend", choices=["default", "autotune", "triton", "fuse_epilogue"], default="default",
                         help="GEMM policy for w2: cuBLAS, autotuned cuBLAS-vs-Triton, or Triton templates only")
+    parser.add_argument("--replay-input-refresh", choices=["always", "on_change"], default="always",
+                        help="Replay copies inputs every call (always) or only when they change (on_change)")
     parser.add_argument("--rtol", type=float)
     parser.add_argument("--atol", type=float)
     parser.add_argument("--m", type=int, default=32)
@@ -90,7 +92,7 @@ def main():
                 prepared = prepare_execution(
                     build_partition(captured, partition), inputs, mode=mode, reference=workload,
                     config=config, allow_cpu=device.type == "cpu", warmup_iterations=args.warmup,
-                    rtol=spec.rtol, atol=spec.atol, trace_path=candidate_dir / "execution_trace.json",
+                    rtol=spec.rtol, atol=spec.atol, input_refresh=args.replay_input_refresh, trace_path=candidate_dir / "execution_trace.json",
                 )
                 record = prepared.record
                 try:

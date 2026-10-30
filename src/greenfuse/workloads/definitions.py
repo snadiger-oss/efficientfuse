@@ -42,3 +42,31 @@ def workload_w4(x, bias):
     """
     h = x + bias
     return h - h.mean(dim=-1, keepdim=True)
+
+
+def workload_w5(x, bias):
+    """Expensive pointwise feeding a multi-pass reduction: softmax(gelu(x + bias)) over rows.
+
+    Softmax reads each row several times (max, sum of exponentials, normalize). When a row is too
+    wide to stay on chip, a fully fused kernel recomputes gelu(x + bias) in every pass, while
+    [add + GELU] [softmax] computes it once and stores it.
+    """
+    import torch
+    import torch.nn.functional as functional
+
+    return torch.softmax(functional.gelu(x + bias), -1)
+
+
+def make_workload_w6(n: int):
+    """Transformer MLP entry, five operations: residual add, LayerNorm, matmul, bias add, GELU.
+
+    gelu(layer_norm(x + residual) @ weight + bias). Large enough that the best plan may mix
+    full fusion in one region (add + LayerNorm) with a cut in another (GEMM | epilogue).
+    """
+
+    def workload_w6(x, residual, weight, bias):
+        import torch.nn.functional as functional
+
+        return functional.gelu(functional.layer_norm(x + residual, (n,)) @ weight + bias)
+
+    return workload_w6

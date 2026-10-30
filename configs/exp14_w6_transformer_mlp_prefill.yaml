@@ -1,0 +1,23 @@
+# Experiment 14: same as exp13 at a larger, prefill-style shape (512 x 4096).
+# Replay reads GPU-resident inputs (copies only new/modified inputs), like ordinary mode.
+# fuse_epilogue: a group fusing the GEMM with bias/GELU uses a Triton GEMM; a GEMM-only group keeps cuBLAS.
+# Primary policy 1.05x; 1.20x is reported alongside from the same data (results/bhargav/threshold_sensitivity.csv).
+workload: w6
+shapes: [[512, 4096]]
+device: cuda:0
+modes: [launch, graph]
+replay_input_refresh: on_change
+gemm_backend: fuse_epilogue
+dtype: float32
+layout: contiguous
+seed: 0
+rtol: 0.0001
+atol: 0.001
+rounds: 5
+window_seconds: 3.0
+warmup_iterations: 3
+max_partitions: 256
+latency_tolerance: 0.05
+exclusion_policy: none
+eager_baseline: true
+compiler_artifacts: false

@@ -115,18 +115,42 @@ class StaticBuffers:
         with torch.inference_mode(False), torch.no_grad():
             self.values = tuple(value.detach().clone() for value in values)
         self.addresses = tuple(value.data_ptr() for value in self.values)
+        self._sources = None  # (tensor, version) pairs last copied in; see update(on_change=True)
+        self.copies = 0
 
     @property
     def nbytes(self):
         return sum(value.numel() * value.element_size() for value in self.values)
 
-    def update(self, inputs: dict):
+    @staticmethod
+    def _version(tensor):
+        try:
+            return tensor._version
+        except RuntimeError:  # inference tensors have no version counter: always treat as changed
+            return None
+
+    def update(self, inputs: dict, *, on_change: bool = False):
+        """Copy caller inputs into the owned buffers.
+
+        on_change=True skips the copy when the caller passes the very same tensor objects as last
+        time and none was modified in place (same version counter). The buffers then already hold
+        those values. References are kept so a freed tensor's address cannot be mistaken for it.
+        """
         import torch
 
         incoming = self.contract.validate(inputs)
+        if on_change and self._sources is not None and all(
+            source is previous and version is not None and self._version(source) == version
+            for source, (previous, version) in zip(incoming, self._sources)
+        ):
+            return False
         with torch.no_grad():
             for target, source in zip(self.values, incoming):
                 target.copy_(source, non_blocking=True)
+        self._sources = tuple((source, self._version(source)) for source in incoming)
+        self.copies += 1
+        return True
 
     def close(self):
         self.values = ()
+        self._sources = None

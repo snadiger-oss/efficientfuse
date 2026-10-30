@@ -38,6 +38,9 @@ class PlannerTests(unittest.TestCase):
             prep["profiling"]["kernel_launches_per_invocation"] = None
         self.assertEqual(select_report(report)["status"], "selected")  # unknown, not invented
         report = synthetic_report()
+        report["candidates"]["p00_graph"]["preparations"][-1]["profiling"]["kernel_launches_per_invocation"] = 1
+        self.assertEqual(select_report(report)["status"], "selected")  # replay counts are lower bounds
+        report = synthetic_report()
         report["candidates"]["p00_launch"]["preparations"][-1]["profiling"]["kernel_launches_per_invocation"] = 5
         self.assertEqual(select_report(report)["status"], "invalid")
         report = synthetic_report()

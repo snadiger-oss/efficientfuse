@@ -1,0 +1,74 @@
+{
+  "scope": "runtime screen only (synchronized batch wall-clock); not a calibration",
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "window_seconds": 0.3,
+  "repeats": 3,
+  "replay_input_refresh": "on_change",
+  "cases": [
+    {
+      "case": "w1:32x256",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 95.73403254216629,
+          "us_min": 95.12288652988802,
+          "us_max": 112.82943511485792
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 26.76275985820047,
+          "us_min": 26.748813152861775,
+          "us_max": 27.32858758451706
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 151.41373906468277,
+          "us_min": 150.57874611476137,
+          "us_max": 202.77680546030152
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 26.730577940816993,
+          "us_min": 26.540892136352856,
+          "us_max": 26.780055471109378
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 150.44826343320145,
+          "us_min": 150.02012386985155,
+          "us_max": 150.70976194678215
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 26.839190821924337,
+          "us_min": 26.814371851482157,
+          "us_max": 26.886593223372525
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 203.8767414097114,
+          "us_min": 203.62884382304458,
+          "us_max": 204.76647899118075
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 26.814511086094477,
+          "us_min": 26.78610806256392,
+          "us_max": 33.065061247670286
+        },
+        "eager": {
+          "status": "ok",
+          "us": 42.91689676460636,
+          "us_min": 42.57063950546126,
+          "us_max": 45.06382357525663
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 0.9987975112599002,
+      "fastest_compiled": "first_pair_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    }
+  ]
+}

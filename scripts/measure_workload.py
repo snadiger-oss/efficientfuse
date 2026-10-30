@@ -25,8 +25,10 @@ def main():
     parser.add_argument("--device", default="cuda:0", help="Use cpu explicitly for development timing only")
     parser.add_argument("--modes", nargs="+", choices=["launch", "graph"])
     parser.add_argument("--workload", choices=sorted(WORKLOADS), default="w1")
-    parser.add_argument("--gemm-backend", choices=["default", "autotune", "triton"], default="default",
+    parser.add_argument("--gemm-backend", choices=["default", "autotune", "triton", "fuse_epilogue"], default="default",
                         help="GEMM policy for w2: cuBLAS, autotuned cuBLAS-vs-Triton, or Triton templates only")
+    parser.add_argument("--replay-input-refresh", choices=["always", "on_change"], default="always",
+                        help="Replay copies inputs every call (always) or only when they change (on_change)")
     parser.add_argument("--rtol", type=float)
     parser.add_argument("--atol", type=float)
     parser.add_argument("--m", type=int, default=32)
@@ -86,7 +88,7 @@ def main():
                 return prepare_execution(build_partition(captured, partition), inputs, mode=mode, reference=workload,
                                          config=CompilerConfig(str(path / "compiler") if args.compiler_artifacts else None, gemm_backend=args.gemm_backend),
                                          allow_cpu=device.type == "cpu", warmup_iterations=args.warmup,
-                                         rtol=spec.rtol, atol=spec.atol)
+                                         rtol=spec.rtol, atol=spec.atol, input_refresh=args.replay_input_refresh)
             candidates.append(MeasurementCandidate(f"{partition.id}_{mode}", factory,
                                                     metadata={"partition_id": partition.id, "mode": mode,
                                                               "requested_groups": len(partition.groups)}))

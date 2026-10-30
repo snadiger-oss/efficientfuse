@@ -49,7 +49,8 @@ class PreparedExecution:
 
 def prepare_execution(built, inputs: dict, *, mode="launch", reference=None,
                       config: CompilerConfig | None = None, allow_cpu=False,
-                      warmup_iterations=3, rtol=1e-5, atol=1e-6, trace_path=None) -> PreparedExecution:
+                      warmup_iterations=3, rtol=1e-5, atol=1e-6, trace_path=None,
+                      input_refresh="always") -> PreparedExecution:
     """Return an executor and evidence, or a visible failure with no executor."""
     if mode not in ("launch", "graph"):
         raise ValueError("mode must be launch or graph")
@@ -73,7 +74,8 @@ def prepare_execution(built, inputs: dict, *, mode="launch", reference=None,
         record.setup_seconds["compilation"] = compiled.record.setup_seconds
         stage = "capture" if mode == "graph" else "warmup"
         if mode == "graph":
-            executor = GraphExecutor.prepare(compiled, inputs, warmup_iterations=warmup_iterations)
+            executor = GraphExecutor.prepare(compiled, inputs, warmup_iterations=warmup_iterations,
+                                             input_refresh=input_refresh)
         else:
             executor = LaunchExecutor(compiled)
             executor.warmup(inputs, warmup_iterations)

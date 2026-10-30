@@ -13,13 +13,17 @@ class CompilerConfig:
     """Fixed controlled policy. Explicit replay belongs only to graphs.py."""
 
     artifact_dir: str | None = None
-    gemm_backend: str = "default"  # default (cuBLAS), autotune (cuBLAS vs Triton), triton (Triton only)
+    # default (cuBLAS), autotune (cuBLAS vs Triton), triton (Triton only), or fuse_epilogue:
+    # a group that fuses a GEMM with other operations uses a Triton GEMM (needed to fuse the
+    # epilogue into it); a group holding only the GEMM keeps cuBLAS.
+    gemm_backend: str = "default"
 
     def options(self, available_options) -> dict:
+        """Options shared by every group (fuse_epilogue adds per-group options; see group_options)."""
         required = {"triton.cudagraphs": False}
-        if self.gemm_backend not in ("default", "autotune", "triton"):
-            raise ValueError("gemm_backend must be default, autotune, or triton")
-        if self.gemm_backend != "default":
+        if self.gemm_backend not in ("default", "autotune", "triton", "fuse_epilogue"):
+            raise ValueError("gemm_backend must be default, autotune, triton, or fuse_epilogue")
+        if self.gemm_backend in ("autotune", "triton"):
             # GEMM autotuning only: plain max_autotune would also turn on Inductor's own CUDA Graphs.
             # Triton templates can fuse the bias/GELU epilogue into the GEMM kernel.
             required["max_autotune_gemm"] = True
@@ -30,6 +34,19 @@ class CompilerConfig:
         if missing:
             raise RuntimeError(f"Installed Inductor lacks required options: {sorted(missing)}")
         return required
+
+    def group_options(self, base: dict, module) -> dict:
+        """Per-group options. Only fuse_epilogue differs between groups."""
+        if self.gemm_backend != "fuse_epilogue":
+            return dict(base)
+        import operator
+        import torch
+
+        targets = [node.target for node in module.graph.nodes if node.op in ("call_function", "call_method")]
+        has_gemm = any(t in (operator.matmul, torch.matmul, "matmul") for t in targets)
+        if has_gemm and len(targets) > 1:
+            return {**base, "max_autotune_gemm": True, "max_autotune_gemm_backends": "TRITON"}
+        return dict(base)
 
 
 @dataclass
@@ -115,7 +132,10 @@ def compile_partition(built, inputs: dict, *, config=None, allow_cpu=False) -> C
                 details["status"] = "compiling"
                 group_started = perf_counter()
                 input_slots = tuple(slots[key] for key in group.bindings.input_ids)
-                fn = torch.compile(group.module, backend="inductor", fullgraph=True, dynamic=False, options=record.options)
+                options = config.group_options(record.options, group.module)
+                if options != record.options:
+                    details["options"] = options
+                fn = torch.compile(group.module, backend="inductor", fullgraph=True, dynamic=False, options=options)
                 # Compilation is lazy: invoke the wrapper and synchronize here.
                 output = fn(*(values[slot] for slot in input_slots))
                 synchronize(contract.device)

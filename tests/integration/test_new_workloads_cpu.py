@@ -12,7 +12,8 @@ from greenfuse.workloads.registry import get_workload, get_workload_spec
 
 @unittest.skipUnless(importlib.util.find_spec("torch") is not None, "CPU graph tests require optional PyTorch")
 class NewWorkloadTests(unittest.TestCase):
-    KINDS = {"w2": ["matmul", "add", "gelu"], "w3": ["add", "layer_norm", "gelu"], "w4": ["add", "mean", "sub"]}
+    KINDS = {"w2": ["matmul", "add", "gelu"], "w3": ["add", "layer_norm", "gelu"], "w4": ["add", "mean", "sub"],
+             "w5": ["add", "gelu", "softmax"], "w6": ["add", "layer_norm", "matmul", "add", "gelu"]}
 
     def test_capture_and_all_partitions_match_eager(self):
         import torch
@@ -23,11 +24,12 @@ class NewWorkloadTests(unittest.TestCase):
                 captured = capture_graph(workload)
                 self.assertEqual([op.kind for op in captured.description.operations], kinds)
                 partitions = enumerate_partitions(captured.description)
-                self.assertEqual(sorted(p.id for p in partitions), ["p00", "p01", "p10", "p11"])
+                self.assertEqual(len(partitions), 2 ** (len(kinds) - 1))
                 for seed in (0, 1):
                     inputs = make_inputs(get_workload_spec(name, m=8, n=16, seed=seed))
                     expected = workload(**inputs)
-                    self.assertTrue((expected < 0).any() and (expected > 0).any())
+                    if name != "w5":  # softmax outputs are always positive
+                        self.assertTrue((expected < 0).any() and (expected > 0).any())
                     for partition in partitions:
                         actual = build_partition(captured, partition).run(inputs)
                         torch.testing.assert_close(actual, expected, rtol=1e-5, atol=1e-5)
@@ -44,8 +46,26 @@ class NewWorkloadTests(unittest.TestCase):
                          [("op_0",), ("op_1",), ("op_2",)])
 
     def test_w3_requires_row_width(self):
-        with self.assertRaises(ValueError):
-            get_workload("w3")
+        for name in ("w3", "w6"):
+            with self.assertRaises(ValueError):
+                get_workload(name)
+
+    def test_fuse_epilogue_uses_triton_only_for_gemm_plus_epilogue_groups(self):
+        from greenfuse.compiler.inductor import CompilerConfig
+        from greenfuse.naming import grouping_name
+
+        captured = capture_graph(get_workload("w6", n=16))
+        kinds = [op.kind for op in captured.description.operations]
+        config = CompilerConfig(gemm_backend="fuse_epilogue")
+        base = {"triton.cudagraphs": False}
+        by_name = {grouping_name(p, kinds): p for p in enumerate_partitions(captured.description)}
+        groups = build_partition(captured, by_name["add+ln_mm_add+gelu"]).groups
+        self.assertEqual([config.group_options(base, g.module).get("max_autotune_gemm_backends") for g in groups],
+                         [None, None, None])  # GEMM alone keeps cuBLAS
+        groups = build_partition(captured, by_name["add+ln_mm+add+gelu"]).groups
+        self.assertEqual([config.group_options(base, g.module).get("max_autotune_gemm_backends") for g in groups],
+                         [None, "TRITON"])  # fused epilogue needs a Triton GEMM
+        self.assertEqual(CompilerConfig().group_options(base, groups[1].module), base)
 
     def test_compiled_fan_out_partitions_on_cpu(self):
         import torch

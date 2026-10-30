@@ -35,10 +35,13 @@ class ExperimentConfig:
     # GEMM implementation policy (matters for w2): default = cuBLAS, no autotuning;
     # autotune = Inductor benchmarks cuBLAS vs Triton templates; triton = Triton templates only.
     gemm_backend: str = "default"
+    # CUDA Graph input policy: always = copy inputs every replay (original contract);
+    # on_change = inputs already resident on the GPU are not re-copied (spec: report refresh cost separately).
+    replay_input_refresh: str = "always"
 
     def __post_init__(self):
-        if self.workload not in ("w1", "w2", "w3", "w4") or self.dtype != "float32" or self.layout != "contiguous":
-            raise ValueError("Supported experiments are w1-w4 with contiguous float32 inputs")
+        if self.workload not in ("w1", "w2", "w3", "w4", "w5", "w6") or self.dtype != "float32" or self.layout != "contiguous":
+            raise ValueError("Supported experiments are w1-w6 with contiguous float32 inputs")
         if not isinstance(self.shapes, tuple) or not self.shapes:
             raise ValueError("shapes must be a nonempty sequence of [M, N] pairs")
         for shape in self.shapes:
@@ -62,8 +65,10 @@ class ExperimentConfig:
             raise ValueError("latency_tolerance must be finite and between 0 and 1")
         if self.exclusion_policy not in ("none", "preparation_failures"):
             raise ValueError("Unknown exclusion policy")
-        if self.gemm_backend not in ("default", "autotune", "triton"):
-            raise ValueError("gemm_backend must be default, autotune, or triton")
+        if self.replay_input_refresh not in ("always", "on_change"):
+            raise ValueError("replay_input_refresh must be always or on_change")
+        if self.gemm_backend not in ("default", "autotune", "triton", "fuse_epilogue"):
+            raise ValueError("gemm_backend must be default, autotune, triton, or fuse_epilogue")
         if any(type(v) is not bool for v in (self.eager_baseline, self.compiler_artifacts)):
             raise ValueError("Baseline and artifact switches must be booleans")
         if self.partitions is not None and (not isinstance(self.partitions, tuple) or not self.partitions

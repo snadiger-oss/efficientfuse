@@ -37,9 +37,12 @@ def describe_graph(module) -> tuple[NormalizedGraph, dict[str, str]]:
         functional.gelu: ("gelu", "functional.gelu"),
         functional.layer_norm: ("layer_norm", "functional.layer_norm"),
         torch.mean: ("mean", "torch.mean"),
+        torch.softmax: ("softmax", "torch.softmax"),
+        functional.softmax: ("softmax", "functional.softmax"),
     }
     methods = {"add": ("add", "Tensor.add"), "relu": ("relu", "Tensor.relu"), "sub": ("sub", "Tensor.sub"),
-               "matmul": ("matmul", "Tensor.matmul"), "mean": ("mean", "Tensor.mean")}
+               "matmul": ("matmul", "Tensor.matmul"), "mean": ("mean", "Tensor.mean"),
+               "softmax": ("softmax", "Tensor.softmax")}
     refs = {}
     names = {}
     inputs = []
@@ -71,7 +74,7 @@ def describe_graph(module) -> tuple[NormalizedGraph, dict[str, str]]:
             else:
                 definition = methods.get(node.target)
             if definition is None:
-                raise UnsupportedGraphError(f"Unsupported operation {node.op}: {node.target}; supported: add, sub, relu, matmul, gelu, layer_norm, mean")
+                raise UnsupportedGraphError(f"Unsupported operation {node.op}: {node.target}; supported: add, sub, relu, matmul, gelu, layer_norm, mean, softmax")
             node_id = f"op_{len(operations)}"
             kind, target = definition
             operations.append(Operation(

@@ -38,7 +38,7 @@ def build_identity(config, workload_spec, graph, candidates, environment):
         "workload": workload_spec.to_dict(), "graph": graph.to_dict(), "graph_fingerprint": graph.fingerprint,
         "experiment": config.to_dict(), "candidates": [c.to_dict() for c in candidates],
         "environment": stable_environment(environment), "implementation": implementation_fingerprint(),
-        "execution_contract": {"forward_only": True, "autocast": False, "input_update": "every invocation",
+        "execution_contract": {"forward_only": True, "autocast": False, "input_update": "every invocation" if config.replay_input_refresh == "always" else "only new or modified inputs",
                                "output": "borrowed until next invocation", "graph_scope": "whole compiled partition",
                                "compiler": {"backend": "inductor", "fullgraph": True, "dynamic": False, "triton.cudagraphs": False,
                                             **({"gemm_backend": config.gemm_backend} if config.gemm_backend != "default" else {})}},

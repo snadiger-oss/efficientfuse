@@ -26,6 +26,9 @@ SUPPORTED_TARGETS = {
     "functional.layer_norm": "layer_norm",
     "torch.mean": "mean",
     "Tensor.mean": "mean",
+    "torch.softmax": "softmax",
+    "functional.softmax": "softmax",
+    "Tensor.softmax": "softmax",
 }
 
 

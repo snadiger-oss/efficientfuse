@@ -119,7 +119,9 @@ def _candidate_checks(report, entry, partition, mode):
     # CUPTI kernel records once CUDA Graphs are used; replay hides launches), per the spec's
     # "use unknown when kernel counts cannot be established". Observed counts must agree.
     counts = {p["profiling"].get("kernel_launches_per_invocation") for p in preparations} - {None}
-    if len(counts) > 1:
+    # Ordinary-mode counts come from complete launch API events and must agree. Replay-mode counts
+    # come from GPU kernel records, which CUPTI can drop partially, so each is only a lower bound.
+    if len(counts) > 1 and mode != "graph":
         raise ValueError(f"{entry['id']}: inconsistent kernel count evidence {sorted(counts)}")
     for trial in entry["trials"]:
         if trial["elapsed_seconds"] < config["window_seconds"]:

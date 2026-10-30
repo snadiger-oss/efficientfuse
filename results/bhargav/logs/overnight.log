@@ -1,0 +1,43 @@
+2026-10-30 01:19:17 Overnight queue started on gl1523.arc-ts.umich.edu
+2026-10-30 02:05:20 Earlier batch finished
+2026-10-30 02:05:20 SKIP exp8_w3_layernorm_small statuses=[inconclusive]
+2026-10-30 02:05:20 SKIP exp9_w4_fan_out_launch_bound statuses=[validated]
+2026-10-30 02:05:20 SKIP exp10_w5_softmax_small statuses=[validated]
+2026-10-30 02:05:20 SKIP exp11_w2_gemm_bound statuses=[inconclusive]
+2026-10-30 02:05:20 SCREEN fuse_epilogue
+PASS w2:16x4096: best partial+replay first_pair_replay / best full full_replay = 1.020 | eager=145.2 first_pair_ord=178.4 first_pair_rep=117.3 full_ord=115.9 full_rep=115.0 last_pair_ord=213.7 last_pair_rep=140.7 separate_ord=305.7 separate_rep=142.4
+PASS w2:64x4096: best partial+replay last_pair_replay / best full full_ordinary = 0.848 | eager=149.1 first_pair_ord=181.3 first_pair_rep=172.7 full_ord=170.3 full_rep=170.9 last_pair_ord=217.3 last_pair_rep=144.4 separate_ord=291.8 separate_rep=145.7
+PASS w2:128x4096: best partial+replay last_pair_replay / best full full_replay = 0.875 | eager=261.4 first_pair_ord=288.9 first_pair_rep=287.4 full_ord=294.3 full_rep=293.1 last_pair_ord=256.9 last_pair_rep=256.6 separate_ord=291.2 separate_rep=258.6
+PASS w2:512x4096: best partial+replay last_pair_replay / best full full_replay = 0.865 | eager=930.0 first_pair_ord=1041.3 first_pair_rep=1047.4 full_ord=1029.2 full_rep=1028.5 last_pair_ord=884.4 last_pair_rep=889.9 separate_ord=915.5 separate_rep=920.9
+PASS w6:64x4096: best partial+replay add+ln_mm_add+gelu_replay / best full full_replay = 0.860 | add+ln+mm+add_gelu_ord=221.3 add+ln+mm+add_gelu_rep=178.1 add+ln+mm_add+gelu_ord=210.8 add+ln+mm_add+gelu_rep=178.7 add+ln+mm_add_gelu_ord=288.1 add+ln+mm_add_gelu_rep=180.9 add+ln_mm+add+gelu_ord=195.1 add+ln_mm+add+gelu_rep=177.6 add+ln_mm+add_gelu_ord=269.2 add+ln_mm+add_gelu_rep=180.1 add+ln_mm_add+gelu_ord=295.8 add+ln_mm_add+gelu_rep=151.3 add+ln_mm_add_gelu_ord=370.0 add+ln_mm_add_gelu_rep=153.0 add_ln+mm+add+gelu_ord=213.0 add_ln+mm+add+gelu_rep=180.1 add_ln+mm+add_gelu_ord=286.7 add_ln+mm+add_gelu_rep=181.6 add_ln+mm_add+gelu_ord=283.9 add_ln+mm_add+gelu_rep=180.4 add_ln+mm_add_gelu_ord=350.8 add_ln+mm_add_gelu_rep=182.6 add_ln_mm+add+gelu_ord=262.7 add_ln_mm+add+gelu_rep=180.0 add_ln_mm+add_gelu_ord=332.0 add_ln_mm+add_gelu_rep=180.7 add_ln_mm_add+gelu_ord=373.0 add_ln_mm_add+gelu_rep=153.4 eager=162.2 full_ord=177.3 full_rep=176.1 separate_ord=441.7 separate_rep=155.4
+PASS w6:512x4096: best partial+replay add+ln_mm_add+gelu_replay / best full full_replay = 0.874 | add+ln+mm+add_gelu_ord=1099.7 add+ln+mm+add_gelu_rep=1099.7 add+ln+mm_add+gelu_ord=1099.5 add+ln+mm_add+gelu_rep=1098.5 add+ln+mm_add_gelu_ord=1129.0 add+ln+mm_add_gelu_rep=1129.1 add+ln_mm+add+gelu_ord=1083.5 add+ln_mm+add+gelu_rep=1080.4 add+ln_mm+add_gelu_ord=1112.1 add+ln_mm+add_gelu_rep=1100.3 add+ln_mm_add+gelu_ord=944.6 add+ln_mm_add+gelu_rep=941.5 add+ln_mm_add_gelu_ord=967.9 add+ln_mm_add_gelu_rep=970.5 add_ln+mm+add+gelu_ord=1107.1 add_ln+mm+add+gelu_rep=1105.3 add_ln+mm+add_gelu_ord=1124.3 add_ln+mm+add_gelu_rep=1124.1 add_ln+mm_add+gelu_ord=1121.3 add_ln+mm_add+gelu_rep=1124.5 add_ln+mm_add_gelu_ord=1154.4 add_ln+mm_add_gelu_rep=1147.3 add_ln_mm+add+gelu_ord=1104.7 add_ln_mm+add+gelu_rep=1103.1 add_ln_mm+add_gelu_ord=1129.1 add_ln_mm+add_gelu_rep=1125.3 add_ln_mm_add+gelu_ord=964.9 add_ln_mm_add+gelu_rep=965.6 eager=1008.8 full_ord=1077.9 full_rep=1077.4 separate_ord=994.8 separate_rep=989.0
+Saved results/bhargav/screening/screen_fuse_epilogue.json
+2026-10-30 02:08:57 SCREEN w6 default
+PASS w6:64x4096: best partial+replay add+ln_mm+add+gelu_replay / best full full_replay = 0.997 | add+ln+mm+add_gelu_ord=248.0 add+ln+mm+add_gelu_rep=179.0 add+ln+mm_add+gelu_ord=244.9 add+ln+mm_add+gelu_rep=151.0 add+ln+mm_add_gelu_ord=312.8 add+ln+mm_add_gelu_rep=152.1 add+ln_mm+add+gelu_ord=240.6 add+ln_mm+add+gelu_rep=150.0 add+ln_mm+add_gelu_ord=300.4 add+ln_mm+add_gelu_rep=180.4 add+ln_mm_add+gelu_ord=291.0 add+ln_mm_add+gelu_rep=151.7 add+ln_mm_add_gelu_ord=357.1 add+ln_mm_add_gelu_rep=153.0 add_ln+mm+add+gelu_ord=256.5 add_ln+mm+add+gelu_rep=152.3 add_ln+mm+add_gelu_ord=321.4 add_ln+mm+add_gelu_rep=180.8 add_ln+mm_add+gelu_ord=309.7 add_ln+mm_add+gelu_rep=152.3 add_ln+mm_add_gelu_ord=385.6 add_ln+mm_add_gelu_rep=154.6 add_ln_mm+add+gelu_ord=314.2 add_ln_mm+add+gelu_rep=152.6 add_ln_mm+add_gelu_ord=366.9 add_ln_mm+add_gelu_rep=182.1 add_ln_mm_add+gelu_ord=357.5 add_ln_mm_add+gelu_rep=153.3 eager=163.5 full_ord=183.2 full_rep=150.5 separate_ord=424.0 separate_rep=156.0
+PASS w6:512x4096: best partial+replay add+ln+mm+add_gelu_replay / best full full_ordinary = 1.002 | add+ln+mm+add_gelu_ord=941.1 add+ln+mm+add_gelu_rep=934.6 add+ln+mm_add+gelu_ord=935.3 add+ln+mm_add+gelu_rep=939.4 add+ln+mm_add_gelu_ord=967.7 add+ln+mm_add_gelu_rep=963.7 add+ln_mm+add+gelu_ord=933.9 add+ln_mm+add+gelu_rep=937.1 add+ln_mm+add_gelu_ord=938.1 add+ln_mm+add_gelu_rep=941.1 add+ln_mm_add+gelu_ord=938.8 add+ln_mm_add+gelu_rep=940.6 add+ln_mm_add_gelu_ord=967.4 add+ln_mm_add_gelu_rep=963.4 add_ln+mm+add+gelu_ord=960.6 add_ln+mm+add+gelu_rep=958.2 add_ln+mm+add_gelu_ord=964.1 add_ln+mm+add_gelu_rep=959.8 add_ln+mm_add+gelu_ord=962.5 add_ln+mm_add+gelu_rep=957.8 add_ln+mm_add_gelu_ord=994.5 add_ln+mm_add_gelu_rep=988.2 add_ln_mm+add+gelu_ord=960.1 add_ln_mm+add+gelu_rep=958.5 add_ln_mm+add_gelu_ord=964.0 add_ln_mm+add_gelu_rep=959.7 add_ln_mm_add+gelu_ord=962.6 add_ln_mm_add+gelu_rep=957.8 eager=1007.6 full_ord=932.8 full_rep=952.5 separate_ord=994.8 separate_rep=988.2
+Saved results/bhargav/screening/screen_w6_default.json
+2026-10-30 02:10:33 START exp7_w1_launch_bound
+2026-10-30 02:25:05 END exp7_w1_launch_bound exit=0 statuses=[validated]  "reason": "Same median-energy winner meets the runtime bound in a fresh full-set repeat",
+2026-10-30 02:25:05 START exp12_w2_fuse_epilogue_decode
+2026-10-30 03:07:34 END exp12_w2_fuse_epilogue_decode exit=2 statuses=[inconclusive validated inconclusive]  "reason": "Same median-energy winner meets the runtime bound in a fresh full-set repeat",
+2026-10-30 03:07:34 START exp13_w6_transformer_mlp_decode
+2026-10-30 04:02:16 END exp13_w6_transformer_mlp_decode exit=2 statuses=[inconclusive]  "reason": "Fresh measurements chose a different winner; rerun or increase measurement windows",
+2026-10-30 04:02:16 START exp14_w6_transformer_mlp_prefill
+2026-10-30 04:53:53 END exp14_w6_transformer_mlp_prefill exit=2 statuses=[inconclusive]  "reason": "Fresh measurements chose a different winner; rerun or increase measurement windows",
+2026-10-30 04:53:53 EXPORT
+256x1024: validated -> compiled_full_replay | results/bhargav/exp7_w1_launch_bound/256x1024
+32x1024: inconclusive -> none | results/bhargav/exp8_w3_layernorm_small/32x1024
+256x4096: validated -> compiled_full_replay | results/bhargav/exp9_w4_fan_out_launch_bound/256x4096
+32x1024: validated -> compiled_full_replay | results/bhargav/exp10_w5_softmax_small/32x1024
+128x4096: inconclusive -> none | results/bhargav/exp11_w2_gemm_bound/128x4096
+128x4096: validated -> compiled_last_pair_replay | results/bhargav/exp12_w2_fuse_epilogue_decode/128x4096
+16x4096: inconclusive -> none | results/bhargav/exp12_w2_fuse_epilogue_decode/16x4096
+64x4096: inconclusive -> none | results/bhargav/exp12_w2_fuse_epilogue_decode/64x4096
+64x4096: inconclusive -> none | results/bhargav/exp13_w6_transformer_mlp_decode/64x4096
+512x4096: inconclusive -> none | results/bhargav/exp14_w6_transformer_mlp_prefill/512x4096
+Wrote results/bhargav/summary_all_experiments.csv and results/bhargav/energy_by_workload.png
+Wrote results/bhargav/threshold_sensitivity.csv (42 rows)
+Wrote results/bhargav/overnight_summary.md
+2026-10-30 04:54:30 TESTS
+OK (skipped=7)
+2026-10-30 04:54:46 COMMIT (local only; push needs GitHub login)

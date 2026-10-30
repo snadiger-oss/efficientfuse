@@ -9,7 +9,7 @@ class GraphExecutor:
     mode = "graph"
 
     @classmethod
-    def prepare(cls, compiled, inputs: dict, *, warmup_iterations: int = 3):
+    def prepare(cls, compiled, inputs: dict, *, warmup_iterations: int = 3, input_refresh: str = "always"):
         import torch
 
         device = compiled.contract.device
@@ -17,7 +17,10 @@ class GraphExecutor:
             raise UnsupportedExecutionError("Explicit CUDA Graph execution requires an available NVIDIA CUDA device")
         if type(warmup_iterations) is not int or warmup_iterations < 1:
             raise ValueError("Warmup iterations must be a positive integer")
+        if input_refresh not in ("always", "on_change"):
+            raise ValueError("input_refresh must be always or on_change")
         self = cls()
+        self.input_refresh = input_refresh
         self.compiled = compiled
         self.contract = compiled.contract
         self.device = device
@@ -62,16 +65,19 @@ class GraphExecutor:
             raise RuntimeError("Executor is closed")
         check_stream(self.device, self.stream_id)
         with torch.cuda.device(self.device), torch.inference_mode():
-            # Copies are intentionally part of every logical run, even when the
-            # caller repeats the same input values. Measurement must include them.
-            self.buffers.update(inputs)
+            # "always": copies are part of every logical run, even for repeated inputs.
+            # "on_change": inputs already resident (same unmodified tensors) are not re-copied,
+            # matching ordinary mode, which reads resident inputs directly.
+            self.buffers.update(inputs, on_change=self.input_refresh == "on_change")
             self.graph.replay()
         return self.output
 
     def buffer_contract(self):
         return {
             **self.contract.to_dict(),
-            "input_update": "copy all caller inputs into owned buffers on every run",
+            "input_update": ("copy all caller inputs into owned buffers on every run" if self.input_refresh == "always"
+                             else "copy caller inputs only when they are new tensors or were modified in place"),
+            "input_refresh": self.input_refresh,
             "static_input_bytes": self.buffers.nbytes,
             "retained_output_and_intermediate_bytes": sum(value.numel() * value.element_size() for value in self.intermediates),
             "pool_note": "Graph-private allocator pool may reserve additional memory",

@@ -1,0 +1,426 @@
+{
+  "scope": "runtime screen only (synchronized batch wall-clock); not a calibration",
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "window_seconds": 0.3,
+  "repeats": 3,
+  "replay_input_refresh": "on_change",
+  "cases": [
+    {
+      "case": "w6:64x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 183.2260579941853,
+          "us_min": 182.74382903025702,
+          "us_max": 185.5226084449027
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 150.4535222964653,
+          "us_min": 150.4333759003495,
+          "us_max": 152.1373609918727
+        },
+        "add+ln+mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 248.03903092956776,
+          "us_min": 244.50948089965945,
+          "us_max": 317.5400401610736
+        },
+        "add+ln+mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 178.99592833208496,
+          "us_min": 178.99033149510728,
+          "us_max": 187.06468235492136
+        },
+        "add+ln+mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 244.94554488341404,
+          "us_min": 244.26896870744966,
+          "us_max": 284.27585950303893
+        },
+        "add+ln+mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 151.00649222543916,
+          "us_min": 150.95943861854465,
+          "us_max": 152.93982546185364
+        },
+        "add+ln+mm_add_gelu_ordinary": {
+          "status": "ok",
+          "us": 312.8354654694765,
+          "us_min": 312.33854765482874,
+          "us_max": 321.23546826384836
+        },
+        "add+ln+mm_add_gelu_replay": {
+          "status": "ok",
+          "us": 152.14595039327352,
+          "us_min": 152.09911986163814,
+          "us_max": 156.15869584030278
+        },
+        "add+ln_mm+add+gelu_ordinary": {
+          "status": "ok",
+          "us": 240.60781747102737,
+          "us_min": 239.8220770061016,
+          "us_max": 242.7233785390854
+        },
+        "add+ln_mm+add+gelu_replay": {
+          "status": "ok",
+          "us": 149.9627755508535,
+          "us_min": 149.94577879739322,
+          "us_max": 153.3983476560613
+        },
+        "add+ln_mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 300.43213228005175,
+          "us_min": 291.5548074273914,
+          "us_max": 338.0011754443343
+        },
+        "add+ln_mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 180.4050500757444,
+          "us_min": 180.2250340724739,
+          "us_max": 185.91927510514333
+        },
+        "add+ln_mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 290.95455310216136,
+          "us_min": 290.8787708364281,
+          "us_max": 293.8910049623718
+        },
+        "add+ln_mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 151.6592543589112,
+          "us_min": 151.5947143156561,
+          "us_max": 153.7789920216134
+        },
+        "add+ln_mm_add_gelu_ordinary": {
+          "status": "ok",
+          "us": 357.0806188948171,
+          "us_min": 354.43641838424327,
+          "us_max": 357.2910813228139
+        },
+        "add+ln_mm_add_gelu_replay": {
+          "status": "ok",
+          "us": 152.97466651441493,
+          "us_min": 152.9744199039985,
+          "us_max": 156.61956941975012
+        },
+        "add_ln+mm+add+gelu_ordinary": {
+          "status": "ok",
+          "us": 256.50351620864336,
+          "us_min": 255.23801633956714,
+          "us_max": 256.94726015763314
+        },
+        "add_ln+mm+add+gelu_replay": {
+          "status": "ok",
+          "us": 152.30286947822546,
+          "us_min": 152.2644798695375,
+          "us_max": 155.7319674913476
+        },
+        "add_ln+mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 321.43572019015113,
+          "us_min": 315.59550975505107,
+          "us_max": 418.22011733793806
+        },
+        "add_ln+mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 180.76176208911565,
+          "us_min": 180.63751445109762,
+          "us_max": 191.10573905914788
+        },
+        "add_ln+mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 309.74136964853017,
+          "us_min": 307.81883653956584,
+          "us_max": 313.3217875464963
+        },
+        "add_ln+mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 152.2566839523122,
+          "us_min": 152.14490964252332,
+          "us_max": 155.77479421638594
+        },
+        "add_ln+mm_add_gelu_ordinary": {
+          "status": "ok",
+          "us": 385.5978958357266,
+          "us_min": 379.4724294111968,
+          "us_max": 385.75608224997774
+        },
+        "add_ln+mm_add_gelu_replay": {
+          "status": "ok",
+          "us": 154.64898573292285,
+          "us_min": 154.6289243725772,
+          "us_max": 156.95975978196282
+        },
+        "add_ln_mm+add+gelu_ordinary": {
+          "status": "ok",
+          "us": 314.20230916295696,
+          "us_min": 314.12383961683804,
+          "us_max": 316.41467229110367
+        },
+        "add_ln_mm+add+gelu_replay": {
+          "status": "ok",
+          "us": 152.6224704804525,
+          "us_min": 152.6190600568493,
+          "us_max": 155.92983072194937
+        },
+        "add_ln_mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 366.8760540536963,
+          "us_min": 362.65293064598853,
+          "us_max": 581.3745154927557
+        },
+        "add_ln_mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 182.06378642942374,
+          "us_min": 182.027827312748,
+          "us_max": 188.97713300544126
+        },
+        "add_ln_mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 357.54663116183457,
+          "us_min": 355.2588400523774,
+          "us_max": 359.5625744665227
+        },
+        "add_ln_mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 153.28227492822583,
+          "us_min": 153.27016678248324,
+          "us_max": 156.61940321417674
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 423.9729189606496,
+          "us_min": 422.97613675510166,
+          "us_max": 425.3610324447368
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 156.0333877817401,
+          "us_min": 155.93005894730788,
+          "us_max": 157.15873750793077
+        },
+        "eager": {
+          "status": "ok",
+          "us": 163.4981168421955,
+          "us_min": 161.8980956072748,
+          "us_max": 163.92295683289578
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "add+ln_mm+add+gelu_replay",
+      "partial_replay_over_full": 0.9967382169714525,
+      "fastest_compiled": "add+ln_mm+add+gelu_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w6:512x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 932.7654435764998,
+          "us_min": 932.667643064633,
+          "us_max": 959.9646495189518
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 952.4898813763009,
+          "us_min": 933.277441136142,
+          "us_max": 972.2781825962485
+        },
+        "add+ln+mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 941.1331885081681,
+          "us_min": 937.8226226360737,
+          "us_max": 964.20202805083
+        },
+        "add+ln+mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 934.5739672426134,
+          "us_min": 934.5330414362252,
+          "us_max": 971.1228602100164
+        },
+        "add+ln+mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 935.3003568119473,
+          "us_min": 935.2541779951443,
+          "us_max": 966.1064586705631
+        },
+        "add+ln+mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 939.3722145908678,
+          "us_min": 936.0233158293563,
+          "us_max": 959.3930982964166
+        },
+        "add+ln+mm_add_gelu_ordinary": {
+          "status": "ok",
+          "us": 967.6877041513094,
+          "us_min": 967.5970403507689,
+          "us_max": 991.302831731375
+        },
+        "add+ln+mm_add_gelu_replay": {
+          "status": "ok",
+          "us": 963.7053942134143,
+          "us_min": 963.5197735388563,
+          "us_max": 990.1606091492813
+        },
+        "add+ln_mm+add+gelu_ordinary": {
+          "status": "ok",
+          "us": 933.940356480889,
+          "us_min": 933.8317438960075,
+          "us_max": 968.7159239547327
+        },
+        "add+ln_mm+add+gelu_replay": {
+          "status": "ok",
+          "us": 937.1133515360214,
+          "us_min": 936.866335010267,
+          "us_max": 952.8385492794939
+        },
+        "add+ln_mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 938.0739684388928,
+          "us_min": 938.0716357531966,
+          "us_max": 971.4009584771428
+        },
+        "add+ln_mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 941.0850639285156,
+          "us_min": 941.0627326875363,
+          "us_max": 974.5181737315355
+        },
+        "add+ln_mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 938.789904329115,
+          "us_min": 935.5455701612524,
+          "us_max": 965.8833912776472
+        },
+        "add+ln_mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 940.6350594037359,
+          "us_min": 940.4729712028173,
+          "us_max": 957.8431388304668
+        },
+        "add+ln_mm_add_gelu_ordinary": {
+          "status": "ok",
+          "us": 967.3931620846288,
+          "us_min": 967.2687054403777,
+          "us_max": 990.7250078605989
+        },
+        "add+ln_mm_add_gelu_replay": {
+          "status": "ok",
+          "us": 963.365850772505,
+          "us_min": 963.3093096100249,
+          "us_max": 989.3692904107056
+        },
+        "add_ln+mm+add+gelu_ordinary": {
+          "status": "ok",
+          "us": 960.6048309554657,
+          "us_min": 960.271462248877,
+          "us_max": 982.5217913692961
+        },
+        "add_ln+mm+add+gelu_replay": {
+          "status": "ok",
+          "us": 958.2348263723675,
+          "us_min": 955.1061425130466,
+          "us_max": 978.8352894294301
+        },
+        "add_ln+mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 964.1383744535908,
+          "us_min": 964.0869173792101,
+          "us_max": 981.4746257278226
+        },
+        "add_ln+mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 959.8027363754928,
+          "us_min": 959.7773540920767,
+          "us_max": 983.0905531811561
+        },
+        "add_ln+mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 962.472278205528,
+          "us_min": 962.3943615429271,
+          "us_max": 984.6728372947579
+        },
+        "add_ln+mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 957.8462993613066,
+          "us_min": 957.6376801291213,
+          "us_max": 984.9915703455099
+        },
+        "add_ln+mm_add_gelu_ordinary": {
+          "status": "ok",
+          "us": 994.5496830708123,
+          "us_min": 994.1675611110803,
+          "us_max": 1003.7903240559124
+        },
+        "add_ln+mm_add_gelu_replay": {
+          "status": "ok",
+          "us": 988.2344738288288,
+          "us_min": 988.1261422640026,
+          "us_max": 1003.3619371872924
+        },
+        "add_ln_mm+add+gelu_ordinary": {
+          "status": "ok",
+          "us": 960.1353562865227,
+          "us_min": 960.1333019865671,
+          "us_max": 985.7076923946858
+        },
+        "add_ln_mm+add+gelu_replay": {
+          "status": "ok",
+          "us": 958.5385962458286,
+          "us_min": 955.1807201895683,
+          "us_max": 981.9252889639312
+        },
+        "add_ln_mm+add_gelu_ordinary": {
+          "status": "ok",
+          "us": 964.0242814296677,
+          "us_min": 963.8957619186372,
+          "us_max": 987.7458995869084
+        },
+        "add_ln_mm+add_gelu_replay": {
+          "status": "ok",
+          "us": 959.6813261174622,
+          "us_min": 959.2380314969864,
+          "us_max": 984.8123165563894
+        },
+        "add_ln_mm_add+gelu_ordinary": {
+          "status": "ok",
+          "us": 962.5895008925469,
+          "us_min": 962.513291667546,
+          "us_max": 986.2379952063484
+        },
+        "add_ln_mm_add+gelu_replay": {
+          "status": "ok",
+          "us": 957.7669328651749,
+          "us_min": 957.7131579415156,
+          "us_max": 984.2443262011958
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 994.8077435261782,
+          "us_min": 993.8131219574384,
+          "us_max": 1005.53560185175
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 988.2245397213661,
+          "us_min": 988.2021142114507,
+          "us_max": 999.0650976058281
+        },
+        "eager": {
+          "status": "ok",
+          "us": 1007.6058424236783,
+          "us_min": 1003.0086379635293,
+          "us_max": 1007.9575677629698
+        }
+      },
+      "best_full": "full_ordinary",
+      "best_partial_replay": "add+ln+mm+add_gelu_replay",
+      "partial_replay_over_full": 1.001938883648154,
+      "fastest_compiled": "full_ordinary",
+      "partial_replay_within_5pct_of_fastest": true
+    }
+  ]
+}

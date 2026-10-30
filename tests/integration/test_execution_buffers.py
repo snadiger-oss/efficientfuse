@@ -60,3 +60,30 @@ class BufferTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OnChangeRefreshTests(unittest.TestCase):
+    """CPU-only checks of the on_change input policy used by CUDA Graph replay."""
+
+    def setUp(self):
+        import torch
+        from greenfuse.execution.buffers import InputContract, StaticBuffers
+
+        self.torch = torch
+        self.inputs = {"x": torch.ones(4), "y": torch.zeros(4)}
+        contract = InputContract.from_inputs(self.inputs, ("x", "y"), allow_cpu=True)
+        self.buffers = StaticBuffers(contract, self.inputs)
+
+    def test_same_unmodified_tensors_are_not_recopied(self):
+        self.assertTrue(self.buffers.update(self.inputs, on_change=True))
+        self.assertFalse(self.buffers.update(self.inputs, on_change=True))
+        self.assertTrue(self.buffers.update(self.inputs))  # default policy always copies
+
+    def test_new_or_modified_tensors_are_copied(self):
+        self.buffers.update(self.inputs, on_change=True)
+        self.inputs["x"].add_(1)  # in-place change bumps the version counter
+        self.assertTrue(self.buffers.update(self.inputs, on_change=True))
+        self.assertEqual(self.buffers.values[0][0].item(), 2.0)
+        changed = {"x": self.torch.full((4,), 5.0), "y": self.inputs["y"]}
+        self.assertTrue(self.buffers.update(changed, on_change=True))
+        self.assertEqual(self.buffers.values[0][0].item(), 5.0)

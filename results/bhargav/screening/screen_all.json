@@ -1,0 +1,1346 @@
+{
+  "scope": "runtime screen only (synchronized batch wall-clock); not a calibration",
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "window_seconds": 0.3,
+  "repeats": 3,
+  "replay_input_refresh": "on_change",
+  "cases": [
+    {
+      "case": "w1:32x256",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 90.35642387389335,
+          "us_min": 89.76545423168926,
+          "us_max": 99.66897970635044
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 26.503597740065832,
+          "us_min": 26.373319049397168,
+          "us_max": 35.10369344188484
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 147.84320543600816,
+          "us_min": 146.69289051621095,
+          "us_max": 149.96951570602383
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 26.620133924789535,
+          "us_min": 26.480636562002942,
+          "us_max": 26.934121598192824
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 146.17499093048434,
+          "us_min": 145.25735229511724,
+          "us_max": 191.53043094633358
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 26.540096047849726,
+          "us_min": 26.397120234840852,
+          "us_max": 26.562146172328625
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 199.26171786836443,
+          "us_min": 198.89033849764346,
+          "us_max": 267.53363908817437
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 26.62354246958306,
+          "us_min": 26.477546708887083,
+          "us_max": 26.65954151828038
+        },
+        "eager": {
+          "status": "ok",
+          "us": 42.371847340632854,
+          "us_min": 41.89576702204286,
+          "us_max": 56.24343123056603
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.0013771076720168,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w1:256x1024",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 90.31786958639643,
+          "us_min": 89.98574588695564,
+          "us_max": 120.41718830482593
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 26.739607077664417,
+          "us_min": 26.63230054694454,
+          "us_max": 34.80829655261241
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 148.44938701008493,
+          "us_min": 147.38606186115427,
+          "us_max": 150.26302623431323
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 29.43426182134771,
+          "us_min": 26.68562522248904,
+          "us_max": 32.76609029401434
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 147.96568808049065,
+          "us_min": 147.7199541941351,
+          "us_max": 148.48576639451048
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 26.766764818797817,
+          "us_min": 26.689331025717376,
+          "us_max": 36.20668882131045
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 203.700416181949,
+          "us_min": 202.13315105625514,
+          "us_max": 248.78571593696304
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 30.677113236985228,
+          "us_min": 27.724723437013857,
+          "us_max": 43.89094691459916
+        },
+        "eager": {
+          "status": "ok",
+          "us": 43.548388556352684,
+          "us_min": 43.15533137290227,
+          "us_max": 43.95128716447326
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.0010156372550472,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w1:1024x1024",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 89.33840079262457,
+          "us_min": 89.32179373255933,
+          "us_max": 103.77310309642336
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 26.813099161030383,
+          "us_min": 26.764942117877094,
+          "us_max": 33.81523132251277
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 147.8649874097935,
+          "us_min": 147.71994636716818,
+          "us_max": 148.02913670197572
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 31.74760052870708,
+          "us_min": 31.516808895563432,
+          "us_max": 38.96249303054865
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 148.28003223727245,
+          "us_min": 147.67456145053453,
+          "us_max": 152.4920856561696
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 37.04610084113805,
+          "us_min": 31.572818859638268,
+          "us_max": 39.48828805693326
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 202.40309528619701,
+          "us_min": 202.29810902268673,
+          "us_max": 208.88821817323807
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 39.58452167417781,
+          "us_min": 39.404499468132954,
+          "us_max": 41.64683026764615
+        },
+        "eager": {
+          "status": "ok",
+          "us": 42.694319743942614,
+          "us_min": 42.45338254238071,
+          "us_max": 42.803210797535435
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.1840332345784332,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w1:2048x2048",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 91.74569369260853,
+          "us_min": 91.12046003777274,
+          "us_max": 130.84537077391118
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 90.53853984299977,
+          "us_min": 90.52493567014525,
+          "us_max": 90.54750934292707
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 153.6302774762496,
+          "us_min": 153.59156693403537,
+          "us_max": 157.85327897622037
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 151.998191614986,
+          "us_min": 151.9785625638239,
+          "us_max": 152.001831467177
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 153.50681830762474,
+          "us_min": 153.5041712903891,
+          "us_max": 153.52454301748486
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 152.07090674392214,
+          "us_min": 152.06509354955904,
+          "us_max": 152.07327669486403
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 215.84539091308338,
+          "us_min": 215.6665716186273,
+          "us_max": 216.5516650826811
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 213.14365636835743,
+          "us_min": 213.10229504023582,
+          "us_max": 213.19160854370992
+        },
+        "eager": {
+          "status": "ok",
+          "us": 218.2653516780428,
+          "us_min": 218.26024702716254,
+          "us_max": 218.28533241083355
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.6788230943260365,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w1:4096x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 352.4703740635339,
+          "us_min": 352.3116131477496,
+          "us_max": 352.62141924570585
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 353.2109402550123,
+          "us_min": 353.2039920840022,
+          "us_max": 353.33205935917135
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 590.4039812570023,
+          "us_min": 590.3114937613232,
+          "us_max": 590.5764210506303
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 588.823490444944,
+          "us_min": 588.6663476001537,
+          "us_max": 588.9587682509001
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 590.4748168805177,
+          "us_min": 590.1311478289157,
+          "us_max": 590.7411990169237
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 588.8150316939373,
+          "us_min": 588.6493752068293,
+          "us_max": 588.8812104880458
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 829.873978059708,
+          "us_min": 828.6233434138867,
+          "us_max": 852.2757894031889
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 826.2960466643724,
+          "us_min": 826.111920075028,
+          "us_max": 826.359741924876
+        },
+        "eager": {
+          "status": "ok",
+          "us": 847.2322430936541,
+          "us_min": 847.2218534384165,
+          "us_max": 847.332461845267
+        }
+      },
+      "best_full": "full_ordinary",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.670537653720087,
+      "fastest_compiled": "full_ordinary",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w3:32x1024",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 88.46887789216764,
+          "us_min": 88.20062160316377,
+          "us_max": 100.08380744216718
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 24.56649568789369,
+          "us_min": 24.512895600815842,
+          "us_max": 25.020631315367535
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 144.82410507532452,
+          "us_min": 144.7407251342814,
+          "us_max": 144.94077484456665
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 24.52308073467672,
+          "us_min": 24.434860051769647,
+          "us_max": 25.315091988886707
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 144.92794057825603,
+          "us_min": 144.1016620264415,
+          "us_max": 145.36485476157512
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 24.41811281876221,
+          "us_min": 24.21943297964773,
+          "us_max": 26.104348107399947
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 200.6607608509204,
+          "us_min": 200.26410926432183,
+          "us_max": 201.1275138209812
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 24.47956716028972,
+          "us_min": 24.445652190042065,
+          "us_max": 24.486572809281338
+        },
+        "eager": {
+          "status": "ok",
+          "us": 48.446830959147086,
+          "us_min": 48.109911240409104,
+          "us_max": 53.40188716206209
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 0.993959949721091,
+      "fastest_compiled": "last_pair_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w3:256x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 88.21301355234542,
+          "us_min": 87.92981897994143,
+          "us_max": 99.09573977712769
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 29.197864572749392,
+          "us_min": 27.895767527807443,
+          "us_max": 37.541375514957984
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 150.430041116358,
+          "us_min": 145.465446783617,
+          "us_max": 158.00679609695874
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 32.78762310196082,
+          "us_min": 32.77944295650519,
+          "us_max": 32.78830238008306
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 162.0634049360231,
+          "us_min": 146.6947216403279,
+          "us_max": 191.8782550997172
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 32.60583161503703,
+          "us_min": 31.41242544075491,
+          "us_max": 34.62138633563854
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 202.2644312518863,
+          "us_min": 201.3283727364521,
+          "us_max": 265.44234337501285
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 40.002419561616826,
+          "us_min": 40.00139008738347,
+          "us_max": 40.00626387633184
+        },
+        "eager": {
+          "status": "ok",
+          "us": 49.59763645052715,
+          "us_min": 49.06741332159105,
+          "us_max": 63.811974224989626
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.116719735917548,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w3:1024x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 96.16879865263954,
+          "us_min": 96.15897136467063,
+          "us_max": 103.57404940093502
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 101.53937162664273,
+          "us_min": 101.51620809199484,
+          "us_max": 101.55766377338425
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 158.30922913439198,
+          "us_min": 158.29168621457234,
+          "us_max": 168.7867088415285
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 161.92207540120555,
+          "us_min": 161.87462117372172,
+          "us_max": 170.21979063073815
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 157.06329721982578,
+          "us_min": 155.48510128002928,
+          "us_max": 159.58531440216825
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 167.95352605156233,
+          "us_min": 153.49204262688025,
+          "us_max": 177.35817885698108
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 217.33293525766635,
+          "us_min": 217.1755363435849,
+          "us_max": 454.48851204760695
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 214.5181929665631,
+          "us_min": 214.50651296670887,
+          "us_max": 214.56214936747065
+        },
+        "eager": {
+          "status": "ok",
+          "us": 243.25053839545166,
+          "us_min": 243.2399634997566,
+          "us_max": 243.25331573241522
+        }
+      },
+      "best_full": "full_ordinary",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.6837277544254867,
+      "fastest_compiled": "full_ordinary",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w3:64x65536",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 152.3859697584883,
+          "us_min": 152.3755040979955,
+          "us_max": 163.39292705256017
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 150.71603380630364,
+          "us_min": 150.65623540899264,
+          "us_max": 150.7295281556084
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 216.20062802777989,
+          "us_min": 216.14419545549674,
+          "us_max": 236.92739313734927
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 212.56620762704705,
+          "us_min": 212.56235296805644,
+          "us_max": 212.57640597226347
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 182.82507223364942,
+          "us_min": 182.54662940248116,
+          "us_max": 184.0641378279737
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 178.83662927449282,
+          "us_min": 178.7998484193248,
+          "us_max": 178.8418506786947
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 244.41508819756942,
+          "us_min": 244.39812503949878,
+          "us_max": 244.45089313743352
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 239.60435225499526,
+          "us_min": 239.5944836602318,
+          "us_max": 239.65514469728006
+        },
+        "eager": {
+          "status": "ok",
+          "us": 288.91605818518553,
+          "us_min": 288.88813017191,
+          "us_max": 289.04034847641265
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.1865799859378534,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w4:32x1024",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 85.57056240485815,
+          "us_min": 85.33140441853794,
+          "us_max": 94.00460471382603
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 25.60636212043513,
+          "us_min": 24.31515370816637,
+          "us_max": 31.214820612881084
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 151.20672255813807,
+          "us_min": 149.69024152646557,
+          "us_max": 152.50054981249846
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 24.518853860887333,
+          "us_min": 24.413798682336857,
+          "us_max": 32.15489433742163
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 140.16010582586642,
+          "us_min": 140.01184974118755,
+          "us_max": 140.1841130098917
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 25.104538255282854,
+          "us_min": 24.557804094973065,
+          "us_max": 32.299016276748084
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 202.26805745392116,
+          "us_min": 202.1902368665945,
+          "us_max": 207.29830177703906
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 25.034636119928876,
+          "us_min": 24.51084752333053,
+          "us_max": 32.77823620884582
+        },
+        "eager": {
+          "status": "ok",
+          "us": 44.441672843401804,
+          "us_min": 44.32084116214163,
+          "us_max": 44.46646076052048
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 0.9575297633286256,
+      "fastest_compiled": "first_pair_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w4:256x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 84.98371346393532,
+          "us_min": 84.67455367910686,
+          "us_max": 104.98605445608924
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 24.683748634654,
+          "us_min": 24.557368488485725,
+          "us_max": 24.823179852486202
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 152.52833750433365,
+          "us_min": 152.28295442113546,
+          "us_max": 153.02404949912074
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 25.34766444492858,
+          "us_min": 25.34291395137866,
+          "us_max": 25.39268699150974
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 143.04530871650283,
+          "us_min": 142.93834112506462,
+          "us_max": 143.3898834200901
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 24.734543059766658,
+          "us_min": 24.63712842577227,
+          "us_max": 32.31468854595669
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 206.04329481265077,
+          "us_min": 204.79666604771248,
+          "us_max": 210.28714628040507
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 27.29487230235683,
+          "us_min": 27.294038902183093,
+          "us_max": 33.82561412124022
+        },
+        "eager": {
+          "status": "ok",
+          "us": 44.277539716574324,
+          "us_min": 43.96961653509338,
+          "us_max": 45.12582779677141
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.0020578083930634,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w4:1024x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 95.07461790646269,
+          "us_min": 85.70949876597801,
+          "us_max": 125.25445191373288
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 62.75050214376538,
+          "us_min": 62.73179704379477,
+          "us_max": 62.75638053349427
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 151.4858761261066,
+          "us_min": 150.91496932213914,
+          "us_max": 202.0971228056895
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 122.82625265001322,
+          "us_min": 122.82502182386587,
+          "us_max": 122.83373871319901
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 149.9179566173621,
+          "us_min": 141.6734327509437,
+          "us_max": 181.32952665734402
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 124.29232118204328,
+          "us_min": 124.28372622870135,
+          "us_max": 124.29717579262909
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 206.2698540026105,
+          "us_min": 205.80586053645658,
+          "us_max": 274.32417578801045
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 148.40909279882908,
+          "us_min": 148.3985033845252,
+          "us_max": 148.42627570033073
+        },
+        "eager": {
+          "status": "ok",
+          "us": 155.90138669458455,
+          "us_min": 155.89621429463818,
+          "us_max": 155.90700223553756
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.9573748169952565,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w4:64x131072",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 179.6166066006674,
+          "us_min": 179.603483266749,
+          "us_max": 183.01878488299516
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 178.29837862238307,
+          "us_min": 178.28830627460968,
+          "us_max": 178.32642793212435
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 246.8531825495316,
+          "us_min": 246.7998785244476,
+          "us_max": 246.96762552346783
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 244.94582445037608,
+          "us_min": 244.8195447118915,
+          "us_max": 246.90596272750776
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 299.03542744869486,
+          "us_min": 298.98984655143016,
+          "us_max": 299.0432711924145
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 296.3486497507618,
+          "us_min": 296.0744948888367,
+          "us_max": 300.67034356531656
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 299.06645108631506,
+          "us_min": 299.0082471432562,
+          "us_max": 299.092191652564
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 296.0819523020299,
+          "us_min": 295.99767266556637,
+          "us_max": 296.1077112318379
+        },
+        "eager": {
+          "status": "ok",
+          "us": 312.7351017861531,
+          "us_min": 312.6971608528024,
+          "us_max": 312.7444091728862
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.3737972624481638,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w4:16x524288",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 224.4515860352866,
+          "us_min": 224.29800634188743,
+          "us_max": 224.639156911366
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 223.2489825660799,
+          "us_min": 223.23682679393607,
+          "us_max": 223.28308201915462
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 352.13905725483215,
+          "us_min": 342.8829107135193,
+          "us_max": 353.48096095213083
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 339.51219690798905,
+          "us_min": 339.4725196097308,
+          "us_max": 339.5734804676098
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 342.9054425394235,
+          "us_min": 342.8134120983717,
+          "us_max": 370.85623171359504
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 339.53847386795155,
+          "us_min": 339.43890989468025,
+          "us_max": 339.58616855291655
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 342.82957917629176,
+          "us_min": 342.7815425382326,
+          "us_max": 342.8474000444129
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 339.56208917083444,
+          "us_min": 339.4646399220956,
+          "us_max": 339.65532162721405
+        },
+        "eager": {
+          "status": "ok",
+          "us": 368.95351158684406,
+          "us_min": 368.9366399672965,
+          "us_max": 369.05585728549016
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.5207782494932365,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w5:32x1024",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 86.46843406952664,
+          "us_min": 86.28640710021865,
+          "us_max": 102.57710827154052
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 24.47511788325943,
+          "us_min": 24.42909667829273,
+          "us_max": 24.72801728804686
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 146.81903183330783,
+          "us_min": 144.96173100136076,
+          "us_max": 193.30312956383443
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 24.476435335565878,
+          "us_min": 24.39649998801844,
+          "us_max": 24.58762737679697
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 143.6285513613697,
+          "us_min": 143.55624442454203,
+          "us_max": 194.7993020948686
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 24.747556564123098,
+          "us_min": 24.69354465782315,
+          "us_max": 24.884390564007283
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 203.1086564615921,
+          "us_min": 198.78890764500414,
+          "us_max": 263.56062368938217
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 24.618737442309815,
+          "us_min": 24.421399841539102,
+          "us_max": 24.630137883654776
+        },
+        "eager": {
+          "status": "ok",
+          "us": 41.899036034743546,
+          "us_min": 41.862674829132324,
+          "us_max": 42.118823730586875
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.0000538282312972,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w5:256x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 89.93191354491904,
+          "us_min": 88.96634579007879,
+          "us_max": 97.93862278363788
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 24.49900167977052,
+          "us_min": 24.417652912777548,
+          "us_max": 24.82947325226484
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 144.59252581897988,
+          "us_min": 144.5726255875036,
+          "us_max": 144.70842947442847
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 28.88694004921553,
+          "us_min": 25.742003441102494,
+          "us_max": 30.216697704821694
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 144.46436730493983,
+          "us_min": 144.16272471468133,
+          "us_max": 145.35072472799254
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 28.039892238516053,
+          "us_min": 28.033359075964277,
+          "us_max": 29.570934022961474
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 202.26690990044722,
+          "us_min": 201.72696409249275,
+          "us_max": 203.9961770854213
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 34.14103354106818,
+          "us_min": 34.1193746473109,
+          "us_max": 37.00230323194548
+        },
+        "eager": {
+          "status": "ok",
+          "us": 42.64169663705541,
+          "us_min": 42.472836556008815,
+          "us_max": 42.92481242292251
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.1445320346122243,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w5:1024x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 103.47365660281307,
+          "us_min": 86.60238892769958,
+          "us_max": 123.6801777046838
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 64.92194452801266,
+          "us_min": 64.87284540324598,
+          "us_max": 65.22211915737874
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 146.77220332193468,
+          "us_min": 145.99938134043134,
+          "us_max": 157.0582842809449
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 124.09056540321208,
+          "us_min": 124.08766277476583,
+          "us_max": 124.1265324876483
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 145.8787157851327,
+          "us_min": 144.7471710215853,
+          "us_max": 189.08478983346075
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 124.51002607895587,
+          "us_min": 124.49970031064314,
+          "us_max": 124.54705311301043
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 214.20281295579147,
+          "us_min": 201.17276053119647,
+          "us_max": 248.921109389636
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 185.34757687618648,
+          "us_min": 185.26384999760154,
+          "us_max": 185.36575580903906
+        },
+        "eager": {
+          "status": "ok",
+          "us": 189.40069868605272,
+          "us_min": 189.3942135510306,
+          "us_max": 189.40397567072776
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.9113809098812378,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w5:64x131072",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 246.2499566076227,
+          "us_min": 246.20207499532103,
+          "us_max": 246.26542176613574
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 244.0971142761682,
+          "us_min": 244.05463111410305,
+          "us_max": 250.67085580577492
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 358.6911133484926,
+          "us_min": 358.68921389658294,
+          "us_max": 392.6946697923952
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 354.7801939252566,
+          "us_min": 354.70959636763,
+          "us_max": 354.86624482468034
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 361.20076209550336,
+          "us_min": 361.1441975718298,
+          "us_max": 368.60983285860084
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 357.2225646161351,
+          "us_min": 357.0765845202292,
+          "us_max": 357.3047419004276
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 537.63427734375,
+          "us_min": 479.06626760959625,
+          "us_max": 641.9518932700157
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 473.91559928655624,
+          "us_min": 473.9013101793767,
+          "us_max": 473.92812873844474
+        },
+        "eager": {
+          "status": "ok",
+          "us": 478.2134895784813,
+          "us_min": 478.1030038255824,
+          "us_max": 478.3111655612312
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.4534387060547673,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w5:16x524288",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 318.8964971280717,
+          "us_min": 318.8964941042971,
+          "us_max": 318.8974052683745
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 321.9224336516076,
+          "us_min": 321.68502442210627,
+          "us_max": 321.93528910424607
+        },
+        "first_pair_ordinary": {
+          "status": "ok",
+          "us": 411.13724352073933,
+          "us_min": 411.0021276504251,
+          "us_max": 411.1517882498367
+        },
+        "first_pair_replay": {
+          "status": "ok",
+          "us": 406.16617262928787,
+          "us_min": 406.0733381931375,
+          "us_max": 406.1723322302184
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 434.33434525923735,
+          "us_min": 434.32966972253837,
+          "us_max": 470.9079018178976
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 427.7028629659926,
+          "us_min": 427.65834149552484,
+          "us_max": 427.7081413462907
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 532.0946819961176,
+          "us_min": 532.0788246991367,
+          "us_max": 541.5074418085507
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 526.3107679849769,
+          "us_min": 526.2161511764166,
+          "us_max": 526.3813831867988
+        },
+        "eager": {
+          "status": "ok",
+          "us": 559.7475968370927,
+          "us_min": 559.7265454653267,
+          "us_max": 559.8158201324605
+        }
+      },
+      "best_full": "full_ordinary",
+      "best_partial_replay": "first_pair_replay",
+      "partial_replay_over_full": 1.2736614427789337,
+      "fastest_compiled": "full_ordinary",
+      "partial_replay_within_5pct_of_fastest": false
+    },
+    {
+      "case": "w2:32x1024",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 118.90847125309664,
+          "us_min": 117.01174139362995,
+          "us_max": 135.90908977287873
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 27.76661623376665,
+          "us_min": 26.7711647612923,
+          "us_max": 32.519804706716826
+        },
+        "first_pair_ordinary": {
+          "status": "failed",
+          "reason": "AssertionError: Tensor-likes are not close!\n\nMismatched elements: 8 / 32768 (0.0%)\nGreatest absolute difference: 3.24249267578125e-05 at index (3, 38) (up to 1e-05 allowed)\nGreatest relative difference: 0.001555821392685175 at index (22, 578) (up to 1e-05 allowed)"
+        },
+        "first_pair_replay": {
+          "status": "failed",
+          "reason": "AssertionError: Tensor-likes are not close!\n\nMismatched elements: 8 / 32768 (0.0%)\nGreatest absolute difference: 3.24249267578125e-05 at index (3, 38) (up to 1e-05 allowed)\nGreatest relative difference: 0.001555821392685175 at index (22, 578) (up to 1e-05 allowed)"
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 167.2886978126275,
+          "us_min": 167.13012382802495,
+          "us_max": 168.40777097806517
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 27.038802753986943,
+          "us_min": 26.80609253997634,
+          "us_max": 35.04671750360437
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 226.26872975205148,
+          "us_min": 225.42892050032862,
+          "us_max": 228.54537752419247
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 27.079349090466906,
+          "us_min": 26.725542958951763,
+          "us_max": 35.21682814344459
+        },
+        "eager": {
+          "status": "ok",
+          "us": 55.48445678147844,
+          "us_min": 54.641873281717125,
+          "us_max": 56.13762315050884
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 0.9737881824111279,
+      "fastest_compiled": "last_pair_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    },
+    {
+      "case": "w2:128x4096",
+      "candidates": {
+        "full_ordinary": {
+          "status": "ok",
+          "us": 252.54104330332996,
+          "us_min": 251.90517184032936,
+          "us_max": 254.83722930228467
+        },
+        "full_replay": {
+          "status": "ok",
+          "us": 252.266334434116,
+          "us_min": 252.24784764177977,
+          "us_max": 256.46328744058764
+        },
+        "first_pair_ordinary": {
+          "status": "failed",
+          "reason": "AssertionError: Tensor-likes are not close!\n\nMismatched elements: 7110 / 524288 (1.4%)\nGreatest absolute difference: 0.0002809762954711914 at index (107, 281) (up to 1e-05 allowed)\nGreatest relative difference: 1.295193076133728 at index (26, 1779) (up to 1e-05 allowed)"
+        },
+        "first_pair_replay": {
+          "status": "failed",
+          "reason": "AssertionError: Tensor-likes are not close!\n\nMismatched elements: 7110 / 524288 (1.4%)\nGreatest absolute difference: 0.0002809762954711914 at index (107, 281) (up to 1e-05 allowed)\nGreatest relative difference: 1.295193076133728 at index (26, 1779) (up to 1e-05 allowed)"
+        },
+        "last_pair_ordinary": {
+          "status": "ok",
+          "us": 253.86902318034018,
+          "us_min": 252.3286872216173,
+          "us_max": 291.2016612213306
+        },
+        "last_pair_replay": {
+          "status": "ok",
+          "us": 252.4911937999585,
+          "us_min": 252.47440015360033,
+          "us_max": 257.92370831458805
+        },
+        "separate_ordinary": {
+          "status": "ok",
+          "us": 257.26172786492566,
+          "us_min": 255.9154660592222,
+          "us_max": 324.6802884416702
+        },
+        "separate_replay": {
+          "status": "ok",
+          "us": 256.64740222078535,
+          "us_min": 256.5551477248577,
+          "us_max": 259.6394058972469
+        },
+        "eager": {
+          "status": "ok",
+          "us": 258.25517620116705,
+          "us_min": 258.1953537924419,
+          "us_max": 260.5982343372957
+        }
+      },
+      "best_full": "full_replay",
+      "best_partial_replay": "last_pair_replay",
+      "partial_replay_over_full": 1.0008913570110214,
+      "fastest_compiled": "full_replay",
+      "partial_replay_within_5pct_of_fastest": true
+    }
+  ]
+}

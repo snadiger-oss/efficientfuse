@@ -60,7 +60,8 @@ class ExperimentContext:
                                                        gemm_backend=self.config.gemm_backend),
                                  allow_cpu=self.config.device == "cpu", warmup_iterations=self.config.warmup_iterations,
                                  rtol=self.config.rtol, atol=self.config.atol,
-                                 trace_path=Path(path) / "kernels.json" if profile else None)
+                                 trace_path=Path(path) / "kernels.json" if profile else None,
+                                 input_refresh=self.config.replay_input_refresh)
 
     def measurement_candidates(self):
         candidates = [MeasurementCandidate(c.id, lambda path, name=c.id: self.prepare_candidate(name, path),

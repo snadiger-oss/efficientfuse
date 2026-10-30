@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 import shutil
 
+from greenfuse.naming import grouping_name
+from greenfuse.partition.enumerate import PartitionSpec
 from greenfuse.results import load_report, summarize_candidate
 
 GROUPINGS = {
@@ -24,7 +26,9 @@ OPERATIONS = {
     "w2": ("matmul", "bias add", "GELU"),
     "w3": ("residual add", "LayerNorm", "GELU"),
     "w4": ("bias add", "row mean", "subtract"),
+    "w5": ("bias add", "GELU", "softmax"),
 }
+_KINDS = None  # operation kinds of the exported workload; set by export() for chains longer than 3
 
 
 def grouping_description(partition, workload="w1"):
@@ -33,18 +37,27 @@ def grouping_description(partition, workload="w1"):
             "p10": f"[{a}] [{b} + {c}]", "p00": f"[{a} + {b} + {c}]"}[partition]
 MODES = {"launch": "ordinary", "graph": "replay"}
 # Default validated categorical slots 1 and 2; marker shape is the second cue for mode.
-COLORS = {"full": "#2a78d6", "last_pair": "#eb6834", "first_pair": "#1baf7a", "separate": "#6250d6", "eager": "#52514e"}
+COLORS = {"full": "#2a78d6", "last_pair": "#eb6834", "first_pair": "#1baf7a", "separate": "#6250d6", "eager": "#52514e",
+          "mixed": "#a8a7a2"}  # mixed = any other grouping of a longer chain
 
 
 def readable(candidate_id):
     if candidate_id == "eager_launch":
         return "eager_baseline"
     partition, mode = candidate_id.rsplit("_", 1)
-    return f"compiled_{GROUPINGS[partition][0]}_{MODES[mode]}"
+    if partition in GROUPINGS:
+        return f"compiled_{GROUPINGS[partition][0]}_{MODES[mode]}"
+    cuts = tuple(int(bit) for bit in partition[1:])
+    return f"compiled_{grouping_name(PartitionSpec('', cuts, ()), _KINDS)}_{MODES[mode]}"
 
 
 def grouping_of(candidate_id):
-    return "eager" if candidate_id == "eager_launch" else GROUPINGS[candidate_id.rsplit("_", 1)[0]][0]
+    if candidate_id == "eager_launch":
+        return "eager"
+    partition = candidate_id.rsplit("_", 1)[0]
+    if partition in GROUPINGS:
+        return GROUPINGS[partition][0]
+    return "full" if set(partition[1:]) == {"0"} else "separate" if set(partition[1:]) == {"1"} else "mixed"
 
 
 def summaries(report):
@@ -83,6 +96,7 @@ def plot(run_dir, decision, shape, path, label="W1"):
     import matplotlib.pyplot as plt
 
     report = load_report(run_dir / "initial.json")
+    plot._mixed = False
     stats = summaries(report)
     figure, axis = plt.subplots(figsize=(9, 5.5), layout="constrained")
     for cid, summary in stats.items():
@@ -96,7 +110,10 @@ def plot(run_dir, decision, shape, path, label="W1"):
                       yerr=[[y - energy["minimum"] * 1e3], [energy["maximum"] * 1e3 - y]],
                       fmt="s" if group == "eager" else ("D" if replay else "o"), markersize=8,
                       color=color, mfc="white" if replay else color, mew=2, elinewidth=1, capsize=3,
-                      label=readable(cid))
+                      label=(readable(cid) if group != "mixed" or cid == decision.get("selected_id")
+                             else ("mixed groupings" if not getattr(plot, "_mixed", None) else None)))
+        if group == "mixed":
+            plot._mixed = True
         if cid == decision.get("selected_id"):
             axis.scatter([x], [y], s=380, facecolors="none", edgecolors="#0b0b0b", linewidths=1.5, zorder=5)
             axis.annotate("selected", (x, y), xytext=(10, 10), textcoords="offset points", color="#0b0b0b", fontsize=9)
@@ -118,8 +135,15 @@ def plot(run_dir, decision, shape, path, label="W1"):
 
 
 def export(run_dir, dest, shape, label="W1"):
+    global _KINDS
     run_dir, dest = Path(run_dir), Path(dest)
     decision = json.loads((run_dir / "decision.json").read_text())
+    workload = json.loads((run_dir / "initial.json").read_text())["metadata"]["workload"]
+    if workload["name"] not in OPERATIONS:  # longer chains: name groups by their operations
+        from greenfuse.graph.capture import capture_graph
+        from greenfuse.workloads.registry import get_workload
+        n = workload["inputs"][0]["shape"][-1]
+        _KINDS = [op.kind for op in capture_graph(get_workload(workload["name"], n=n)).description.operations]
     dest.mkdir(parents=True, exist_ok=True)
     raw = dest / "raw"
     if raw.exists():

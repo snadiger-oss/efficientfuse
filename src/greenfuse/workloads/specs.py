@@ -75,3 +75,12 @@ def w3_spec(m: int = 4096, n: int = 4096, *, seed: int = 0) -> WorkloadSpec:
 
 def w4_spec(m: int = 4096, n: int = 4096, *, seed: int = 0) -> WorkloadSpec:
     return WorkloadSpec(name="w4", inputs=(TensorSpec("x", (m, n)), TensorSpec("bias", (n,))), seed=seed)
+
+
+def w5_spec(m: int = 64, n: int = 131072, *, seed: int = 0) -> WorkloadSpec:
+    return WorkloadSpec(name="w5", inputs=(TensorSpec("x", (m, n)), TensorSpec("bias", (n,))), seed=seed)
+
+
+def w6_spec(m: int = 64, n: int = 4096, *, seed: int = 0) -> WorkloadSpec:
+    return WorkloadSpec(name="w6", inputs=(TensorSpec("x", (m, n)), TensorSpec("residual", (m, n)),
+                                           TensorSpec("weight", (n, n)), TensorSpec("bias", (n,))), seed=seed)
