@@ -1,0 +1,44 @@
+{
+  "workload": "w6",
+  "shape": "512x4096",
+  "gemm_backend": "fuse_epilogue",
+  "partition": "eager",
+  "grouping": "eager",
+  "groups": null,
+  "calls_profiled": 20,
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "kernels": [
+    {
+      "kernel": "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_nn_align1>(cutlass_80_simt_sgemm_256x128_8x4_nn_align1::Params)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 779.5956499999999,
+      "gpu_us_per_call": 779.5956499999999
+    },
+    {
+      "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul>)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 46.73129999999983,
+      "gpu_us_per_call": 46.73129999999983
+    },
+    {
+      "kernel": "void at::native::(anonymous namespace)::vectorized_layer_norm_kernel<float, float, false>(int, float, float const*, float const*, float const*, float*, float*, float*)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 35.385600000000274,
+      "gpu_us_per_call": 35.385600000000274
+    },
+    {
+      "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1})",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 32.15535000000009,
+      "gpu_us_per_call": 32.15535000000009
+    },
+    {
+      "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 31.272000000000183,
+      "gpu_us_per_call": 31.272000000000183
+    }
+  ],
+  "total_gpu_us_per_call": 925.1399000000002
+}

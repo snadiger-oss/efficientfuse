@@ -1,0 +1,48 @@
+{
+  "workload": "w2",
+  "shape": "64x4096",
+  "gemm_backend": "fuse_epilogue",
+  "partition": "p11",
+  "grouping": "separate",
+  "groups": [
+    [
+      "op_0"
+    ],
+    [
+      "op_1"
+    ],
+    [
+      "op_2"
+    ]
+  ],
+  "calls_profiled": 20,
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "kernels": [
+    {
+      "kernel": "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x64_8x5_nn_align1>(cutlass_80_simt_sgemm_128x64_8x5_nn_align1::Params)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 130.06245000000027,
+      "gpu_us_per_call": 130.06245000000027
+    },
+    {
+      "kernel": "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 6.943950000000041,
+      "gpu_us_per_call": 6.943950000000041
+    },
+    {
+      "kernel": "triton_poi_fused_add_0",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 3.0608000000001083,
+      "gpu_us_per_call": 3.0608000000001083
+    },
+    {
+      "kernel": "triton_poi_fused_gelu_0",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 2.561600000000067,
+      "gpu_us_per_call": 2.561600000000067
+    }
+  ],
+  "total_gpu_us_per_call": 142.6288000000005
+}

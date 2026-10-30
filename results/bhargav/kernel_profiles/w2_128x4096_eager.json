@@ -1,0 +1,32 @@
+{
+  "workload": "w2",
+  "shape": "128x4096",
+  "gemm_backend": "fuse_epilogue",
+  "partition": "eager",
+  "grouping": "eager",
+  "groups": null,
+  "calls_profiled": 20,
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "kernels": [
+    {
+      "kernel": "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_nn_align1>(cutlass_80_simt_sgemm_256x128_8x4_nn_align1::Params)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 225.45469999999995,
+      "gpu_us_per_call": 225.45469999999995
+    },
+    {
+      "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1})",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 5.59840000000006,
+      "gpu_us_per_call": 5.59840000000006
+    },
+    {
+      "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 3.3200000000000047,
+      "gpu_us_per_call": 3.3200000000000047
+    }
+  ],
+  "total_gpu_us_per_call": 234.37310000000002
+}

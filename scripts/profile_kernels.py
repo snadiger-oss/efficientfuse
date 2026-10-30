@@ -33,7 +33,7 @@ def main():
     parser.add_argument("--m", type=int, required=True)
     parser.add_argument("--n", type=int, required=True)
     parser.add_argument("--gemm-backend", default="default")
-    parser.add_argument("--partition", required=True, help="ID such as p00 or p0101, or an alias like full")
+    parser.add_argument("--partition", required=True, help="ID such as p00 or p0101, an alias like full, or eager")
     parser.add_argument("--calls", type=int, default=20)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -42,11 +42,16 @@ def main():
     spec = get_workload_spec(args.workload, m=args.m, n=args.n)
     captured = capture_graph(workload)
     kinds = [op.kind for op in captured.description.operations]
-    partition, = select_partitions(enumerate_partitions(captured.description), [args.partition])
     inputs = make_inputs(spec, device="cuda:0")
-    prepared = prepare_execution(build_partition(captured, partition), inputs, mode="launch", reference=workload,
-                                 config=CompilerConfig(gemm_backend=args.gemm_backend), rtol=1e-4, atol=1e-3,
-                                 warmup_iterations=10)
+    if args.partition == "eager":
+        from greenfuse.measurement.baseline import prepare_eager
+        partition = None
+        prepared = prepare_eager(workload, inputs, captured.description.fingerprint)
+    else:
+        partition, = select_partitions(enumerate_partitions(captured.description), [args.partition])
+        prepared = prepare_execution(build_partition(captured, partition), inputs, mode="launch", reference=workload,
+                                     config=CompilerConfig(gemm_backend=args.gemm_backend), rtol=1e-4, atol=1e-3,
+                                     warmup_iterations=10)
     if prepared.executor is None:
         raise SystemExit(f"Preparation failed: {prepared.record.reason}")
     executor = prepared.executor
@@ -65,8 +70,9 @@ def main():
              "gpu_us_per_call": sum(times) / args.calls} for name, times in kernels.items()]
     rows.sort(key=lambda row: -row["gpu_us_per_call"])
     result = {"workload": args.workload, "shape": f"{args.m}x{args.n}", "gemm_backend": args.gemm_backend,
-              "partition": partition.id, "grouping": grouping_name(partition, kinds),
-              "groups": [list(g) for g in partition.groups], "calls_profiled": args.calls,
+              "partition": partition.id if partition else "eager",
+              "grouping": grouping_name(partition, kinds) if partition else "eager",
+              "groups": [list(g) for g in partition.groups] if partition else None, "calls_profiled": args.calls,
               "torch": str(torch.__version__), "gpu": torch.cuda.get_device_name(0),
               "kernels": rows, "total_gpu_us_per_call": sum(r["gpu_us_per_call"] for r in rows)}
     args.output.parent.mkdir(parents=True, exist_ok=True)
