@@ -70,14 +70,31 @@ def summarize_kernel_trace(trace: dict, *, mode: str, device_index: int) -> Kern
             status="invalid", reason="Ordinary execution unexpectedly submitted a CUDA Graph",
             graph_launch_api_events=graph_launches, replay_check="failed",
         )
-    if not kernels:
-        return KernelEvidence(reason="No GPU kernel events visible; graph submission alone is not a kernel count", graph_launch_api_events=graph_launches if runtime else None)
     for event in kernels:
         args = event.get("args", {})
         if not isinstance(args, dict) or args.get("device") != device_index:
             return KernelEvidence(reason="Kernel device is missing or does not match the requested CUDA device")
     launches = [event for event in runtime if "launchkernel" in str(event.get("name", "")).lower()]
-    replay_verified = bool(graph_launches) if mode == "graph" else bool(launches)
+    # Mode is verified from CPU-side API events, which are always recorded. GPU kernel records
+    # are not: PyTorch keeps CUPTI alive between sessions once CUDA Graphs are used
+    # (TEARDOWN_CUPTI=0), and later sessions can silently drop some or all kernel records.
+    replay_verified = bool(graph_launches) if mode == "graph" else bool(launches) and not graph_launches
+    if not kernels or (mode == "launch" and len(kernels) < len(launches)):
+        lost = "No GPU kernel events visible" if not kernels else (
+            f"Profiler recorded {len(kernels)} kernel events for {len(launches)} kernel launches")
+        if mode == "launch" and replay_verified:
+            # CPU-side launch API events are complete, and each one is one kernel launch.
+            return KernelEvidence(
+                status="observed_launch_api", reason=f"{lost}; count taken from kernel launch API events",
+                kernel_launches_per_invocation=len(launches), graph_launch_api_events=graph_launches,
+                replay_check="passed",
+            )
+        return KernelEvidence(
+            status="unavailable",
+            reason=f"{lost}; kernel count unknown" + ("" if replay_verified else "; execution mode unverified"),
+            graph_launch_api_events=graph_launches if runtime else None,
+            replay_check="passed" if replay_verified else "unavailable",
+        )
     return KernelEvidence(
         status="observed",
         reason=None if replay_verified else "Kernel events are visible, but runtime launch events cannot verify the replay policy",

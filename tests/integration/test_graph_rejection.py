@@ -20,14 +20,19 @@ class GraphRejectionTests(unittest.TestCase):
             b = torch.relu(bias)
             return a + b
 
+        with self.assertRaisesRegex(UnsupportedGraphError, "straight compute chain"):
+            capture_graph(two_branches)
+
+    def test_accept_reuse_of_earlier_result(self):
+        import torch
+
         def reuse_old_intermediate(x):
             a = x + 1
             b = torch.relu(a)
             return a + b
 
-        for fn in (two_branches, reuse_old_intermediate):
-            with self.assertRaisesRegex(UnsupportedGraphError, "straight compute chain"):
-                capture_graph(fn)
+        graph = capture_graph(reuse_old_intermediate).description
+        self.assertEqual(graph.operations[2].dependencies, ("op_0", "op_1"))
 
     def test_reject_inplace_methods_and_functions(self):
         import torch

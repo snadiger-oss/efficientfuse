@@ -1,6 +1,7 @@
 """Person 2 correctness/setup runner. This does not measure runtime or energy."""
 
 import argparse
+from dataclasses import replace
 import json
 from pathlib import Path
 import uuid
@@ -9,10 +10,9 @@ from greenfuse.compiler.inductor import CompilerConfig
 from greenfuse.execution.prepare import ExecutionRecord, prepare_execution
 from greenfuse.graph.capture import capture_graph
 from greenfuse.partition.build import build_partition
-from greenfuse.partition.enumerate import enumerate_partitions
-from greenfuse.workloads.definitions import workload_w1
+from greenfuse.partition.enumerate import enumerate_partitions, select_partitions
 from greenfuse.workloads.inputs import make_inputs
-from greenfuse.workloads.specs import w1_spec
+from greenfuse.workloads.registry import WORKLOADS, get_workload, get_workload_spec
 
 
 def main():
@@ -21,11 +21,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--device", default="cuda:0", help="cuda:N for GPU validation; cpu for explicit ordinary-only development")
     parser.add_argument("--modes", nargs="+", choices=["launch", "graph"], default=["launch", "graph"])
+    parser.add_argument("--workload", choices=sorted(WORKLOADS), default="w1")
+    parser.add_argument("--gemm-backend", choices=["default", "autotune", "triton"], default="default",
+                        help="GEMM policy for w2: cuBLAS, autotuned cuBLAS-vs-Triton, or Triton templates only")
+    parser.add_argument("--rtol", type=float)
+    parser.add_argument("--atol", type=float)
     parser.add_argument("--m", type=int, default=32)
     parser.add_argument("--n", type=int, default=256)
+    parser.add_argument("--partitions", nargs="+", metavar="NAME",
+                        help="Subset to run: separate, first_pair, last_pair, full (or p11, p01, p10, p00). Default: all")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--warmup", type=int, default=3)
-    parser.add_argument("--partitions", nargs="+", help="Optional subset of partition IDs, e.g. p10 p00")
     parser.add_argument("--compiler-artifacts", action="store_true", help="Ask Inductor to save debug code; cache hits may not produce files")
     parser.add_argument("--output", type=Path, default=Path("results/person2_execution.json"))
     args = parser.parse_args()
@@ -36,14 +42,14 @@ def main():
         parser.error("Only CUDA and explicit CPU development are supported")
     run_id = uuid.uuid4().hex[:12]
     artifacts = args.output.parent / f"person2_artifacts_{run_id}"
-    spec = w1_spec(args.m, args.n, seed=args.seed)
-    captured = capture_graph(workload_w1)
-    partitions = enumerate_partitions(captured.description)
-    if args.partitions:
-        unknown = sorted(set(args.partitions) - {p.id for p in partitions})
-        if unknown:
-            parser.error(f"Unknown partition IDs {unknown}; available: {[p.id for p in partitions]}")
-        partitions = tuple(p for p in partitions if p.id in args.partitions)
+    spec = get_workload_spec(args.workload, m=args.m, n=args.n, seed=args.seed)
+    spec = replace(spec, rtol=spec.rtol if args.rtol is None else args.rtol, atol=spec.atol if args.atol is None else args.atol)
+    workload = get_workload(args.workload, n=args.n)
+    captured = capture_graph(workload)
+    try:
+        partitions = select_partitions(enumerate_partitions(captured.description), args.partitions)
+    except ValueError as error:
+        parser.error(str(error))
     modes = tuple(dict.fromkeys(args.modes))
     report = {
         "schema_version": 1, "run_id": run_id,
@@ -80,9 +86,9 @@ def main():
                                          status=preflight_status, device=str(device), failure_stage=preflight_stage, reason=unavailable)
             else:
                 candidate_dir = artifacts / f"{partition.id}_{mode}"
-                config = CompilerConfig(str(candidate_dir / "compiler") if args.compiler_artifacts else None)
+                config = CompilerConfig(str(candidate_dir / "compiler") if args.compiler_artifacts else None, gemm_backend=args.gemm_backend)
                 prepared = prepare_execution(
-                    build_partition(captured, partition), inputs, mode=mode, reference=workload_w1,
+                    build_partition(captured, partition), inputs, mode=mode, reference=workload,
                     config=config, allow_cpu=device.type == "cpu", warmup_iterations=args.warmup,
                     rtol=spec.rtol, atol=spec.atol, trace_path=candidate_dir / "execution_trace.json",
                 )

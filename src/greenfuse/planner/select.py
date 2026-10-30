@@ -110,8 +110,17 @@ def _candidate_checks(report, entry, partition, mode):
                     or actual["dtype"] != "torch." + expected["dtype"] or actual["device"] != device):
                 raise ValueError(f"{entry['id']}: mixed input specialization")
         profiling = prep["profiling"]
-        if profiling.get("replay_check") != "passed" or type(profiling.get("kernel_launches_per_invocation")) is not int or profiling["kernel_launches_per_invocation"] <= 0:
+        if profiling.get("replay_check") != "passed":
             raise ValueError(f"{entry['id']}: missing actual kernel/mode evidence")
+        count = profiling.get("kernel_launches_per_invocation")
+        if count is not None and (type(count) is not int or count <= 0):
+            raise ValueError(f"{entry['id']}: invalid kernel count evidence")
+    # Every preparation must verify the execution mode. Kernel counts may be unknown (PyTorch drops
+    # CUPTI kernel records once CUDA Graphs are used; replay hides launches), per the spec's
+    # "use unknown when kernel counts cannot be established". Observed counts must agree.
+    counts = {p["profiling"].get("kernel_launches_per_invocation") for p in preparations} - {None}
+    if len(counts) > 1:
+        raise ValueError(f"{entry['id']}: inconsistent kernel count evidence {sorted(counts)}")
     for trial in entry["trials"]:
         if trial["elapsed_seconds"] < config["window_seconds"]:
             raise ValueError(f"{entry['id']}: window is shorter than the experiment policy")

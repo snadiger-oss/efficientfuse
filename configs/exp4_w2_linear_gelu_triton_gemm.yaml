@@ -1,0 +1,22 @@
+# Experiment 4: W2 linear + GELU with Triton GEMM templates only (max_autotune_gemm, backends=TRITON), TF32 off.
+# Here full fusion puts bias add + GELU inside the GEMM kernel. Compare against exp3 (cuBLAS + separate epilogue).
+# All four groupings x two execution modes = 8 compiled candidates, plus the eager baseline.
+#   p11 = separate  p01 = first_pair  p10 = last_pair  p00 = full
+workload: w2
+shapes: [[4096, 4096]]
+device: cuda:0
+modes: [launch, graph]
+gemm_backend: triton
+dtype: float32
+layout: contiguous
+seed: 0
+rtol: 0.00001
+atol: 0.00001
+rounds: 5
+window_seconds: 3.0
+warmup_iterations: 3
+max_partitions: 256
+latency_tolerance: 0.05
+exclusion_policy: none
+eager_baseline: true
+compiler_artifacts: false

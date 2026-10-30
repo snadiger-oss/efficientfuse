@@ -27,6 +27,23 @@ class PlannerTests(unittest.TestCase):
         self.assertNotIn("p10_launch", result["feasible_ids"])  # 107 us, cheaper
         self.assertNotIn("eager_launch", result["candidates"])
 
+    def test_unknown_kernel_counts_are_allowed_but_conflicts_and_unverified_modes_are_not(self):
+        # Synthetic records: PyTorch can drop CUPTI kernel records in later profiler sessions.
+        report = synthetic_report()
+        for entry in report["candidates"].values():
+            for prep in entry["preparations"][1:]:
+                prep["profiling"]["kernel_launches_per_invocation"] = None
+        self.assertEqual(select_report(report)["status"], "selected")
+        for prep in report["candidates"]["p00_launch"]["preparations"]:
+            prep["profiling"]["kernel_launches_per_invocation"] = None
+        self.assertEqual(select_report(report)["status"], "selected")  # unknown, not invented
+        report = synthetic_report()
+        report["candidates"]["p00_launch"]["preparations"][-1]["profiling"]["kernel_launches_per_invocation"] = 5
+        self.assertEqual(select_report(report)["status"], "invalid")
+        report = synthetic_report()
+        report["candidates"]["p00_launch"]["preparations"][-1]["profiling"]["replay_check"] = "unavailable"
+        self.assertEqual(select_report(report)["status"], "invalid")
+
     def test_tie_break_runtime_then_stable_id(self):
         costs = {name: (100, 40) for name in synthetic_report()["requested_ids"] if name != "eager_launch"}
         result = select_report(synthetic_report(costs=costs))

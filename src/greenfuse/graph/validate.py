@@ -1,4 +1,4 @@
-"""Validate the initially supported straight compute chain using metadata only."""
+"""Validate the supported compute chain (with optional reuse of earlier results) using metadata only."""
 
 import math
 
@@ -16,6 +16,16 @@ SUPPORTED_TARGETS = {
     "torch.relu": "relu",
     "functional.relu": "relu",
     "Tensor.relu": "relu",
+    "operator.sub": "sub",
+    "torch.sub": "sub",
+    "Tensor.sub": "sub",
+    "operator.matmul": "matmul",
+    "torch.matmul": "matmul",
+    "Tensor.matmul": "matmul",
+    "functional.gelu": "gelu",
+    "functional.layer_norm": "layer_norm",
+    "torch.mean": "mean",
+    "Tensor.mean": "mean",
 }
 
 
@@ -38,20 +48,28 @@ def validate_graph(graph: NormalizedGraph) -> None:
         if not op.dependencies:
             raise UnsupportedGraphError(f"{op.id}: expected an operation on an input tensor")
         computed_dependencies = set(op.dependencies) & compute_ids
-        expected = set() if index == 0 else {graph.operations[index - 1].id}
-        if computed_dependencies != expected:
-            raise UnsupportedGraphError(f"{op.id}: only a straight compute chain is supported; branching/merges are deferred")
+        # A chain backbone is required: each operation consumes the previous one. It may also reuse
+        # earlier results (fan-out, e.g. h - mean(h)). Independent branches are still deferred.
+        if index == 0:
+            if computed_dependencies:
+                raise UnsupportedGraphError(f"{op.id}: unknown or forward dependency")
+        elif graph.operations[index - 1].id not in computed_dependencies:
+            raise UnsupportedGraphError(f"{op.id}: only a straight compute chain is supported; independent branches are deferred")
         kw = dict(op.kwargs)
         if len(kw) != len(op.kwargs):
             raise UnsupportedGraphError(f"{op.id}: duplicate keyword argument")
         if "out" in kw:
             raise UnsupportedGraphError(f"{op.id}: out= mutation is not supported")
+        if op.kind in ("gelu", "layer_norm") and any(isinstance(v, str) for v in (*op.args, *kw.values())):
+            raise UnsupportedGraphError(f"{op.id}: string options are not supported")
         if op.target == "functional.relu":
             inplace = op.args[1] if len(op.args) > 1 else kw.get("inplace", False)
             if inplace is not False:
                 raise UnsupportedGraphError(f"{op.id}: in-place ReLU is not supported")
         for value in (*op.args, *kw.values()):
             if isinstance(value, ValueRef):
+                continue
+            if type(value) is tuple and value and all(type(item) is int for item in value):
                 continue
             if value is not None and type(value) not in (int, float, bool):
                 raise UnsupportedGraphError(f"{op.id}: unsupported argument structure")

@@ -15,7 +15,7 @@ class ConfigTests(unittest.TestCase):
 
     def test_invalid_or_unsupported_config_is_not_silently_accepted(self):
         for data in ({"round": 5}, {"shapes": [[True, 256]]}, {"modes": ["launch", "launch"]},
-                     {"workload": "w2"}, {"dtype": "float16"}, {"device": "cuda"}, {"latency_tolerance": float("nan")},
+                     {"workload": "w9"}, {"dtype": "float16"}, {"device": "cuda"}, {"latency_tolerance": float("nan")},
                      {"rounds": True}, {"seed": -1}, {"eager_baseline": 1}, {"grid": {"m": [], "n": [2]}},
                      {"shapes": [[1, 2]], "grid": {"m": [1], "n": [2]}}, {"shapes": [[1, 2], [1, 2]]}):
             with self.subTest(data=data), self.assertRaises(ValueError):

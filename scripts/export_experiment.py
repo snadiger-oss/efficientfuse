@@ -18,6 +18,19 @@ GROUPINGS = {
     "p10": ("last_pair", "[bias add] [ReLU + residual add]"),
     "p00": ("full", "[bias add + ReLU + residual add]"),
 }
+# Operation names per workload; grouping names (separate/first_pair/last_pair/full) are shared.
+OPERATIONS = {
+    "w1": ("bias add", "ReLU", "residual add"),
+    "w2": ("matmul", "bias add", "GELU"),
+    "w3": ("residual add", "LayerNorm", "GELU"),
+    "w4": ("bias add", "row mean", "subtract"),
+}
+
+
+def grouping_description(partition, workload="w1"):
+    a, b, c = OPERATIONS[workload]
+    return {"p11": f"[{a}] [{b}] [{c}]", "p01": f"[{a} + {b}] [{c}]",
+            "p10": f"[{a}] [{b} + {c}]", "p00": f"[{a} + {b} + {c}]"}[partition]
 MODES = {"launch": "ordinary", "graph": "replay"}
 # Default validated categorical slots 1 and 2; marker shape is the second cue for mode.
 COLORS = {"full": "#2a78d6", "last_pair": "#eb6834", "first_pair": "#1baf7a", "separate": "#6250d6", "eager": "#52514e"}
@@ -64,7 +77,7 @@ def write_rows(run_dir, decision, shape):
     return rows
 
 
-def plot(run_dir, decision, shape, path):
+def plot(run_dir, decision, shape, path, label="W1"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -98,13 +111,13 @@ def plot(run_dir, decision, shape, path):
         axis.spines[side].set_visible(False)
     axis.set_xlabel("Synchronized wall-clock runtime per call (µs)")
     axis.set_ylabel("GPU-device energy per call (mJ)")
-    axis.set_title(f"W1 {shape}: runtime vs GPU energy (initial search, median and observed range)", fontsize=11)
+    axis.set_title(f"{label} {shape}: runtime vs GPU energy (initial search, median and observed range)", fontsize=11)
     axis.legend(fontsize=8, frameon=False)
     figure.savefig(path, dpi=160)
     plt.close(figure)
 
 
-def export(run_dir, dest, shape):
+def export(run_dir, dest, shape, label="W1"):
     run_dir, dest = Path(run_dir), Path(dest)
     decision = json.loads((run_dir / "decision.json").read_text())
     dest.mkdir(parents=True, exist_ok=True)
@@ -118,7 +131,7 @@ def export(run_dir, dest, shape):
         writer.writeheader()
         writer.writerows(rows)
     if (run_dir / "initial.json").exists():
-        plot(run_dir, decision, shape, dest / "runtime_vs_energy.png")
+        plot(run_dir, decision, shape, dest / "runtime_vs_energy.png", label)
     return decision, rows
 
 
@@ -127,8 +140,9 @@ def main():
     parser.add_argument("run_dir", type=Path, help="Folder holding initial.json, validation.json, decision.json")
     parser.add_argument("dest", type=Path)
     parser.add_argument("--shape", required=True, help="Label such as 4096x4096")
+    parser.add_argument("--label", default="W1", help="Plot title prefix, e.g. 'W2 linear+GELU (cuBLAS)'")
     args = parser.parse_args()
-    decision, _ = export(args.run_dir, args.dest, args.shape)
+    decision, _ = export(args.run_dir, args.dest, args.shape, args.label)
     print(f"{args.shape}: {decision['status']} -> {readable(decision['selected_id']) if decision.get('selected_id') else 'none'} | {args.dest}")
 
 

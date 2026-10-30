@@ -33,7 +33,7 @@ class WorkloadSpecTests(unittest.TestCase):
         self.assertTrue(callable(get_workload("w1")))
         self.assertEqual(get_workload_spec("w1", m=2, n=3), w1_spec(2, 3))
         with self.assertRaisesRegex(ValueError, "Unknown workload"):
-            get_workload("w2")
+            get_workload("w9")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,14 @@
+W2 GEMM autotune probe: gelu(x @ weight + bias), 4096x4096x4096, FP32
+torch 2.10.0+cu128, NVIDIA A40, torch.backends.cuda.matmul.allow_tf32=False, float32_matmul_precision=highest
+Inductor options: max_autotune_gemm=True, max_autotune_gemm_backends=ATEN,TRITON, triton.cudagraphs=False
+
+AUTOTUNE mm(4096x4096, 4096x4096)
+  mm (cuBLAS)  5.7774 ms 100.0%
+  triton_mm_9  6.3826 ms  90.5%  BLOCK_M=128 BLOCK_N=64 BLOCK_K=32 num_stages=3 num_warps=4 ALLOW_TF32=False
+  triton_mm_7  6.5219 ms  88.6%  BLOCK_M=64 BLOCK_N=128 BLOCK_K=32 num_stages=3 num_warps=4
+  triton_mm_4  6.8803 ms  84.0%
+  ... 14 choices total (13 Triton), best = cuBLAS
+
+Consequence: with autotuning enabled, Inductor still picks cuBLAS for every W2 grouping,
+so gemm_backend=autotune produces the same kernels as gemm_backend=default.
+Experiment 4 forces Triton templates (backends=TRITON) to measure the fused-epilogue GEMM.

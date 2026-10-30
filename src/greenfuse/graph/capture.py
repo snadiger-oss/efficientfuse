@@ -30,7 +30,16 @@ def describe_graph(module) -> tuple[NormalizedGraph, dict[str, str]]:
         torch.add: ("add", "torch.add"),
         torch.relu: ("relu", "torch.relu"),
         functional.relu: ("relu", "functional.relu"),
+        operator.sub: ("sub", "operator.sub"),
+        torch.sub: ("sub", "torch.sub"),
+        operator.matmul: ("matmul", "operator.matmul"),
+        torch.matmul: ("matmul", "torch.matmul"),
+        functional.gelu: ("gelu", "functional.gelu"),
+        functional.layer_norm: ("layer_norm", "functional.layer_norm"),
+        torch.mean: ("mean", "torch.mean"),
     }
+    methods = {"add": ("add", "Tensor.add"), "relu": ("relu", "Tensor.relu"), "sub": ("sub", "Tensor.sub"),
+               "matmul": ("matmul", "Tensor.matmul"), "mean": ("mean", "Tensor.mean")}
     refs = {}
     names = {}
     inputs = []
@@ -42,6 +51,8 @@ def describe_graph(module) -> tuple[NormalizedGraph, dict[str, str]]:
             if value not in refs:
                 raise UnsupportedGraphError("Unknown or forward graph reference")
             return ValueRef(refs[value])
+        if type(value) in (tuple, list) and value and all(type(item) is int for item in value):
+            return tuple(value)  # e.g. layer_norm normalized_shape
         if value is None or type(value) in (int, float, bool):
             if type(value) is float and not math.isfinite(value):
                 raise UnsupportedGraphError("Nonfinite constants are not supported")
@@ -58,9 +69,9 @@ def describe_graph(module) -> tuple[NormalizedGraph, dict[str, str]]:
             if node.op == "call_function":
                 definition = targets.get(node.target)
             else:
-                definition = {"add": ("add", "Tensor.add"), "relu": ("relu", "Tensor.relu")}.get(node.target)
+                definition = methods.get(node.target)
             if definition is None:
-                raise UnsupportedGraphError(f"Unsupported operation {node.op}: {node.target}; only addition and ReLU are supported")
+                raise UnsupportedGraphError(f"Unsupported operation {node.op}: {node.target}; supported: add, sub, relu, matmul, gelu, layer_norm, mean")
             node_id = f"op_{len(operations)}"
             kind, target = definition
             operations.append(Operation(

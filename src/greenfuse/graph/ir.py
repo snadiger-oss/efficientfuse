@@ -12,12 +12,14 @@ class ValueRef:
     id: str
 
 
-Argument = ValueRef | int | float | bool | None
+Argument = ValueRef | int | float | bool | None | tuple
 
 
 def argument_to_dict(value: Argument):
     if isinstance(value, ValueRef):
         return {"ref": value.id}
+    if isinstance(value, tuple):
+        return list(value)
     return value
 
 

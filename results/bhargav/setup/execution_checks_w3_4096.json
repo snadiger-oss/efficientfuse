@@ -1,0 +1,990 @@
+{
+  "schema_version": 1,
+  "run_id": "4a39ef7784c6",
+  "scope": "Person 2 execution correctness, setup costs, and diagnostic kernel profiling; no runtime/energy trials",
+  "device": "cuda:0",
+  "torch_version": "2.10.0+cu128",
+  "cuda_build": "12.8",
+  "workload": {
+    "name": "w3",
+    "inputs": [
+      {
+        "name": "x",
+        "shape": [
+          4096,
+          4096
+        ],
+        "dtype": "float32",
+        "layout": "contiguous"
+      },
+      {
+        "name": "residual",
+        "shape": [
+          4096,
+          4096
+        ],
+        "dtype": "float32",
+        "layout": "contiguous"
+      }
+    ],
+    "seed": 0,
+    "rtol": 0.001,
+    "atol": 0.001
+  },
+  "input_spec_fingerprint": "5921553199622372219e36f98104e9e9f9d3c9bea33ba5f9039e61fe421631c9",
+  "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+  "executions": [
+    {
+      "id": "p00_launch",
+      "partition_id": "p00",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "launch",
+      "requested_groups": 1,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0",
+              "op_1",
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 3.0108972704038024
+          }
+        ],
+        "setup_seconds": 3.0124116521328688,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "use caller's resident inputs directly",
+        "static_input_bytes": 0
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 1,
+        "kernel_names": [
+          "triton_red_fused_add_gelu_native_layer_norm_0"
+        ],
+        "graph_launch_api_events": 0,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p00_launch/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 3.0124116521328688,
+        "warmup": 0.0014507444575428963,
+        "correctness": 0.06859058700501919,
+        "profiling": 0.041412689723074436,
+        "total": 4.278298130258918
+      },
+      "ready_for_gpu_measurement": true
+    },
+    {
+      "id": "p00_graph",
+      "partition_id": "p00",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "graph",
+      "requested_groups": 1,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0",
+              "op_1",
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.05076803360134363
+          }
+        ],
+        "setup_seconds": 0.052170680835843086,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "copy all caller inputs into owned buffers on every run",
+        "static_input_bytes": 134217728,
+        "retained_output_and_intermediate_bytes": 67108864,
+        "pool_note": "Graph-private allocator pool may reserve additional memory"
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 1,
+        "kernel_names": [
+          "triton_red_fused_add_gelu_native_layer_norm_0"
+        ],
+        "graph_launch_api_events": 1,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p00_graph/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 0.052170680835843086,
+        "warmup": 0.0015379805117845535,
+        "capture": 0.017075215466320515,
+        "correctness": 0.019031474366784096,
+        "profiling": 0.011292464099824429,
+        "total": 0.10324150789529085
+      },
+      "ready_for_gpu_measurement": true
+    },
+    {
+      "id": "p01_launch",
+      "partition_id": "p01",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "launch",
+      "requested_groups": 2,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0",
+              "op_1"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.5152113465592265
+          },
+          {
+            "index": 1,
+            "node_ids": [
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.06663327012211084
+          }
+        ],
+        "setup_seconds": 0.5832625525072217,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "use caller's resident inputs directly",
+        "static_input_bytes": 0
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 2,
+        "kernel_names": [
+          "triton_red_fused_add_native_layer_norm_0",
+          "triton_poi_fused_gelu_0"
+        ],
+        "graph_launch_api_events": 0,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p01_launch/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 0.5832625525072217,
+        "warmup": 0.0020788712427020073,
+        "correctness": 0.01750774309039116,
+        "profiling": 0.013842204585671425,
+        "total": 0.6169152166694403
+      },
+      "ready_for_gpu_measurement": true
+    },
+    {
+      "id": "p01_graph",
+      "partition_id": "p01",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "graph",
+      "requested_groups": 2,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0",
+              "op_1"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.05089405830949545
+          },
+          {
+            "index": 1,
+            "node_ids": [
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.04361290484666824
+          }
+        ],
+        "setup_seconds": 0.0959219429641962,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "copy all caller inputs into owned buffers on every run",
+        "static_input_bytes": 134217728,
+        "retained_output_and_intermediate_bytes": 134217728,
+        "pool_note": "Graph-private allocator pool may reserve additional memory"
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 2,
+        "kernel_names": [
+          "triton_red_fused_add_native_layer_norm_0",
+          "triton_poi_fused_gelu_0"
+        ],
+        "graph_launch_api_events": 1,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p01_graph/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 0.0959219429641962,
+        "warmup": 0.002409950830042362,
+        "capture": 0.02147894911468029,
+        "correctness": 0.020057888701558113,
+        "profiling": 0.013288607820868492,
+        "total": 0.15360142663121223
+      },
+      "ready_for_gpu_measurement": true
+    },
+    {
+      "id": "p10_launch",
+      "partition_id": "p10",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "launch",
+      "requested_groups": 2,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.309703410603106
+          },
+          {
+            "index": 1,
+            "node_ids": [
+              "op_1",
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.497071853838861
+          }
+        ],
+        "setup_seconds": 0.8082079030573368,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "use caller's resident inputs directly",
+        "static_input_bytes": 0
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 2,
+        "kernel_names": [
+          "triton_poi_fused_add_0",
+          "triton_red_fused_gelu_native_layer_norm_0"
+        ],
+        "graph_launch_api_events": 0,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p10_launch/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 0.8082079030573368,
+        "warmup": 0.0020573679357767105,
+        "correctness": 0.017451158724725246,
+        "profiling": 0.011431051418185234,
+        "total": 0.8393698306754231
+      },
+      "ready_for_gpu_measurement": true
+    },
+    {
+      "id": "p10_graph",
+      "partition_id": "p10",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "graph",
+      "requested_groups": 2,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.04533420782536268
+          },
+          {
+            "index": 1,
+            "node_ids": [
+              "op_1",
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.0464976541697979
+          }
+        ],
+        "setup_seconds": 0.09322715271264315,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "copy all caller inputs into owned buffers on every run",
+        "static_input_bytes": 134217728,
+        "retained_output_and_intermediate_bytes": 134217728,
+        "pool_note": "Graph-private allocator pool may reserve additional memory"
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 2,
+        "kernel_names": [
+          "triton_poi_fused_add_0",
+          "triton_red_fused_gelu_native_layer_norm_0"
+        ],
+        "graph_launch_api_events": 1,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p10_graph/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 0.09322715271264315,
+        "warmup": 0.0022925958037376404,
+        "capture": 0.02360739279538393,
+        "correctness": 0.01948910392820835,
+        "profiling": 0.015837926417589188,
+        "total": 0.15488790813833475
+      },
+      "ready_for_gpu_measurement": true
+    },
+    {
+      "id": "p11_launch",
+      "partition_id": "p11",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "launch",
+      "requested_groups": 3,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.04277675598859787
+          },
+          {
+            "index": 1,
+            "node_ids": [
+              "op_1"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.4339262545108795
+          },
+          {
+            "index": 2,
+            "node_ids": [
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.0466344365850091
+          }
+        ],
+        "setup_seconds": 0.5247638588771224,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "use caller's resident inputs directly",
+        "static_input_bytes": 0
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 3,
+        "kernel_names": [
+          "triton_poi_fused_add_0",
+          "triton_red_fused_native_layer_norm_0",
+          "triton_poi_fused_gelu_0"
+        ],
+        "graph_launch_api_events": 0,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p11_launch/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 0.5247638588771224,
+        "warmup": 0.0027403049170970917,
+        "correctness": 0.01790341455489397,
+        "profiling": 0.014729820191860199,
+        "total": 0.5603696759790182
+      },
+      "ready_for_gpu_measurement": true
+    },
+    {
+      "id": "p11_graph",
+      "partition_id": "p11",
+      "graph_fingerprint": "eaaf4848725d791984cefdd6cd903de0f6f9b584c4ba1a1b023437e6a251fad0",
+      "mode": "graph",
+      "requested_groups": 3,
+      "status": "ready",
+      "device": "cuda:0",
+      "failure_stage": null,
+      "reason": null,
+      "compilation": {
+        "backend": "inductor",
+        "fullgraph": true,
+        "dynamic": false,
+        "options": {
+          "triton.cudagraphs": false
+        },
+        "torch_version": "2.10.0+cu128",
+        "cuda_build": "12.8",
+        "device": "cuda:0",
+        "groups": [
+          {
+            "index": 0,
+            "node_ids": [
+              "op_0"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.04286872781813145
+          },
+          {
+            "index": 1,
+            "node_ids": [
+              "op_1"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.04500008001923561
+          },
+          {
+            "index": 2,
+            "node_ids": [
+              "op_2"
+            ],
+            "status": "compiled",
+            "setup_seconds": 0.04188041668385267
+          }
+        ],
+        "setup_seconds": 0.13118450809270144,
+        "generated_code_files": [],
+        "generated_code_note": "Not requested; source-file counts are not kernel counts"
+      },
+      "correctness": {
+        "status": "passed",
+        "rtol": 0.001,
+        "atol": 0.001,
+        "checks": [
+          {
+            "inputs": "original",
+            "max_absolute_error": 1.430511474609375e-06
+          },
+          {
+            "inputs": "changed",
+            "max_absolute_error": 9.5367431640625e-07
+          }
+        ]
+      },
+      "buffers": {
+        "tensors": [
+          {
+            "name": "x",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          },
+          {
+            "name": "residual",
+            "shape": [
+              4096,
+              4096
+            ],
+            "stride": [
+              4096,
+              1
+            ],
+            "dtype": "torch.float32",
+            "device": "cuda:0"
+          }
+        ],
+        "forward_only": true,
+        "autocast": false,
+        "output_lifetime": "borrowed until the next run or close; clone to retain",
+        "concurrency": "one caller, on the CUDA stream used during preparation",
+        "input_update": "copy all caller inputs into owned buffers on every run",
+        "static_input_bytes": 134217728,
+        "retained_output_and_intermediate_bytes": 201326592,
+        "pool_note": "Graph-private allocator pool may reserve additional memory"
+      },
+      "profiling": {
+        "status": "observed",
+        "reason": null,
+        "kernel_launches_per_invocation": 3,
+        "kernel_names": [
+          "triton_poi_fused_add_0",
+          "triton_red_fused_native_layer_norm_0",
+          "triton_poi_fused_gelu_0"
+        ],
+        "graph_launch_api_events": 1,
+        "replay_check": "passed",
+        "trace_path": "/home/bsrinid/ondemand/efficientfuse/results/bhargav/setup/person2_artifacts_4a39ef7784c6/p11_graph/execution_trace.json",
+        "logical_invocations": 1
+      },
+      "setup_seconds": {
+        "compilation": 0.13118450809270144,
+        "warmup": 0.00299858208745718,
+        "capture": 0.027830523438751698,
+        "correctness": 0.0189656438305974,
+        "profiling": 0.011337698437273502,
+        "total": 0.1927420599386096
+      },
+      "ready_for_gpu_measurement": true
+    }
+  ],
+  "requested_ids": [
+    "p00_launch",
+    "p00_graph",
+    "p01_launch",
+    "p01_graph",
+    "p10_launch",
+    "p10_graph",
+    "p11_launch",
+    "p11_graph"
+  ],
+  "complete": true,
+  "gpu_name": "NVIDIA A40"
+}

@@ -58,3 +58,20 @@ def w1_spec(m: int = 32, n: int = 256, *, seed: int = 0) -> WorkloadSpec:
         inputs=(TensorSpec("x", (m, n)), TensorSpec("bias", (n,)), TensorSpec("residual", (m, n))),
         seed=seed,
     )
+
+
+def w2_spec(m: int = 4096, n: int = 4096, *, seed: int = 0) -> WorkloadSpec:
+    """x [M, N] @ weight [N, N] + bias [N]: an M x N x N GEMM (K = N)."""
+    return WorkloadSpec(
+        name="w2",
+        inputs=(TensorSpec("x", (m, n)), TensorSpec("weight", (n, n)), TensorSpec("bias", (n,))),
+        seed=seed,
+    )
+
+
+def w3_spec(m: int = 4096, n: int = 4096, *, seed: int = 0) -> WorkloadSpec:
+    return WorkloadSpec(name="w3", inputs=(TensorSpec("x", (m, n)), TensorSpec("residual", (m, n))), seed=seed)
+
+
+def w4_spec(m: int = 4096, n: int = 4096, *, seed: int = 0) -> WorkloadSpec:
+    return WorkloadSpec(name="w4", inputs=(TensorSpec("x", (m, n)), TensorSpec("bias", (n,))), seed=seed)

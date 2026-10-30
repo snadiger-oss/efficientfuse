@@ -13,9 +13,17 @@ class CompilerConfig:
     """Fixed controlled policy. Explicit replay belongs only to graphs.py."""
 
     artifact_dir: str | None = None
+    gemm_backend: str = "default"  # default (cuBLAS), autotune (cuBLAS vs Triton), triton (Triton only)
 
     def options(self, available_options) -> dict:
         required = {"triton.cudagraphs": False}
+        if self.gemm_backend not in ("default", "autotune", "triton"):
+            raise ValueError("gemm_backend must be default, autotune, or triton")
+        if self.gemm_backend != "default":
+            # GEMM autotuning only: plain max_autotune would also turn on Inductor's own CUDA Graphs.
+            # Triton templates can fuse the bias/GELU epilogue into the GEMM kernel.
+            required["max_autotune_gemm"] = True
+            required["max_autotune_gemm_backends"] = "TRITON" if self.gemm_backend == "triton" else "ATEN,TRITON"
         if self.artifact_dir is not None:
             required.update({"trace.enabled": True, "trace.debug_dir": str(Path(self.artifact_dir).resolve())})
         missing = set(required) - set(available_options)
@@ -53,6 +61,7 @@ class CompiledStep:
     callable: Any
     input_slots: tuple[int, ...]
     output_id: str
+    output_count: int = 1  # >1 when a group exports an intermediate for fan-out
 
 
 @dataclass
@@ -68,7 +77,8 @@ class CompiledPartition:
         """Return output plus intermediate owners; caller sets inference context."""
         values = list(ordered_inputs)
         for step in self.steps:
-            values.append(step.callable(*(values[index] for index in step.input_slots)))
+            result = step.callable(*(values[index] for index in step.input_slots))
+            values.extend(result if step.output_count > 1 else (result,))
         return values[self.output_slot], tuple(values[len(ordered_inputs):])
 
     def close(self):
@@ -110,9 +120,12 @@ def compile_partition(built, inputs: dict, *, config=None, allow_cpu=False) -> C
                 output = fn(*(values[slot] for slot in input_slots))
                 synchronize(contract.device)
                 details.update(status="compiled", setup_seconds=perf_counter() - group_started)
-                slots[group.bindings.output_id] = len(values)
-                values.append(output)
-                steps.append(CompiledStep(fn, input_slots, group.bindings.output_id))
+                exported = group.bindings.output_ids
+                outputs = tuple(output) if len(exported) > 1 else (output,)
+                for key, value in zip(exported, outputs):
+                    slots[key] = len(values)
+                    values.append(value)
+                steps.append(CompiledStep(fn, input_slots, group.bindings.output_id, len(exported)))
         record.setup_seconds = perf_counter() - started
         if config.artifact_dir:
             generated = set(Path(config.artifact_dir).rglob("output_code.py")) - existing_artifacts

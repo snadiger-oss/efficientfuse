@@ -16,9 +16,18 @@ class GroupBindings:
     node_ids: tuple[str, ...]
     input_ids: tuple[str, ...]
     output_id: str
+    # Every value later groups need. Usually just output_id; fan-out (h - mean(h)) can export more.
+    output_ids: tuple[str, ...] = ()
+
+    def __post_init__(self):
+        if not self.output_ids:
+            object.__setattr__(self, "output_ids", (self.output_id,))
+        if self.output_id not in self.output_ids:
+            raise ValueError("output_ids must include output_id")
 
     def to_dict(self) -> dict:
-        return {"node_ids": list(self.node_ids), "input_ids": list(self.input_ids), "output_id": self.output_id}
+        return {"node_ids": list(self.node_ids), "input_ids": list(self.input_ids), "output_id": self.output_id,
+                "output_ids": list(self.output_ids)}
 
 
 @dataclass
@@ -52,7 +61,9 @@ class BuiltPartition:
         values = {item.id: inputs[item.name] for item in self.inputs}
         for group in self.groups:
             args = [values[key] for key in group.bindings.input_ids]
-            values[group.bindings.output_id] = group.module(*args)
+            result = group.module(*args)
+            outputs = result if len(group.bindings.output_ids) > 1 else (result,)
+            values.update(zip(group.bindings.output_ids, outputs))
         return values[self.output_id]
 
 
@@ -68,6 +79,12 @@ def build_partition(captured: CapturedGraph, spec: PartitionSpec) -> BuiltPartit
     original = {key: fx_by_name[name] for key, name in node_names.items()}
     operations = {op.id: op for op in current.operations}
     groups = []
+    later_uses = {}
+    for group_index, node_ids in enumerate(spec.groups):
+        for node_id in node_ids:
+            for dependency in operations[node_id].dependencies:
+                later_uses.setdefault(dependency, set()).add(group_index)
+    group_of = {node_id: i for i, node_ids in enumerate(spec.groups) for node_id in node_ids}
 
     for index, node_ids in enumerate(spec.groups):
         members = set(node_ids)
@@ -84,9 +101,16 @@ def build_partition(captured: CapturedGraph, spec: PartitionSpec) -> BuiltPartit
             source = original[node_id]
             remap[source] = graph.node_copy(source, lambda node: remap[node])
         output_id = node_ids[-1]
-        graph.output(remap[original[output_id]])
+        # Export earlier members that a later group reads, then the group's last value.
+        extra = tuple(node_id for node_id in node_ids[:-1]
+                      if any(user > group_of[node_id] for user in later_uses.get(node_id, ())))
+        output_ids = (*extra, output_id)
+        if len(output_ids) == 1:
+            graph.output(remap[original[output_id]])
+        else:
+            graph.output(tuple(remap[original[key]] for key in output_ids))
         graph.lint()
         module = GraphModule(captured.module, graph, class_name=f"Partition_{spec.id}_Group_{index}")
         module.graph.lint()
-        groups.append(BuiltGroup(GroupBindings(node_ids, input_ids, output_id), module))
+        groups.append(BuiltGroup(GroupBindings(node_ids, input_ids, output_id, output_ids), module))
     return BuiltPartition(spec, current.inputs, tuple(groups), current.output.id)

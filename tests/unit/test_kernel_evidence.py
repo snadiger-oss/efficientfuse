@@ -36,6 +36,26 @@ class KernelEvidenceTests(unittest.TestCase):
         self.assertEqual(evidence.graph_launch_api_events, 1)
         self.assertEqual(evidence.replay_check, "passed")
 
+    def test_gpu_copy_of_marker_is_ignored(self):
+        gpu_marker = {"name": INVOCATION_MARKER, "ph": "X", "cat": "gpu_user_annotation", "ts": 15, "dur": 30}
+        evidence = summarize_kernel_trace(trace(gpu_marker, launch("cudaGraphLaunch"), kernel(), kernel(ts=30)),
+                                          mode="graph", device_index=0)
+        self.assertEqual(evidence.kernel_launches_per_invocation, 2)
+        self.assertEqual(evidence.replay_check, "passed")
+
+    def test_dropped_kernel_records_keep_mode_but_not_count(self):
+        # Real PyTorch 2.10 behavior after CUDA Graph use: launches recorded, kernel records lost.
+        launches = [launch() for _ in range(3)]
+        evidence = summarize_kernel_trace(trace(*launches, kernel()), mode="launch", device_index=0)
+        self.assertEqual(evidence.kernel_launches_per_invocation, 3)  # from launch API events
+        self.assertEqual(evidence.status, "observed_launch_api")
+        self.assertEqual(evidence.replay_check, "passed")
+        evidence = summarize_kernel_trace(trace(launch("cudaGraphLaunch")), mode="graph", device_index=0)
+        self.assertIsNone(evidence.kernel_launches_per_invocation)
+        self.assertEqual(evidence.replay_check, "passed")
+        evidence = summarize_kernel_trace(trace(), mode="graph", device_index=0)
+        self.assertEqual(evidence.replay_check, "unavailable")
+
     def test_ordinary_mode_rejects_hidden_graph_replay(self):
         evidence = summarize_kernel_trace(trace(launch("cuGraphLaunch"), kernel()), mode="launch", device_index=0)
         self.assertEqual(evidence.status, "invalid")
