@@ -1,0 +1,34 @@
+{
+  "workload": "w2",
+  "shape": "128x4096",
+  "gemm_backend": "fuse_epilogue",
+  "partition": "p10",
+  "grouping": "last_pair",
+  "groups": [
+    [
+      "op_0"
+    ],
+    [
+      "op_1",
+      "op_2"
+    ]
+  ],
+  "calls_profiled": 20,
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "kernels": [
+    {
+      "kernel": "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_nn_align1>(cutlass_80_simt_sgemm_256x128_8x4_nn_align1::Params)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 226.96504999999996,
+      "gpu_us_per_call": 226.96504999999996
+    },
+    {
+      "kernel": "triton_poi_fused_add_gelu_0",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 4.33115000000007,
+      "gpu_us_per_call": 4.33115000000007
+    }
+  ],
+  "total_gpu_us_per_call": 231.29620000000003
+}

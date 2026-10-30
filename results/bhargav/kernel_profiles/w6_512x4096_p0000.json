@@ -1,0 +1,34 @@
+{
+  "workload": "w6",
+  "shape": "512x4096",
+  "gemm_backend": "fuse_epilogue",
+  "partition": "p0000",
+  "grouping": "full",
+  "groups": [
+    [
+      "op_0",
+      "op_1",
+      "op_2",
+      "op_3",
+      "op_4"
+    ]
+  ],
+  "calls_profiled": 20,
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "kernels": [
+    {
+      "kernel": "triton_tem_fused_add_gelu_mm_native_layer_norm_1",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 950.0467499999999,
+      "gpu_us_per_call": 950.0467499999999
+    },
+    {
+      "kernel": "triton_red_fused_add_native_layer_norm_0",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 46.82085000000027,
+      "gpu_us_per_call": 46.82085000000027
+    }
+  ],
+  "total_gpu_us_per_call": 996.8676000000002
+}
