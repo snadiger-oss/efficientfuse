@@ -1,0 +1,26 @@
+{
+  "workload": "w1",
+  "shape": "1024x1024",
+  "gemm_backend": "default",
+  "partition": "p00",
+  "grouping": "full",
+  "groups": [
+    [
+      "op_0",
+      "op_1",
+      "op_2"
+    ]
+  ],
+  "calls_profiled": 20,
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "kernels": [
+    {
+      "kernel": "triton_poi_fused_add_relu_0",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 21.6847,
+      "gpu_us_per_call": 21.6847
+    }
+  ],
+  "total_gpu_us_per_call": 21.6847
+}

@@ -1,0 +1,32 @@
+{
+  "workload": "w1",
+  "shape": "8192x8192",
+  "gemm_backend": "default",
+  "partition": "eager",
+  "grouping": "eager",
+  "groups": null,
+  "calls_profiled": 20,
+  "torch": "2.10.0+cu128",
+  "gpu": "NVIDIA A40",
+  "kernels": [
+    {
+      "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul>)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 1447.3203000000012,
+      "gpu_us_per_call": 1447.3203000000012
+    },
+    {
+      "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 967.1714500000004,
+      "gpu_us_per_call": 967.1714500000004
+    },
+    {
+      "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1})",
+      "launches_per_call": 1.0,
+      "avg_gpu_us": 960.0321999999999,
+      "gpu_us_per_call": 960.0321999999999
+    }
+  ],
+  "total_gpu_us_per_call": 3374.5239500000016
+}
