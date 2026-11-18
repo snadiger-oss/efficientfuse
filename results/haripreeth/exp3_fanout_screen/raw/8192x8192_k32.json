@@ -1,0 +1,215 @@
+{
+  "shape": [
+    8192,
+    8192
+  ],
+  "k": 32,
+  "candidates": {
+    "eager_baseline": {
+      "setup_seconds": 0.09662963915616274,
+      "max_rel_error": 0.0,
+      "correct": true,
+      "kernels_per_call": 34,
+      "kernel_names": [
+        "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+        "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::func_wrapper_t<float, at::native::sum_functor<float, float, float>::operator()(at::TensorIterator&)::{lambda(float, float)#1}>, unsigned int, float, 4, 4> >(at::native::ReduceOp<float, at::native::func_wrapper_t<float, at::native::sum_functor<float, float, float>::operator()(at::TensorIterator&)::{lambda(float, float)#1}>, unsigned int, float, 4, 4>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::sin_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, false>(int, at::native::sin_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::tanh_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, false>(int, at::native::tanh_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)"
+      ],
+      "trials": [
+        {
+          "round": 0,
+          "calls": 64,
+          "seconds_per_call": 0.03222132615337614,
+          "joules_per_call": 7.877015625
+        },
+        {
+          "round": 1,
+          "calls": 64,
+          "seconds_per_call": 0.032223846443230286,
+          "joules_per_call": 7.563515625
+        },
+        {
+          "round": 2,
+          "calls": 64,
+          "seconds_per_call": 0.032225679300609045,
+          "joules_per_call": 8.1324375
+        },
+        {
+          "round": 3,
+          "calls": 64,
+          "seconds_per_call": 0.03222413822368253,
+          "joules_per_call": 8.163890625
+        },
+        {
+          "round": 4,
+          "calls": 64,
+          "seconds_per_call": 0.032225158327491954,
+          "joules_per_call": 8.137421875
+        }
+      ]
+    },
+    "compiled_full": {
+      "setup_seconds": 12.232135920785367,
+      "max_rel_error": 1.195178720751213e-07,
+      "correct": true,
+      "kernels_per_call": 1,
+      "kernel_names": [
+        "triton_red_fused_mul_sin_sum_tanh_0"
+      ],
+      "trials": [
+        {
+          "round": 0,
+          "calls": 648,
+          "seconds_per_call": 0.003107844232466578,
+          "joules_per_call": 0.925354938271605
+        },
+        {
+          "round": 1,
+          "calls": 640,
+          "seconds_per_call": 0.003128115115396213,
+          "joules_per_call": 0.935278125
+        },
+        {
+          "round": 2,
+          "calls": 640,
+          "seconds_per_call": 0.003144155022164341,
+          "joules_per_call": 0.9307390625
+        },
+        {
+          "round": 3,
+          "calls": 640,
+          "seconds_per_call": 0.0031535627611447127,
+          "joules_per_call": 0.9346125000000001
+        },
+        {
+          "round": 4,
+          "calls": 640,
+          "seconds_per_call": 0.0031513796784565784,
+          "joules_per_call": 0.9336640624999999
+        }
+      ]
+    },
+    "compiled_split_after_y": {
+      "setup_seconds": 3.643735677935183,
+      "max_rel_error": 1.7927680811268192e-07,
+      "correct": true,
+      "kernels_per_call": 2,
+      "kernel_names": [
+        "triton_poi_fused_sin_tanh_0",
+        "triton_red_fused_mul_sum_0"
+      ],
+      "trials": [
+        {
+          "round": 0,
+          "calls": 528,
+          "seconds_per_call": 0.003814555669316288,
+          "joules_per_call": 1.133001893939394
+        },
+        {
+          "round": 1,
+          "calls": 528,
+          "seconds_per_call": 0.003834066766130766,
+          "joules_per_call": 1.1882992424242425
+        },
+        {
+          "round": 2,
+          "calls": 520,
+          "seconds_per_call": 0.003849099465430929,
+          "joules_per_call": 1.1466538461538462
+        },
+        {
+          "round": 3,
+          "calls": 520,
+          "seconds_per_call": 0.003855947945983364,
+          "joules_per_call": 1.1493826923076922
+        },
+        {
+          "round": 4,
+          "calls": 520,
+          "seconds_per_call": 0.003860845142760529,
+          "joules_per_call": 1.1508192307692309
+        }
+      ]
+    },
+    "compiled_separate": {
+      "setup_seconds": 0.08695745840668678,
+      "max_rel_error": 1.195178720751213e-07,
+      "correct": true,
+      "kernels_per_call": 3,
+      "kernel_names": [
+        "triton_poi_fused_mul_0",
+        "triton_poi_fused_sin_tanh_0",
+        "triton_red_fused_sum_0"
+      ],
+      "trials": [
+        {
+          "round": 0,
+          "calls": 480,
+          "seconds_per_call": 0.004200619788995634,
+          "joules_per_call": 1.24268125
+        },
+        {
+          "round": 1,
+          "calls": 480,
+          "seconds_per_call": 0.004203346383292228,
+          "joules_per_call": 1.2968333333333333
+        },
+        {
+          "round": 2,
+          "calls": 480,
+          "seconds_per_call": 0.004221653583226725,
+          "joules_per_call": 1.2431229166666666
+        },
+        {
+          "round": 3,
+          "calls": 480,
+          "seconds_per_call": 0.004228385206079111,
+          "joules_per_call": 1.3056729166666665
+        },
+        {
+          "round": 4,
+          "calls": 480,
+          "seconds_per_call": 0.004236613196553662,
+          "joules_per_call": 1.3054791666666667
+        }
+      ]
+    }
+  },
+  "summary": {
+    "eager_baseline": {
+      "us": 32224.13822368253,
+      "us_min": 32221.32615337614,
+      "us_max": 32225.679300609045,
+      "mJ": 8132.4375,
+      "mJ_min": 7563.515625,
+      "mJ_max": 8163.890625000001
+    },
+    "compiled_full": {
+      "us": 3144.155022164341,
+      "us_min": 3107.844232466578,
+      "us_max": 3153.5627611447126,
+      "mJ": 933.6640624999999,
+      "mJ_min": 925.354938271605,
+      "mJ_max": 935.2781249999999
+    },
+    "compiled_split_after_y": {
+      "us": 3849.099465430929,
+      "us_min": 3814.555669316288,
+      "us_max": 3860.845142760529,
+      "mJ": 1149.3826923076922,
+      "mJ_min": 1133.001893939394,
+      "mJ_max": 1188.2992424242425
+    },
+    "compiled_separate": {
+      "us": 4221.6535832267255,
+      "us_min": 4200.619788995634,
+      "us_max": 4236.613196553662,
+      "mJ": 1296.8333333333333,
+      "mJ_min": 1242.6812499999999,
+      "mJ_max": 1305.6729166666664
+    }
+  },
+  "winner": "compiled_full",
+  "runtime_cutoff_us": 3301.362773272558
+}

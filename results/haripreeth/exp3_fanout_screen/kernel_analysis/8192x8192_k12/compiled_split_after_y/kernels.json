@@ -1,0 +1,24 @@
+[
+  {
+    "kernel": "triton_poi_fused_sin_tanh_0",
+    "kind": "pointwise",
+    "row_passes": 1,
+    "sin_calls": 6,
+    "tanh_calls": 6,
+    "loads": 1,
+    "stores": 1,
+    "group": 1,
+    "gpu_us_per_call": 1098.3
+  },
+  {
+    "kernel": "triton_red_fused_mul_sum_0",
+    "kind": "looped_reduction",
+    "row_passes": 2,
+    "sin_calls": 0,
+    "tanh_calls": 0,
+    "loads": 2,
+    "stores": 1,
+    "group": 2,
+    "gpu_us_per_call": 997.9
+  }
+]

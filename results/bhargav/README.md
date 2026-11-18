@@ -15,7 +15,7 @@ All inputs are FP32 and contiguous, at 4096×4096 (W2: x [4096, 4096] @ weight [
 
 ## Candidate names
 
-Same convention as `results/README.md`. Raw JSON keeps the internal IDs; summaries and plots use the readable names.
+Same convention as `results/haripreeth/README.md`. Raw JSON keeps the internal IDs; summaries and plots use the readable names.
 
 | Readable name | Internal ID | W2 groups | W3 groups | W4 groups |
 |---|---|---|---|---|
@@ -55,7 +55,7 @@ Configs are in `configs/exp3_*.yaml` through `configs/exp14_*.yaml`. Profiler tr
 - **Tolerances:** correctness checked at rtol = atol = 1e-5 on two input sets. The largest observed error was 1.4e-6.
 - **Measurement:** 5 rounds, 3 s windows, separate timing and energy passes, shuffled order, then a fresh validation repeat. Same policy as the other pair.
 
-**Version note:** the other pair used PyTorch 2.15.0+cu132. Comparisons within this folder are consistent; **do not pool absolute numbers with `results/exp1_*` or `results/exp2_*`.** At W1 32×256, for example, our eager baseline measured 53 µs and theirs 86 µs on the same GPU model.
+**Version note:** the other pair used PyTorch 2.15.0+cu132. Comparisons within this folder are consistent; **do not pool absolute numbers with `results/haripreeth/`.** At W1 32×256, for example, our eager baseline measured 53 µs and theirs 86 µs on the same GPU model.
 
 ## Part 1: exp3–6 at 4096×4096 (fresh validation pass, ordinary execution, µs / mJ per call)
 
@@ -130,7 +130,7 @@ Findings, limited to these settings:
 
 ## Known issues
 
-**Replay numbers in Part 1 (exp3–6) include input copies.** This is the same issue described in `results/README.md`; it does not apply to exp7–14. In every Part 1 workload, replay minus ordinary equals the cost of copying the inputs each call:
+**Replay numbers in Part 1 (exp3–6) include input copies.** This is the same issue described in `results/haripreeth/README.md`; it does not apply to exp7–14. In every Part 1 workload, replay minus ordinary equals the cost of copying the inputs each call:
 
 | Workload | Replay overhead | Copy cost |
 |---|---|---|

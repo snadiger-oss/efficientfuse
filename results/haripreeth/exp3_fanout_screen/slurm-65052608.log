@@ -1,0 +1,150 @@
+Fri Oct 30 00:28:38 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 595.71.05              Driver Version: 595.71.05      CUDA Version: 13.2     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:23:00.0 Off |                    0 |
+|  0%   46C    P8             24W /  300W |       0MiB /  46068MiB |      0%   E. Process |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+[00:28:49] start: NVIDIA A40, torch 2.15.0+cu132, shapes=['8192x8192', '2048x32768'], k=[2, 4, 8, 12, 16, 24, 32]
+USDT:2026-10-30 00:28:51 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:28:51 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+/home/havarur/.conda/envs/env_scalable/lib/python3.11/site-packages/triton/knobs.py:504: UserWarning: TRITON_DEFAULT_FP_FUSION is unset: defaulting to FP fusion ENABLED for backward compatibility in Triton 3.9. The default will change to DISABLED in Triton 3.10; set TRITON_DEFAULT_FP_FUSION=1 to keep fusion enabled or =0 to adopt the new default early and silence this warning.
+  warn_once(FP_FUSION_DEFAULT_WARNING)
+USDT:2026-10-30 00:28:59 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:28:59 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:29:00 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:29:00 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:29:01 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:29:01 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:29:41] 8192x8192 k=2: winner=compiled_full | split_after_y vs full: time 1.933x, energy 1.548x
+USDT:2026-10-30 00:29:41 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:29:41 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:29:44 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:29:44 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:29:45 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:29:45 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:29:45 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:29:45 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:30:25] 8192x8192 k=4: winner=compiled_full | split_after_y vs full: time 1.965x, energy 1.715x
+USDT:2026-10-30 00:30:25 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:30:25 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:30:31 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:30:31 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:30:32 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:30:32 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:30:32 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:30:32 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:31:13] 8192x8192 k=8: winner=compiled_full | split_after_y vs full: time 1.189x, energy 1.188x
+USDT:2026-10-30 00:31:13 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:31:13 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:31:22 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:31:22 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:31:23 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:31:23 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:31:23 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:31:23 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:32:04] 8192x8192 k=12: winner=compiled_split_after_y | split_after_y vs full: time 0.881x, energy 0.883x
+USDT:2026-10-30 00:32:04 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:32:04 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:32:17 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:32:17 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:32:18 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:32:18 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:32:18 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:32:19 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:32:59] 8192x8192 k=16: winner=compiled_split_after_y | split_after_y vs full: time 0.794x, energy 0.829x
+USDT:2026-10-30 00:32:59 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:32:59 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:33:20 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:33:20 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:33:22 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:33:22 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:33:22 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:33:22 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:34:04] 8192x8192 k=24: winner=compiled_split_after_y | split_after_y vs full: time 0.684x, energy 0.701x
+USDT:2026-10-30 00:34:04 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:34:04 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:34:16 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:34:16 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:34:20 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:34:20 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:34:20 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:34:20 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:35:01] 8192x8192 k=32: winner=compiled_full | split_after_y vs full: time 1.224x, energy 1.231x
+USDT:2026-10-30 00:35:01 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:01 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:35:03 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:03 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:35:04 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:04 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:35:04 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:04 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:35:45] 2048x32768 k=2: winner=compiled_full | split_after_y vs full: time 1.828x, energy 1.529x
+USDT:2026-10-30 00:35:45 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:45 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:35:50 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:50 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:35:50 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:50 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:35:50 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:35:50 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:36:31] 2048x32768 k=4: winner=compiled_full | split_after_y vs full: time 1.437x, energy 1.300x
+USDT:2026-10-30 00:36:31 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:36:31 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:36:42 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:36:42 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:36:43 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:36:43 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:36:43 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:36:43 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:37:23] 2048x32768 k=8: winner=compiled_full | split_after_y vs full: time 1.146x, energy 1.149x
+USDT:2026-10-30 00:37:23 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:37:23 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:37:43 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:37:43 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:37:43 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:37:43 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:37:43 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:37:43 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:38:24] 2048x32768 k=12: winner=compiled_split_after_y | split_after_y vs full: time 0.858x, energy 0.853x
+USDT:2026-10-30 00:38:24 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:38:24 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:38:52 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:38:52 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:38:53 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:38:53 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:38:53 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:38:53 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:39:33] 2048x32768 k=16: winner=compiled_split_after_y | split_after_y vs full: time 0.771x, energy 0.771x
+USDT:2026-10-30 00:39:33 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:39:33 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:40:24 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:40:24 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:40:24 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:40:24 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:40:24 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:40:24 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:41:05] 2048x32768 k=24: winner=compiled_split_after_y | split_after_y vs full: time 0.662x, energy 0.700x
+USDT:2026-10-30 00:41:05 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:41:05 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:41:36 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:41:36 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:41:36 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:41:36 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-10-30 00:41:36 3304932:3304932 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 00:41:36 3304932:3304932 SyncActivityProfilerHandler.cpp:46] profiler_stop
+[00:42:17] 2048x32768 k=32: winner=compiled_full | split_after_y vs full: time 1.162x, energy 1.152x
+[00:42:17] done

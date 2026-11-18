@@ -1,0 +1,546 @@
+shape,k,grouping,launch,kernel,step,pass,code,meaning
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,1,-,"_tmp6 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD x ← memory [x]
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,4,1,tmp1 = tl_math.sin(tmp0),sin  → y step 1/4
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,5,1,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/4
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,6,1,tmp3 = tl_math.sin(tmp2),sin  → y step 3/4
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,7,1,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/4  (= y)
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,8,1,tmp7 = _tmp6 + tmp5,add y step 4/4  (= y) to running row sum
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,9,end of 1,"tmp6 = tl.sum(_tmp6, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,10,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,11,2,"tmp8 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD x ← memory [x]
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,12,2,tmp9 = tl_math.sin(tmp8),sin  → y step 1/4
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,13,2,tmp10 = libdevice.tanh(tmp9),tanh  → y step 2/4
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,14,2,tmp11 = tl_math.sin(tmp10),sin  → y step 3/4
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,15,2,tmp12 = libdevice.tanh(tmp11),tanh  → y step 4/4  (= y)
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,16,2,tmp13 = tmp12 * tmp6,multiply y step 4/4  (= y) × row sum Σy → out
+2048x32768,4,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,17,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp13, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,4,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,4,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/4
+2048x32768,4,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/4
+2048x32768,4,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/4
+2048x32768,4,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/4  (= y)
+2048x32768,4,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,6,-,"tl.store(out_ptr0 + (x0), tmp4, None)",STORE y step 4/4  (= y) → memory [y]
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD y ← memory [y]
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,6,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,7,2,"tmp4 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,8,2,tmp5 = tmp4 * tmp2,multiply y × row sum Σy → out
+2048x32768,4,compiled_split_after_y,2,triton_red_fused_mul_sum_0,9,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp5, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,4,compiled_separate,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,4,compiled_separate,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/4
+2048x32768,4,compiled_separate,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/4
+2048x32768,4,compiled_separate,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/4
+2048x32768,4,compiled_separate,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/4  (= y)
+2048x32768,4,compiled_separate,1,triton_poi_fused_sin_tanh_0,6,-,"tl.store(out_ptr0 + (x0), tmp4, None)",STORE y step 4/4  (= y) → memory [y]
+2048x32768,4,compiled_separate,2,triton_red_fused_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,4,compiled_separate,2,triton_red_fused_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,4,compiled_separate,2,triton_red_fused_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,4,compiled_separate,2,triton_red_fused_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,4,compiled_separate,2,triton_red_fused_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,4,compiled_separate,2,triton_red_fused_sum_0,6,1,"tl.store(out_ptr0 + (x0), tmp2, xmask)",STORE row sum Σy → memory [s]
+2048x32768,4,compiled_separate,3,triton_poi_fused_mul_0,1,-,"tmp0 = tl.load(in_ptr0 + (x2), None)",LOAD y ← memory [y]
+2048x32768,4,compiled_separate,3,triton_poi_fused_mul_0,2,-,"tmp1 = tl.load(in_ptr1 + (x1), None, eviction_policy='evict_last')",LOAD s ← memory [s]
+2048x32768,4,compiled_separate,3,triton_poi_fused_mul_0,3,-,tmp2 = tmp0 * tmp1,multiply y × s → out
+2048x32768,4,compiled_separate,3,triton_poi_fused_mul_0,4,-,"tl.store(out_ptr0 + (x2), tmp2, None)",STORE out = y × Σy → memory [out]
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,1,-,"_tmp10 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD x ← memory [x]
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,4,1,tmp1 = tl_math.sin(tmp0),sin  → y step 1/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,5,1,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,6,1,tmp3 = tl_math.sin(tmp2),sin  → y step 3/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,7,1,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,8,1,tmp5 = tl_math.sin(tmp4),sin  → y step 5/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,9,1,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,10,1,tmp7 = tl_math.sin(tmp6),sin  → y step 7/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,11,1,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/8  (= y)
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,12,1,tmp11 = _tmp10 + tmp9,add y step 8/8  (= y) to running row sum
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,13,end of 1,"tmp10 = tl.sum(_tmp10, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,14,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,15,2,"tmp12 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD x ← memory [x]
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,16,2,tmp13 = tl_math.sin(tmp12),sin  → y step 1/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,17,2,tmp14 = libdevice.tanh(tmp13),tanh  → y step 2/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,18,2,tmp15 = tl_math.sin(tmp14),sin  → y step 3/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,19,2,tmp16 = libdevice.tanh(tmp15),tanh  → y step 4/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,20,2,tmp17 = tl_math.sin(tmp16),sin  → y step 5/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,21,2,tmp18 = libdevice.tanh(tmp17),tanh  → y step 6/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,22,2,tmp19 = tl_math.sin(tmp18),sin  → y step 7/8
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,23,2,tmp20 = libdevice.tanh(tmp19),tanh  → y step 8/8  (= y)
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,24,2,tmp21 = tmp20 * tmp10,multiply y step 8/8  (= y) × row sum Σy → out
+2048x32768,8,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,25,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp21, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/8
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/8
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/8
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/8
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/8
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/8
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/8
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/8  (= y)
+2048x32768,8,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,10,-,"tl.store(out_ptr0 + (x0), tmp8, None)",STORE y step 8/8  (= y) → memory [y]
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD y ← memory [y]
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,6,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,7,2,"tmp4 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,8,2,tmp5 = tmp4 * tmp2,multiply y × row sum Σy → out
+2048x32768,8,compiled_split_after_y,2,triton_red_fused_mul_sum_0,9,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp5, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/8
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/8
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/8
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/8
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/8
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/8
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/8
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/8  (= y)
+2048x32768,8,compiled_separate,1,triton_poi_fused_sin_tanh_0,10,-,"tl.store(out_ptr0 + (x0), tmp8, None)",STORE y step 8/8  (= y) → memory [y]
+2048x32768,8,compiled_separate,2,triton_red_fused_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,8,compiled_separate,2,triton_red_fused_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,8,compiled_separate,2,triton_red_fused_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,8,compiled_separate,2,triton_red_fused_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,8,compiled_separate,2,triton_red_fused_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,8,compiled_separate,2,triton_red_fused_sum_0,6,1,"tl.store(out_ptr0 + (x0), tmp2, xmask)",STORE row sum Σy → memory [s]
+2048x32768,8,compiled_separate,3,triton_poi_fused_mul_0,1,-,"tmp0 = tl.load(in_ptr0 + (x2), None)",LOAD y ← memory [y]
+2048x32768,8,compiled_separate,3,triton_poi_fused_mul_0,2,-,"tmp1 = tl.load(in_ptr1 + (x1), None, eviction_policy='evict_last')",LOAD s ← memory [s]
+2048x32768,8,compiled_separate,3,triton_poi_fused_mul_0,3,-,tmp2 = tmp0 * tmp1,multiply y × s → out
+2048x32768,8,compiled_separate,3,triton_poi_fused_mul_0,4,-,"tl.store(out_ptr0 + (x2), tmp2, None)",STORE out = y × Σy → memory [out]
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,1,-,"_tmp14 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD x ← memory [x]
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,4,1,tmp1 = tl_math.sin(tmp0),sin  → y step 1/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,5,1,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,6,1,tmp3 = tl_math.sin(tmp2),sin  → y step 3/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,7,1,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,8,1,tmp5 = tl_math.sin(tmp4),sin  → y step 5/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,9,1,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,10,1,tmp7 = tl_math.sin(tmp6),sin  → y step 7/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,11,1,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,12,1,tmp9 = tl_math.sin(tmp8),sin  → y step 9/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,13,1,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,14,1,tmp11 = tl_math.sin(tmp10),sin  → y step 11/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,15,1,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/12  (= y)
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,16,1,tmp15 = _tmp14 + tmp13,add y step 12/12  (= y) to running row sum
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,17,end of 1,"tmp14 = tl.sum(_tmp14, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,18,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,19,2,"tmp16 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD x ← memory [x]
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,20,2,tmp17 = tl_math.sin(tmp16),sin  → y step 1/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,21,2,tmp18 = libdevice.tanh(tmp17),tanh  → y step 2/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,22,2,tmp19 = tl_math.sin(tmp18),sin  → y step 3/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,23,2,tmp20 = libdevice.tanh(tmp19),tanh  → y step 4/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,24,2,tmp21 = tl_math.sin(tmp20),sin  → y step 5/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,25,2,tmp22 = libdevice.tanh(tmp21),tanh  → y step 6/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,26,2,tmp23 = tl_math.sin(tmp22),sin  → y step 7/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,27,2,tmp24 = libdevice.tanh(tmp23),tanh  → y step 8/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,28,2,tmp25 = tl_math.sin(tmp24),sin  → y step 9/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,29,2,tmp26 = libdevice.tanh(tmp25),tanh  → y step 10/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,30,2,tmp27 = tl_math.sin(tmp26),sin  → y step 11/12
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,31,2,tmp28 = libdevice.tanh(tmp27),tanh  → y step 12/12  (= y)
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,32,2,tmp29 = tmp28 * tmp14,multiply y step 12/12  (= y) × row sum Σy → out
+2048x32768,12,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,33,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp29, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/12
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/12  (= y)
+2048x32768,12,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,14,-,"tl.store(out_ptr0 + (x0), tmp12, None)",STORE y step 12/12  (= y) → memory [y]
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD y ← memory [y]
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,6,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,7,2,"tmp4 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,8,2,tmp5 = tmp4 * tmp2,multiply y × row sum Σy → out
+2048x32768,12,compiled_split_after_y,2,triton_red_fused_mul_sum_0,9,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp5, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/12
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/12  (= y)
+2048x32768,12,compiled_separate,1,triton_poi_fused_sin_tanh_0,14,-,"tl.store(out_ptr0 + (x0), tmp12, None)",STORE y step 12/12  (= y) → memory [y]
+2048x32768,12,compiled_separate,2,triton_red_fused_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,12,compiled_separate,2,triton_red_fused_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,12,compiled_separate,2,triton_red_fused_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,12,compiled_separate,2,triton_red_fused_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,12,compiled_separate,2,triton_red_fused_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,12,compiled_separate,2,triton_red_fused_sum_0,6,1,"tl.store(out_ptr0 + (x0), tmp2, xmask)",STORE row sum Σy → memory [s]
+2048x32768,12,compiled_separate,3,triton_poi_fused_mul_0,1,-,"tmp0 = tl.load(in_ptr0 + (x2), None)",LOAD y ← memory [y]
+2048x32768,12,compiled_separate,3,triton_poi_fused_mul_0,2,-,"tmp1 = tl.load(in_ptr1 + (x1), None, eviction_policy='evict_last')",LOAD s ← memory [s]
+2048x32768,12,compiled_separate,3,triton_poi_fused_mul_0,3,-,tmp2 = tmp0 * tmp1,multiply y × s → out
+2048x32768,12,compiled_separate,3,triton_poi_fused_mul_0,4,-,"tl.store(out_ptr0 + (x2), tmp2, None)",STORE out = y × Σy → memory [out]
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,1,-,"_tmp18 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD x ← memory [x]
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,4,1,tmp1 = tl_math.sin(tmp0),sin  → y step 1/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,5,1,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,6,1,tmp3 = tl_math.sin(tmp2),sin  → y step 3/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,7,1,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,8,1,tmp5 = tl_math.sin(tmp4),sin  → y step 5/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,9,1,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,10,1,tmp7 = tl_math.sin(tmp6),sin  → y step 7/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,11,1,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,12,1,tmp9 = tl_math.sin(tmp8),sin  → y step 9/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,13,1,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,14,1,tmp11 = tl_math.sin(tmp10),sin  → y step 11/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,15,1,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,16,1,tmp13 = tl_math.sin(tmp12),sin  → y step 13/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,17,1,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,18,1,tmp15 = tl_math.sin(tmp14),sin  → y step 15/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,19,1,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/16  (= y)
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,20,1,tmp19 = _tmp18 + tmp17,add y step 16/16  (= y) to running row sum
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,21,end of 1,"tmp18 = tl.sum(_tmp18, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,22,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,23,2,"tmp20 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD x ← memory [x]
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,24,2,tmp21 = tl_math.sin(tmp20),sin  → y step 1/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,25,2,tmp22 = libdevice.tanh(tmp21),tanh  → y step 2/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,26,2,tmp23 = tl_math.sin(tmp22),sin  → y step 3/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,27,2,tmp24 = libdevice.tanh(tmp23),tanh  → y step 4/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,28,2,tmp25 = tl_math.sin(tmp24),sin  → y step 5/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,29,2,tmp26 = libdevice.tanh(tmp25),tanh  → y step 6/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,30,2,tmp27 = tl_math.sin(tmp26),sin  → y step 7/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,31,2,tmp28 = libdevice.tanh(tmp27),tanh  → y step 8/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,32,2,tmp29 = tl_math.sin(tmp28),sin  → y step 9/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,33,2,tmp30 = libdevice.tanh(tmp29),tanh  → y step 10/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,34,2,tmp31 = tl_math.sin(tmp30),sin  → y step 11/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,35,2,tmp32 = libdevice.tanh(tmp31),tanh  → y step 12/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,36,2,tmp33 = tl_math.sin(tmp32),sin  → y step 13/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,37,2,tmp34 = libdevice.tanh(tmp33),tanh  → y step 14/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,38,2,tmp35 = tl_math.sin(tmp34),sin  → y step 15/16
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,39,2,tmp36 = libdevice.tanh(tmp35),tanh  → y step 16/16  (= y)
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,40,2,tmp37 = tmp36 * tmp18,multiply y step 16/16  (= y) × row sum Σy → out
+2048x32768,16,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,41,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp37, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,14,-,tmp13 = tl_math.sin(tmp12),sin  → y step 13/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,15,-,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,16,-,tmp15 = tl_math.sin(tmp14),sin  → y step 15/16
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,17,-,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/16  (= y)
+2048x32768,16,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,18,-,"tl.store(out_ptr0 + (x0), tmp16, None)",STORE y step 16/16  (= y) → memory [y]
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD y ← memory [y]
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,6,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,7,2,"tmp4 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,8,2,tmp5 = tmp4 * tmp2,multiply y × row sum Σy → out
+2048x32768,16,compiled_split_after_y,2,triton_red_fused_mul_sum_0,9,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp5, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,14,-,tmp13 = tl_math.sin(tmp12),sin  → y step 13/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,15,-,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,16,-,tmp15 = tl_math.sin(tmp14),sin  → y step 15/16
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,17,-,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/16  (= y)
+2048x32768,16,compiled_separate,1,triton_poi_fused_sin_tanh_0,18,-,"tl.store(out_ptr0 + (x0), tmp16, None)",STORE y step 16/16  (= y) → memory [y]
+2048x32768,16,compiled_separate,2,triton_red_fused_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,16,compiled_separate,2,triton_red_fused_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,16,compiled_separate,2,triton_red_fused_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,16,compiled_separate,2,triton_red_fused_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,16,compiled_separate,2,triton_red_fused_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,16,compiled_separate,2,triton_red_fused_sum_0,6,1,"tl.store(out_ptr0 + (x0), tmp2, xmask)",STORE row sum Σy → memory [s]
+2048x32768,16,compiled_separate,3,triton_poi_fused_mul_0,1,-,"tmp0 = tl.load(in_ptr0 + (x2), None)",LOAD y ← memory [y]
+2048x32768,16,compiled_separate,3,triton_poi_fused_mul_0,2,-,"tmp1 = tl.load(in_ptr1 + (x1), None, eviction_policy='evict_last')",LOAD s ← memory [s]
+2048x32768,16,compiled_separate,3,triton_poi_fused_mul_0,3,-,tmp2 = tmp0 * tmp1,multiply y × s → out
+2048x32768,16,compiled_separate,3,triton_poi_fused_mul_0,4,-,"tl.store(out_ptr0 + (x2), tmp2, None)",STORE out = y × Σy → memory [out]
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,1,-,"_tmp26 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD x ← memory [x]
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,4,1,tmp1 = tl_math.sin(tmp0),sin  → y step 1/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,5,1,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,6,1,tmp3 = tl_math.sin(tmp2),sin  → y step 3/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,7,1,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,8,1,tmp5 = tl_math.sin(tmp4),sin  → y step 5/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,9,1,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,10,1,tmp7 = tl_math.sin(tmp6),sin  → y step 7/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,11,1,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,12,1,tmp9 = tl_math.sin(tmp8),sin  → y step 9/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,13,1,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,14,1,tmp11 = tl_math.sin(tmp10),sin  → y step 11/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,15,1,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,16,1,tmp13 = tl_math.sin(tmp12),sin  → y step 13/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,17,1,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,18,1,tmp15 = tl_math.sin(tmp14),sin  → y step 15/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,19,1,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,20,1,tmp17 = tl_math.sin(tmp16),sin  → y step 17/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,21,1,tmp18 = libdevice.tanh(tmp17),tanh  → y step 18/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,22,1,tmp19 = tl_math.sin(tmp18),sin  → y step 19/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,23,1,tmp20 = libdevice.tanh(tmp19),tanh  → y step 20/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,24,1,tmp21 = tl_math.sin(tmp20),sin  → y step 21/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,25,1,tmp22 = libdevice.tanh(tmp21),tanh  → y step 22/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,26,1,tmp23 = tl_math.sin(tmp22),sin  → y step 23/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,27,1,tmp24 = libdevice.tanh(tmp23),tanh  → y step 24/24  (= y)
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,28,1,tmp27 = _tmp26 + tmp25,add y step 24/24  (= y) to running row sum
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,29,end of 1,"tmp26 = tl.sum(_tmp26, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,30,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,31,2,"tmp28 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD x ← memory [x]
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,32,2,tmp29 = tl_math.sin(tmp28),sin  → y step 1/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,33,2,tmp30 = libdevice.tanh(tmp29),tanh  → y step 2/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,34,2,tmp31 = tl_math.sin(tmp30),sin  → y step 3/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,35,2,tmp32 = libdevice.tanh(tmp31),tanh  → y step 4/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,36,2,tmp33 = tl_math.sin(tmp32),sin  → y step 5/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,37,2,tmp34 = libdevice.tanh(tmp33),tanh  → y step 6/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,38,2,tmp35 = tl_math.sin(tmp34),sin  → y step 7/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,39,2,tmp36 = libdevice.tanh(tmp35),tanh  → y step 8/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,40,2,tmp37 = tl_math.sin(tmp36),sin  → y step 9/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,41,2,tmp38 = libdevice.tanh(tmp37),tanh  → y step 10/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,42,2,tmp39 = tl_math.sin(tmp38),sin  → y step 11/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,43,2,tmp40 = libdevice.tanh(tmp39),tanh  → y step 12/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,44,2,tmp41 = tl_math.sin(tmp40),sin  → y step 13/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,45,2,tmp42 = libdevice.tanh(tmp41),tanh  → y step 14/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,46,2,tmp43 = tl_math.sin(tmp42),sin  → y step 15/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,47,2,tmp44 = libdevice.tanh(tmp43),tanh  → y step 16/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,48,2,tmp45 = tl_math.sin(tmp44),sin  → y step 17/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,49,2,tmp46 = libdevice.tanh(tmp45),tanh  → y step 18/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,50,2,tmp47 = tl_math.sin(tmp46),sin  → y step 19/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,51,2,tmp48 = libdevice.tanh(tmp47),tanh  → y step 20/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,52,2,tmp49 = tl_math.sin(tmp48),sin  → y step 21/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,53,2,tmp50 = libdevice.tanh(tmp49),tanh  → y step 22/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,54,2,tmp51 = tl_math.sin(tmp50),sin  → y step 23/24
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,55,2,tmp52 = libdevice.tanh(tmp51),tanh  → y step 24/24  (= y)
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,56,2,tmp53 = tmp52 * tmp26,multiply y step 24/24  (= y) × row sum Σy → out
+2048x32768,24,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,57,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp53, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,14,-,tmp13 = tl_math.sin(tmp12),sin  → y step 13/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,15,-,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,16,-,tmp15 = tl_math.sin(tmp14),sin  → y step 15/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,17,-,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,18,-,tmp17 = tl_math.sin(tmp16),sin  → y step 17/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,19,-,tmp18 = libdevice.tanh(tmp17),tanh  → y step 18/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,20,-,tmp19 = tl_math.sin(tmp18),sin  → y step 19/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,21,-,tmp20 = libdevice.tanh(tmp19),tanh  → y step 20/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,22,-,tmp21 = tl_math.sin(tmp20),sin  → y step 21/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,23,-,tmp22 = libdevice.tanh(tmp21),tanh  → y step 22/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,24,-,tmp23 = tl_math.sin(tmp22),sin  → y step 23/24
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,25,-,tmp24 = libdevice.tanh(tmp23),tanh  → y step 24/24  (= y)
+2048x32768,24,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,26,-,"tl.store(out_ptr0 + (x0), tmp24, None)",STORE y step 24/24  (= y) → memory [y]
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD y ← memory [y]
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,6,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,7,2,"tmp4 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,8,2,tmp5 = tmp4 * tmp2,multiply y × row sum Σy → out
+2048x32768,24,compiled_split_after_y,2,triton_red_fused_mul_sum_0,9,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp5, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,14,-,tmp13 = tl_math.sin(tmp12),sin  → y step 13/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,15,-,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,16,-,tmp15 = tl_math.sin(tmp14),sin  → y step 15/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,17,-,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,18,-,tmp17 = tl_math.sin(tmp16),sin  → y step 17/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,19,-,tmp18 = libdevice.tanh(tmp17),tanh  → y step 18/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,20,-,tmp19 = tl_math.sin(tmp18),sin  → y step 19/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,21,-,tmp20 = libdevice.tanh(tmp19),tanh  → y step 20/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,22,-,tmp21 = tl_math.sin(tmp20),sin  → y step 21/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,23,-,tmp22 = libdevice.tanh(tmp21),tanh  → y step 22/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,24,-,tmp23 = tl_math.sin(tmp22),sin  → y step 23/24
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,25,-,tmp24 = libdevice.tanh(tmp23),tanh  → y step 24/24  (= y)
+2048x32768,24,compiled_separate,1,triton_poi_fused_sin_tanh_0,26,-,"tl.store(out_ptr0 + (x0), tmp24, None)",STORE y step 24/24  (= y) → memory [y]
+2048x32768,24,compiled_separate,2,triton_red_fused_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,24,compiled_separate,2,triton_red_fused_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,24,compiled_separate,2,triton_red_fused_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,24,compiled_separate,2,triton_red_fused_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,24,compiled_separate,2,triton_red_fused_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,24,compiled_separate,2,triton_red_fused_sum_0,6,1,"tl.store(out_ptr0 + (x0), tmp2, xmask)",STORE row sum Σy → memory [s]
+2048x32768,24,compiled_separate,3,triton_poi_fused_mul_0,1,-,"tmp0 = tl.load(in_ptr0 + (x2), None)",LOAD y ← memory [y]
+2048x32768,24,compiled_separate,3,triton_poi_fused_mul_0,2,-,"tmp1 = tl.load(in_ptr1 + (x1), None, eviction_policy='evict_last')",LOAD s ← memory [s]
+2048x32768,24,compiled_separate,3,triton_poi_fused_mul_0,3,-,tmp2 = tmp0 * tmp1,multiply y × s → out
+2048x32768,24,compiled_separate,3,triton_poi_fused_mul_0,4,-,"tl.store(out_ptr0 + (x2), tmp2, None)",STORE out = y × Σy → memory [out]
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,1,-,"_tmp34 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD x ← memory [x]
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,4,1,tmp1 = tl_math.sin(tmp0),sin  → y step 1/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,5,1,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,6,1,tmp3 = tl_math.sin(tmp2),sin  → y step 3/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,7,1,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,8,1,tmp5 = tl_math.sin(tmp4),sin  → y step 5/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,9,1,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,10,1,tmp7 = tl_math.sin(tmp6),sin  → y step 7/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,11,1,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,12,1,tmp9 = tl_math.sin(tmp8),sin  → y step 9/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,13,1,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,14,1,tmp11 = tl_math.sin(tmp10),sin  → y step 11/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,15,1,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,16,1,tmp13 = tl_math.sin(tmp12),sin  → y step 13/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,17,1,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,18,1,tmp15 = tl_math.sin(tmp14),sin  → y step 15/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,19,1,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,20,1,tmp17 = tl_math.sin(tmp16),sin  → y step 17/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,21,1,tmp18 = libdevice.tanh(tmp17),tanh  → y step 18/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,22,1,tmp19 = tl_math.sin(tmp18),sin  → y step 19/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,23,1,tmp20 = libdevice.tanh(tmp19),tanh  → y step 20/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,24,1,tmp21 = tl_math.sin(tmp20),sin  → y step 21/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,25,1,tmp22 = libdevice.tanh(tmp21),tanh  → y step 22/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,26,1,tmp23 = tl_math.sin(tmp22),sin  → y step 23/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,27,1,tmp24 = libdevice.tanh(tmp23),tanh  → y step 24/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,28,1,tmp25 = tl_math.sin(tmp24),sin  → y step 25/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,29,1,tmp26 = libdevice.tanh(tmp25),tanh  → y step 26/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,30,1,tmp27 = tl_math.sin(tmp26),sin  → y step 27/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,31,1,tmp28 = libdevice.tanh(tmp27),tanh  → y step 28/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,32,1,tmp29 = tl_math.sin(tmp28),sin  → y step 29/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,33,1,tmp30 = libdevice.tanh(tmp29),tanh  → y step 30/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,34,1,tmp31 = tl_math.sin(tmp30),sin  → y step 31/32
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,35,1,tmp32 = libdevice.tanh(tmp31),tanh  → y step 32/32  (= y)
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,36,1,tmp35 = _tmp34 + tmp33,add y step 32/32  (= y) to running row sum
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,37,1,"tl.store(in_out_ptr0 + (r0_1 + 32768*x0), tmp32, r0_mask & xmask)","STORE y step 32/32  (= y) → memory [out buffer, reused to hold y]"
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,38,end of 1,"tmp34 = tl.sum(_tmp34, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,39,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,40,2,"tmp36 = tl.load(in_out_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)","LOAD y step 32/32  (= y) ← memory [out buffer, reused to hold y]"
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,41,2,tmp37 = tmp36 * tmp34,multiply y step 32/32  (= y) × row sum Σy → out
+2048x32768,32,compiled_full,1,triton_red_fused_mul_sin_sum_tanh_0,42,2,"tl.store(in_out_ptr0 + (r0_1 + 32768*x0), tmp37, r0_mask & xmask)","STORE out = y × Σy → memory [out buffer, reused to hold y]"
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,14,-,tmp13 = tl_math.sin(tmp12),sin  → y step 13/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,15,-,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,16,-,tmp15 = tl_math.sin(tmp14),sin  → y step 15/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,17,-,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,18,-,tmp17 = tl_math.sin(tmp16),sin  → y step 17/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,19,-,tmp18 = libdevice.tanh(tmp17),tanh  → y step 18/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,20,-,tmp19 = tl_math.sin(tmp18),sin  → y step 19/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,21,-,tmp20 = libdevice.tanh(tmp19),tanh  → y step 20/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,22,-,tmp21 = tl_math.sin(tmp20),sin  → y step 21/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,23,-,tmp22 = libdevice.tanh(tmp21),tanh  → y step 22/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,24,-,tmp23 = tl_math.sin(tmp22),sin  → y step 23/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,25,-,tmp24 = libdevice.tanh(tmp23),tanh  → y step 24/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,26,-,tmp25 = tl_math.sin(tmp24),sin  → y step 25/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,27,-,tmp26 = libdevice.tanh(tmp25),tanh  → y step 26/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,28,-,tmp27 = tl_math.sin(tmp26),sin  → y step 27/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,29,-,tmp28 = libdevice.tanh(tmp27),tanh  → y step 28/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,30,-,tmp29 = tl_math.sin(tmp28),sin  → y step 29/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,31,-,tmp30 = libdevice.tanh(tmp29),tanh  → y step 30/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,32,-,tmp31 = tl_math.sin(tmp30),sin  → y step 31/32
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,33,-,tmp32 = libdevice.tanh(tmp31),tanh  → y step 32/32  (= y)
+2048x32768,32,compiled_split_after_y,1,triton_poi_fused_sin_tanh_0,34,-,"tl.store(out_ptr0 + (x0), tmp32, None)",STORE y step 32/32  (= y) → memory [y]
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0)",LOAD y ← memory [y]
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,6,2,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 2 over the row starts (loop over row chunks)
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,7,2,"tmp4 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,8,2,tmp5 = tmp4 * tmp2,multiply y × row sum Σy → out
+2048x32768,32,compiled_split_after_y,2,triton_red_fused_mul_sum_0,9,2,"tl.store(out_ptr1 + (r0_1 + 32768*x0), tmp5, r0_mask & xmask)",STORE out = y × Σy → memory [out]
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,1,-,"tmp0 = tl.load(in_ptr0 + (x0), None)",LOAD x ← memory [x]
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,2,-,tmp1 = tl_math.sin(tmp0),sin  → y step 1/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,3,-,tmp2 = libdevice.tanh(tmp1),tanh  → y step 2/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,4,-,tmp3 = tl_math.sin(tmp2),sin  → y step 3/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,5,-,tmp4 = libdevice.tanh(tmp3),tanh  → y step 4/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,6,-,tmp5 = tl_math.sin(tmp4),sin  → y step 5/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,7,-,tmp6 = libdevice.tanh(tmp5),tanh  → y step 6/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,8,-,tmp7 = tl_math.sin(tmp6),sin  → y step 7/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,9,-,tmp8 = libdevice.tanh(tmp7),tanh  → y step 8/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,10,-,tmp9 = tl_math.sin(tmp8),sin  → y step 9/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,11,-,tmp10 = libdevice.tanh(tmp9),tanh  → y step 10/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,12,-,tmp11 = tl_math.sin(tmp10),sin  → y step 11/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,13,-,tmp12 = libdevice.tanh(tmp11),tanh  → y step 12/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,14,-,tmp13 = tl_math.sin(tmp12),sin  → y step 13/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,15,-,tmp14 = libdevice.tanh(tmp13),tanh  → y step 14/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,16,-,tmp15 = tl_math.sin(tmp14),sin  → y step 15/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,17,-,tmp16 = libdevice.tanh(tmp15),tanh  → y step 16/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,18,-,tmp17 = tl_math.sin(tmp16),sin  → y step 17/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,19,-,tmp18 = libdevice.tanh(tmp17),tanh  → y step 18/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,20,-,tmp19 = tl_math.sin(tmp18),sin  → y step 19/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,21,-,tmp20 = libdevice.tanh(tmp19),tanh  → y step 20/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,22,-,tmp21 = tl_math.sin(tmp20),sin  → y step 21/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,23,-,tmp22 = libdevice.tanh(tmp21),tanh  → y step 22/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,24,-,tmp23 = tl_math.sin(tmp22),sin  → y step 23/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,25,-,tmp24 = libdevice.tanh(tmp23),tanh  → y step 24/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,26,-,tmp25 = tl_math.sin(tmp24),sin  → y step 25/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,27,-,tmp26 = libdevice.tanh(tmp25),tanh  → y step 26/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,28,-,tmp27 = tl_math.sin(tmp26),sin  → y step 27/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,29,-,tmp28 = libdevice.tanh(tmp27),tanh  → y step 28/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,30,-,tmp29 = tl_math.sin(tmp28),sin  → y step 29/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,31,-,tmp30 = libdevice.tanh(tmp29),tanh  → y step 30/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,32,-,tmp31 = tl_math.sin(tmp30),sin  → y step 31/32
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,33,-,tmp32 = libdevice.tanh(tmp31),tanh  → y step 32/32  (= y)
+2048x32768,32,compiled_separate,1,triton_poi_fused_sin_tanh_0,34,-,"tl.store(out_ptr0 + (x0), tmp32, None)",STORE y step 32/32  (= y) → memory [y]
+2048x32768,32,compiled_separate,2,triton_red_fused_sum_0,1,-,"_tmp2 = tl.full([XBLOCK, R0_BLOCK], 0, tl.float32)",initialise running row sum = 0
+2048x32768,32,compiled_separate,2,triton_red_fused_sum_0,2,1,"for r0_offset in tl.range(0, r0_numel, R0_BLOCK):",── pass 1 over the row starts (loop over row chunks)
+2048x32768,32,compiled_separate,2,triton_red_fused_sum_0,3,1,"tmp0 = tl.load(in_ptr0 + (r0_1 + 32768*x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0)",LOAD y ← memory [y]
+2048x32768,32,compiled_separate,2,triton_red_fused_sum_0,4,1,tmp3 = _tmp2 + tmp1,add y to running row sum
+2048x32768,32,compiled_separate,2,triton_red_fused_sum_0,5,end of 1,"tmp2 = tl.sum(_tmp2, 1)[:, None]",finish row sum → Σy (one number per row)
+2048x32768,32,compiled_separate,2,triton_red_fused_sum_0,6,1,"tl.store(out_ptr0 + (x0), tmp2, xmask)",STORE row sum Σy → memory [s]
+2048x32768,32,compiled_separate,3,triton_poi_fused_mul_0,1,-,"tmp0 = tl.load(in_ptr0 + (x2), None)",LOAD y ← memory [y]
+2048x32768,32,compiled_separate,3,triton_poi_fused_mul_0,2,-,"tmp1 = tl.load(in_ptr1 + (x1), None, eviction_policy='evict_last')",LOAD s ← memory [s]
+2048x32768,32,compiled_separate,3,triton_poi_fused_mul_0,3,-,tmp2 = tmp0 * tmp1,multiply y × s → out
+2048x32768,32,compiled_separate,3,triton_poi_fused_mul_0,4,-,"tl.store(out_ptr0 + (x2), tmp2, None)",STORE out = y × Σy → memory [out]

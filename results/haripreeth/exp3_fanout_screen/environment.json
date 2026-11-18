@@ -1,0 +1,42 @@
+{
+  "gpu": "NVIDIA A40",
+  "torch": "2.15.0+cu132",
+  "cuda_build": "13.2",
+  "python": "3.11.18",
+  "argv": [
+    "scripts/exp3_screen_fanout.py",
+    "--shapes",
+    "8192x8192",
+    "2048x32768",
+    "--k",
+    "2",
+    "4",
+    "8",
+    "12",
+    "16",
+    "24",
+    "32",
+    "--rounds",
+    "5",
+    "--window",
+    "2.0",
+    "--output-dir",
+    "results/exp3_fanout_screen"
+  ],
+  "args": {
+    "shapes": "['8192x8192', '2048x32768']",
+    "k": "[2, 4, 8, 12, 16, 24, 32]",
+    "rounds": "5",
+    "window": "2.0",
+    "warmup": "3",
+    "seed": "0",
+    "rel_tol": "0.0001",
+    "output_dir": "results/exp3_fanout_screen"
+  },
+  "inductor": {
+    "triton.cudagraphs": false,
+    "persistent_reductions": true,
+    "realize_reads_threshold": 4
+  },
+  "measurement": "ordinary execution; synchronized wall-clock and NVML GPU-device energy over the same window"
+}

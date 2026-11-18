@@ -1,0 +1,110 @@
+/home/havarur/.conda/envs/env_scalable/lib/python3.11/site-packages/triton/knobs.py:504: UserWarning: TRITON_DEFAULT_FP_FUSION is unset: defaulting to FP fusion ENABLED for backward compatibility in Triton 3.9. The default will change to DISABLED in Triton 3.10; set TRITON_DEFAULT_FP_FUSION=1 to keep fusion enabled or =0 to adopt the new default early and silence this warning.
+  warn_once(FP_FUSION_DEFAULT_WARNING)
+USDT:2026-10-30 01:34:25 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:25 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k= 4 compiled_full            kernels=1 expensive-op evaluations per element=8 (k=4) | looped_reduction passes=2 sin+tanh=8 loads=2 stores=1 995.5us
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k= 4 compiled_split_after_y   kernels=2 expensive-op evaluations per element=4 (k=4) | pointwise passes=1 sin+tanh=4 loads=1 stores=1 941.0us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 994.1us
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k= 4 compiled_separate        kernels=3 expensive-op evaluations per element=4 (k=4) | pointwise passes=1 sin+tanh=4 loads=1 stores=1 940.9us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 451.4us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 936.2us
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k= 8 compiled_full            kernels=1 expensive-op evaluations per element=16 (k=8) | looped_reduction passes=2 sin+tanh=16 loads=2 stores=1 1484.0us
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k= 8 compiled_split_after_y   kernels=2 expensive-op evaluations per element=8 (k=8) | pointwise passes=1 sin+tanh=8 loads=1 stores=1 936.9us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 995.6us
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k= 8 compiled_separate        kernels=3 expensive-op evaluations per element=8 (k=8) | pointwise passes=1 sin+tanh=8 loads=1 stores=1 937.0us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 451.9us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 933.7us
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:26 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=12 compiled_full            kernels=1 expensive-op evaluations per element=24 (k=12) | looped_reduction passes=2 sin+tanh=24 loads=2 stores=1 2198.5us
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=12 compiled_split_after_y   kernels=2 expensive-op evaluations per element=12 (k=12) | pointwise passes=1 sin+tanh=12 loads=1 stores=1 1098.3us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 997.9us
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=12 compiled_separate        kernels=3 expensive-op evaluations per element=12 (k=12) | pointwise passes=1 sin+tanh=12 loads=1 stores=1 1097.8us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 451.6us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 939.4us
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=16 compiled_full            kernels=1 expensive-op evaluations per element=32 (k=16) | looped_reduction passes=2 sin+tanh=32 loads=2 stores=1 2925.6us
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=16 compiled_split_after_y   kernels=2 expensive-op evaluations per element=16 (k=16) | pointwise passes=1 sin+tanh=16 loads=1 stores=1 1437.9us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 997.9us
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:27 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=16 compiled_separate        kernels=3 expensive-op evaluations per element=16 (k=16) | pointwise passes=1 sin+tanh=16 loads=1 stores=1 1436.7us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 451.2us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 934.0us
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=24 compiled_full            kernels=1 expensive-op evaluations per element=48 (k=24) | looped_reduction passes=2 sin+tanh=48 loads=2 stores=1 4469.6us
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=24 compiled_split_after_y   kernels=2 expensive-op evaluations per element=24 (k=24) | pointwise passes=1 sin+tanh=24 loads=1 stores=1 2116.7us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 997.3us
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=24 compiled_separate        kernels=3 expensive-op evaluations per element=24 (k=24) | pointwise passes=1 sin+tanh=24 loads=1 stores=1 2117.1us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 451.5us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 939.7us
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=32 compiled_full            kernels=1 expensive-op evaluations per element=32 (k=32) | looped_reduction passes=2 sin+tanh=32 loads=2 stores=2 2972.2us
+USDT:2026-10-30 01:34:28 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=32 compiled_split_after_y   kernels=2 expensive-op evaluations per element=32 (k=32) | pointwise passes=1 sin+tanh=32 loads=1 stores=1 2809.3us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 997.1us
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+8192x8192 k=32 compiled_separate        kernels=3 expensive-op evaluations per element=32 (k=32) | pointwise passes=1 sin+tanh=32 loads=1 stores=1 2801.1us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 451.4us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 934.1us
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k= 4 compiled_full            kernels=1 expensive-op evaluations per element=8 (k=4) | looped_reduction passes=2 sin+tanh=8 loads=2 stores=1 1375.0us
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k= 4 compiled_split_after_y   kernels=2 expensive-op evaluations per element=4 (k=4) | pointwise passes=1 sin+tanh=4 loads=1 stores=1 938.3us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 1037.6us
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k= 4 compiled_separate        kernels=3 expensive-op evaluations per element=4 (k=4) | pointwise passes=1 sin+tanh=4 loads=1 stores=1 938.4us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 459.2us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 938.7us
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:29 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k= 8 compiled_full            kernels=1 expensive-op evaluations per element=16 (k=8) | looped_reduction passes=2 sin+tanh=16 loads=2 stores=1 1551.0us
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k= 8 compiled_split_after_y   kernels=2 expensive-op evaluations per element=8 (k=8) | pointwise passes=1 sin+tanh=8 loads=1 stores=1 938.4us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 1037.9us
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k= 8 compiled_separate        kernels=3 expensive-op evaluations per element=8 (k=8) | pointwise passes=1 sin+tanh=8 loads=1 stores=1 937.1us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 459.1us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 934.0us
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=12 compiled_full            kernels=1 expensive-op evaluations per element=24 (k=12) | looped_reduction passes=2 sin+tanh=24 loads=2 stores=1 2277.5us
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=12 compiled_split_after_y   kernels=2 expensive-op evaluations per element=12 (k=12) | pointwise passes=1 sin+tanh=12 loads=1 stores=1 1100.7us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 1037.9us
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=12 compiled_separate        kernels=3 expensive-op evaluations per element=12 (k=12) | pointwise passes=1 sin+tanh=12 loads=1 stores=1 1102.0us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 459.3us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 933.9us
+USDT:2026-10-30 01:34:30 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=16 compiled_full            kernels=1 expensive-op evaluations per element=32 (k=16) | looped_reduction passes=2 sin+tanh=32 loads=2 stores=1 3053.3us
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=16 compiled_split_after_y   kernels=2 expensive-op evaluations per element=16 (k=16) | pointwise passes=1 sin+tanh=16 loads=1 stores=1 1434.8us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 1037.9us
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=16 compiled_separate        kernels=3 expensive-op evaluations per element=16 (k=16) | pointwise passes=1 sin+tanh=16 loads=1 stores=1 1435.9us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 458.8us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 936.8us
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=24 compiled_full            kernels=1 expensive-op evaluations per element=48 (k=24) | looped_reduction passes=2 sin+tanh=48 loads=2 stores=1 4686.4us
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:31 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=24 compiled_split_after_y   kernels=2 expensive-op evaluations per element=24 (k=24) | pointwise passes=1 sin+tanh=24 loads=1 stores=1 2122.9us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 1035.8us
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=24 compiled_separate        kernels=3 expensive-op evaluations per element=24 (k=24) | pointwise passes=1 sin+tanh=24 loads=1 stores=1 2120.4us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 459.4us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 937.7us
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=32 compiled_full            kernels=1 expensive-op evaluations per element=32 (k=32) | looped_reduction passes=2 sin+tanh=32 loads=2 stores=2 3180.4us
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=32 compiled_split_after_y   kernels=2 expensive-op evaluations per element=32 (k=32) | pointwise passes=1 sin+tanh=32 loads=1 stores=1 2806.9us; looped_reduction passes=2 sin+tanh=0 loads=2 stores=1 1037.7us
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-30 01:34:32 3363906:3363906 SyncActivityProfilerHandler.cpp:46] profiler_stop
+2048x32768 k=32 compiled_separate        kernels=3 expensive-op evaluations per element=32 (k=32) | pointwise passes=1 sin+tanh=32 loads=1 stores=1 2810.4us; looped_reduction passes=1 sin+tanh=0 loads=1 stores=1 458.9us; pointwise passes=1 sin+tanh=0 loads=2 stores=1 936.1us

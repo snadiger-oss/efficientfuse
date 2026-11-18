@@ -2,7 +2,7 @@
 
 Reads <experiment>/<shape>/summary.csv files written by export_experiment.py.
 The figure uses the validation (fresh) pass and ordinary execution only: replay
-numbers currently include per-call input copies (see results/README.md).
+numbers currently include per-call input copies (see results/haripreeth/README.md).
 """
 
 import argparse
